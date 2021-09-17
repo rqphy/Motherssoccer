@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
+
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body
+{
+    overflow: hidden;
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.webgl
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+    pointer-events: none;
+}
+
+h1 {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: black;
+    z-index: 2;
+    font-family: 'Paytone One', sans-serif;
+    font-size: 2.5em;
+    text-transform: uppercase;
+    line-height: 100%;
+}
