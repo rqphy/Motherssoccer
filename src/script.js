@@ -9,49 +9,11 @@ import * as CANNON from 'cannon-es'
  * Debug
  */
 // const gui = new dat.GUI()
-// const debugObject = {}
-// debugObject.createSphere = () =>
-// {
-//     createSphere(
-//         Math.random() * 0.5,
-//         {
-//             x: (Math.random() - 0.5) * 3,
-//             y: 3,
-//             z: (Math.random() - 0.5) * 3,
-//         }
-//     )
-// }
 
-// debugObject.createBox = () =>
-// {
-//     createBox(
-//         Math.random(),
-//         Math.random(),
-//         Math.random(),
-//         {
-//             x: (Math.random() - 0.5) * 3,
-//             y: 3,
-//             z: (Math.random() - 0.5) * 3,
-//         }
-//     )
-// }
-
-// debugObject.reset = () =>
-// {
-//     for(const object of objectsToUpdate)
-//     {
-//         // Remove
-//         object.body.removeEventListener('collide', playHitSound)
-//         world.removeBody(object.mesh)
-
-//         // Remove mesh
-//         scene.remove(object.mesh)
-//     }
-// }
-
-// gui.add(debugObject, 'createSphere')
-// gui.add(debugObject, 'createBox')
-// gui.add(debugObject, 'reset')
+/**
+ * Raycaster
+ */
+const raycaster = new THREE.Raycaster()
 
 /**
  * Base
@@ -64,26 +26,9 @@ const scene = new THREE.Scene()
 scene.background = new THREE.Color(0xfffae8)
 
 /**
- * Sounds
- */
-const hitSound = new Audio('/sounds/hit.mp3')
-const playHitSound = (collision) =>
-{
-    const impactStrength = collision.contact.getImpactVelocityAlongNormal()
-
-    if(impactStrength > 1.5)
-    {
-        hitSound.volume = Math.random()
-        hitSound.currentTime = 0
-        // hitSound.play()
-    }
-}
-
-/**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
-const cubeTextureLoader = new THREE.CubeTextureLoader()
 
 const tennisBallTexture = textureLoader.load('/textures/tennisball.jpeg')
 const basketBallTexture = textureLoader.load('/textures/basket.jpeg')
@@ -91,8 +36,18 @@ const footBallTexture = textureLoader.load('/textures/football.jpeg')
 const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
 
 /**
- * Keyboard handlers
+ * Mouse
  */
+
+const mouse = new THREE.Vector2()
+
+document.addEventListener('mousemove', (_event) => 
+{
+
+    mouse.x = ( _event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( _event.clientY / window.innerHeight ) * 2 + 1;
+
+})
 
 let powerStartTime = 0
 
@@ -110,59 +65,61 @@ document.addEventListener('mouseup', () =>
     const power = Date.now() - powerStartTime
     powerStartTime = 0
 
-    for(const object of objectsToUpdate)
+    if(currentIntersect.length)
     {
-        object.body.applyLocalForce(
-            new CANNON.Vec3(0, power > 2000 ? 2000 : power, 0),
-            new CANNON.Vec3(0, 0, 0)
+        const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        const impactCoords = currentIntersect[0].point
+        console.log(impactCoords.x, impactCoords.y, Math.abs(impactCoords.z))
+        bodyBall.body.applyLocalForce(
+            new CANNON.Vec3(0, power > 1000 ? 1000 : power, power > 1000 ? - 1000 : - power),
+            new CANNON.Vec3(impactCoords.x, impactCoords.y, Math.abs(impactCoords.z))
         )
     }
+
+    // for(const object of objectsToUpdate)
+    // {
+    //     object.body.applyLocalForce(
+    //         new CANNON.Vec3(0, power > 2000 ? 2000 : power, 0),
+    //         new CANNON.Vec3(0, 0, 0)
+    //     )
+    // }
 })
 
-document.addEventListener('mousemove', (_event) => 
-{
-    // const mouseX = (canvas.width / 2) - (_event.clientX + (canvas.width / 4))
-    // const mouseY = (canvas.height / 2) - (_event.clientY + (canvas.height / 4))
-
-    const mouseX = ( event.clientX / window.innerWidth ) * 2 - 1;
-    const mouseY = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-    world.gravity.set(mouseX * 10, mouseY * 10, 0)
-})
-
-// Mobile gesture
-document.addEventListener('touchstart', () =>
-{
-    if(!powerStartTime)
-    {
-        powerStartTime = Date.now()
-    }
-})
-
-document.addEventListener('touchend', () =>
-{
-    const power = Date.now() - powerStartTime
-    powerStartTime = 0
-
-    console.log(power);
-
-    for(const object of objectsToUpdate)
-    {
-        object.body.applyLocalForce(
-            new CANNON.Vec3(0, power > 2000 ? 2000 : power, 0),
-            new CANNON.Vec3(0, 0, 0)
-        )
-    }
-})
-
-document.addEventListener('touchmove', (_event) => 
-{
-    const mouseX = ( event.clientX / window.innerWidth ) * 2 - 1;
-    const mouseY = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
 
-    world.gravity.set(-mouseX / 20, mouseY / 20, 0)
-})
+// // Mobile gesture
+// document.addEventListener('touchstart', () =>
+// {
+//     if(!powerStartTime)
+//     {
+//         powerStartTime = Date.now()
+//     }
+// })
+
+// document.addEventListener('touchend', () =>
+// {
+//     const power = Date.now() - powerStartTime
+//     powerStartTime = 0
+
+//     console.log(power);
+
+//     for(const object of objectsToUpdate)
+//     {
+//         object.body.applyLocalForce(
+//             new CANNON.Vec3(0, power > 2000 ? 2000 : power, 0),
+//             new CANNON.Vec3(0, 0, 0)
+//         )
+//     }
+// })
+
+// document.addEventListener('touchmove', (_event) => 
+// {
+//     const mouseX = ( _event.clientX / window.innerWidth ) * 2 - 1;
+//     const mouseY = - ( _event.clientY / window.innerHeight ) * 2 + 1;
+
+
+//     world.gravity.set(-mouseX / 20, mouseY / 20, 0)
+// })
 
 
 
@@ -170,13 +127,6 @@ document.addEventListener('touchmove', (_event) =>
  * Utils
  */
 const objectsToUpdate = []
-const colors = [
-    'yellow',
-    'red',
-    'blue',
-    'green',
-    'orange'
-]
 
 // Sphere
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
@@ -238,51 +188,6 @@ const createSphere = (type, position) =>
         material: defaultMaterial
     })
     body.position.copy(position)
-    body.addEventListener('collide', playHitSound)
-    world.addBody(body)
-
-    // Save in object to update
-    objectsToUpdate.push({
-        mesh,
-        body
-    })
-}
-
-// Box
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
-
-
-const createBox = (width, height, depth, position) =>
-{
-    const boxMaterial = new THREE.MeshStandardMaterial({
-        metalness: 0.3,
-        roughness: 0.4
-    })
-    // Threejs mesh
-    const mesh = new THREE.Mesh(
-        boxGeometry,
-        boxMaterial
-    )
-
-    const color = colors[Math.round(Math.random() * colors.length)]
-
-
-    mesh.material.color = new THREE.Color(color)
-    mesh.scale.set(width, height, depth)
-    mesh.castShadow = true
-    mesh.position.copy(position)
-    scene.add(mesh)
-
-    // Cannonjs body
-    const shape = new CANNON.Box(new CANNON.Vec3(width * 0.5, height * 0.5, depth * 0.5))
-    const body = new CANNON.Body({
-        mass: 1,
-        position: new CANNON.Vec3(0, 3, 0),
-        shape,
-        material: defaultMaterial
-    })
-    body.position.copy(position)
-    body.addEventListener('collide', playHitSound)
     world.addBody(body)
 
     // Save in object to update
@@ -355,7 +260,7 @@ const createWall = (position, rotation) =>
 const world = new CANNON.World()
 world.broadphase = new CANNON.SAPBroadphase(world)
 world.allowSleep = true
-world.gravity.set(0, 9.82, 0)
+world.gravity.set(0, -9.82, 0)
 
 // Material
 const defaultMaterial = new CANNON.Material('concrete')
@@ -364,8 +269,8 @@ const defaultContactMaterial = new CANNON.ContactMaterial(
     defaultMaterial,
     defaultMaterial,
     {
-        friction: 0.1,
-        restitution: 0.7
+        friction: 0.4,
+        restitution: 0.5
     }
 )
 
@@ -443,8 +348,8 @@ camera.position.set(0, 0, 20)
 scene.add(camera)
 
 // Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 /**
  * Renderer
@@ -459,56 +364,15 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 
-for(let i = 0; i < 30; i++)
-{
-    if(i < 10)
+createSphere(
+    'foot',
+    // Math.random() * 0.5,
     {
-        createSphere(
-            'tennis',
-            // Math.random() * 0.5,
-            {
-                x: (Math.random() - 0.5) * 3,
-                y: 3,
-                z: (Math.random() - 0.5) * 3,
-            }
-        )
-    } else if(i < 20)
-    {
-        console.log('volley');
-        createSphere(
-            'volley',
-            // Math.random() * 0.5,
-            {
-                x: (Math.random() - 0.5) * 3,
-                y: 3,
-                z: (Math.random() - 0.5) * 3,
-            }
-        )
-    } else if(i < 25)
-    {
-        createSphere(
-            'foot',
-            // Math.random() * 0.5,
-            {
-                x: (Math.random() - 0.5) * 3,
-                y: 3,
-                z: (Math.random() - 0.5) * 3,
-            }
-        )
-    } else
-    {
-        createSphere(
-            'basket',
-            // Math.random() * 0.5,
-            {
-                x: (Math.random() - 0.5) * 3,
-                y: 3,
-                z: (Math.random() - 0.5) * 3,
-            }
-        )
+        x: (Math.random() - 0.5) * 3,
+        y: 3,
+        z: (Math.random() - 0.5) * 3,
     }
-}
-
+)
 
 /**
  * Animate
@@ -516,7 +380,7 @@ for(let i = 0; i < 30; i++)
 const clock = new THREE.Clock()
 let oldElapsedTime = 0
 
-console.log(objectsToUpdate);
+let currentIntersect = null
 
 const tick = () =>
 {
@@ -537,11 +401,15 @@ const tick = () =>
         object.mesh.quaternion.copy(object.body.quaternion)
     }
 
+    // Cast a ray
+    raycaster.setFromCamera(mouse, camera)
+    currentIntersect = raycaster.intersectObject(objectsToUpdate[0].mesh)
+
     // Update sphere
     // sphere.position.copy(sphereBody.position)
 
     // Update controls
-    // controls.update()
+    controls.update()
 
     // Render
     renderer.render(scene, camera)
