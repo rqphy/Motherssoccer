@@ -62,19 +62,21 @@ document.addEventListener('mousedown', () =>
 
 document.addEventListener('mouseup', () =>
 {
-    const power = Date.now() - powerStartTime
+    const power = (Date.now() - powerStartTime) / 2
     powerStartTime = 0
 
     if(currentIntersect.length)
     {
+        console.log(currentIntersect)
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         const impactCoords = currentIntersect[0].face.normal
         console.log(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
-        console.log(currentIntersect[0].face.normal)
         bodyBall.body.applyLocalForce(
             new CANNON.Vec3(impactCoords.x > 0 ? -200: 200, power > 1000 ? 1000 : power, power > 3000 ? - 3000 : - power),
             new CANNON.Vec3(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
         )
+            
+        currentIntersect = null
     }
 
     // for(const object of objectsToUpdate)
@@ -127,6 +129,10 @@ document.addEventListener('mouseup', () =>
 /**
  * Utils
  */
+const generateRandomTargetCoords = () =>
+{
+    return [(Math.random() - 0.5) * 50, Math.random() * 10, -29.9]
+}
 
 const objectsToUpdate = []
 
@@ -198,6 +204,32 @@ const createSphere = (type, position) =>
         body
     })
 }
+
+// Target
+const targetGeometry = new THREE.CylinderGeometry(1, 1, 0.2, 32)
+const targetMaterial = new THREE.MeshBasicMaterial({
+    color: 0xff0000,
+})
+
+const createTarget = (size, position) =>
+{
+    // Threejs mesh
+    console.log(position);
+    const [x, y, z] = position
+    const scale = size || 1
+    const mesh = new THREE.Mesh(
+        targetGeometry,
+        targetMaterial
+    )
+    mesh.scale.set(scale, 0.2, scale)
+    mesh.rotation.x = Math.PI / 2
+    mesh.position.set(x, y, z)
+    scene.add(mesh)
+}
+
+createTarget(2, generateRandomTargetCoords())
+createTarget(2, generateRandomTargetCoords())
+createTarget(2, generateRandomTargetCoords())
 
 // Wall
 const wallGeometry = new THREE.PlaneGeometry(1, 1)
@@ -295,12 +327,11 @@ createSphere(
 /**
  * Walls
  */
-// createWall([-5, 0, 0], {y: Math.PI * 0.5})
-// createWall([5, 0, 0], {y: - Math.PI * 0.5})
-createWall([0, 5, -20], {y: 0}, {x: 40, y: 20})
-// createWall([0, 0, 5], {y: Math.PI})
+
+// front
+createWall([0, 5, -30], {y: 0}, {x: 60, y: 20})
+// floor
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
-// createWall([0, 5, 0], {x: Math.PI * 0.5})
 
 
 /**
