@@ -200,7 +200,7 @@ const createSphere = (type, position) =>
 }
 
 // Wall
-const wallGeometry = new THREE.PlaneGeometry(10, 10)
+const wallGeometry = new THREE.PlaneGeometry(1, 1)
 const wallMaterial = new THREE.MeshPhysicalMaterial({
     color: 0xffffff,
     transparent: true,
@@ -211,7 +211,7 @@ const wallMaterial = new THREE.MeshPhysicalMaterial({
 })
 
 
-const createWall = (position, rotation) =>
+const createWall = (position, rotation, size) =>
 {
     const [x, y, z] = position
     // Threejs mesh
@@ -222,6 +222,7 @@ const createWall = (position, rotation) =>
     mesh.receiveShadow = true
     mesh.rotation.x = rotation.x || 0
     mesh.rotation.y = rotation.y || 0
+    mesh.scale.set(size.x, size.y, 1)
     mesh.position.set(x, y, z)
     scene.add(mesh)
 
@@ -280,13 +281,25 @@ world.addContactMaterial(defaultContactMaterial)
 world.defaultContactMaterial = defaultContactMaterial
 
 /**
+ * Ball
+ */
+createSphere(
+    'foot',
+    {
+        x: 0,
+        y: 6,
+        z: 5,
+    }
+)
+
+/**
  * Walls
  */
 // createWall([-5, 0, 0], {y: Math.PI * 0.5})
 // createWall([5, 0, 0], {y: - Math.PI * 0.5})
-createWall([0, 0, -50], {y: 0})
+createWall([0, 5, -20], {y: 0}, {x: 40, y: 20})
 // createWall([0, 0, 5], {y: Math.PI})
-createWall([0, -5, 0], {x: - Math.PI * 0.5})
+createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
 // createWall([0, 5, 0], {x: Math.PI * 0.5})
 
 
@@ -364,26 +377,6 @@ renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-
-createSphere(
-    'foot',
-    {
-        x: -6,
-        // x: (Math.random() - 0.5) * 6,
-        y: 6,
-        z: (Math.random() - 0.5) * 3,
-    }
-)
-createSphere(
-    'foot',
-    {
-        x: 6,
-        // x: (Math.random() - 0.5) * 6,
-        y: 6,
-        z: (Math.random() - 0.5) * 3,
-    }
-)
 
 /**
  * Animate
