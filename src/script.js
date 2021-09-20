@@ -38,6 +38,8 @@ const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
 /**
  * Variables
  */
+let powerCursorPosition = 0
+let powerCursorDirection = 'right'
 // const objectsToUpdate = []
 
 
@@ -48,7 +50,7 @@ const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
 
 const mouse = new THREE.Vector2()
 
-document.addEventListener('mousemove', (_event) => 
+document.addEventListener('mousedown', (_event) => 
 {
 
     mouse.x = ( _event.clientX / window.innerWidth ) * 2 - 1;
@@ -56,46 +58,84 @@ document.addEventListener('mousemove', (_event) =>
 
 })
 
-let powerStartTime = 0
-
-document.addEventListener('mousedown', () =>
+document.addEventListener('mouseup', (_event) =>
 {
-    if(!powerStartTime)
-    {
-        powerStartTime = Date.now()
+    const currentMouse = {
+        x: ( _event.clientX / window.innerWidth ) * 2 - 1,
+        y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
-})
 
-
-document.addEventListener('mouseup', () =>
-{
-    const power = (Date.now() - powerStartTime) / 2
-    powerStartTime = 0
+    console.log('mosue', currentMouse.x - mouse.x, currentMouse.y - mouse.y)
 
     if(currentIntersect.length)
     {
         console.log(currentIntersect)
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
-        const impactCoords = currentIntersect[0].face.normal
-        console.log(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3(impactCoords.x > 0 ? -200: 200, power > 1000 ? 1000 : power, power > 3000 ? - 3000 : - power),
-            new CANNON.Vec3(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * 2500, (- currentMouse.y - mouse.y) * 900, -1000),
+            new CANNON.Vec3(0, 0, 0)
         )
             
         currentIntersect = null
-        createSphere(
-            'foot',
-            {
-                x: 0,
-                y: 6,
-                z: 5,
-            }
-        )
+        setTimeout(() =>
+        {
+            createSphere(
+                'foot',
+                {
+                    x: 0,
+                    y: -4,
+                    z: 5,
+                }
+            )
+        }, 1000)
+
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
-
-
+        
     }
+})
+
+
+
+// let powerStartTime = 0
+
+// document.addEventListener('mousedown', () =>
+// {
+//     if(!powerStartTime)
+//     {
+//         powerStartTime = Date.now()
+//     }
+// })
+
+
+// document.addEventListener('mouseup', () =>
+// {
+//     const power = (Date.now() - powerStartTime) / 2
+//     powerStartTime = 0
+
+//     if(currentIntersect.length)
+//     {
+//         console.log(currentIntersect)
+//         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+//         const impactCoords = currentIntersect[0].face.normal
+//         console.log(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
+//         bodyBall.body.applyLocalForce(
+//             new CANNON.Vec3(impactCoords.x > 0 ? -200: 200, power > 1000 ? 1000 : power, power > 3000 ? - 3000 : - power),
+//             new CANNON.Vec3(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
+//         )
+            
+//         currentIntersect = null
+//         createSphere(
+//             'foot',
+//             {
+//                 x: 0,
+//                 y: 6,
+//                 z: 5,
+//             }
+//         )
+//         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+
+
+//     }
 
     // for(const object of objectsToUpdate)
     // {
@@ -104,7 +144,7 @@ document.addEventListener('mouseup', () =>
     //         new CANNON.Vec3(0, 0, 0)
     //     )
     // }
-})
+// })
 
 
 
@@ -147,6 +187,29 @@ document.addEventListener('mouseup', () =>
 /**
  * Utils
  */
+const movePowerCursor = (cursor) =>
+{
+
+    if(powerCursorPosition === 200)
+    {
+        powerCursorDirection = 'right'
+    } else if(powerCursorPosition === 0)
+    {
+        powerCursorDirection = 'left'
+    }
+
+    if(powerCursorDirection === 'left')
+    {
+        powerCursorPosition += 2
+    } else
+    {
+        powerCursorPosition -= 2
+    }
+    
+    cursor.style.left = `${powerCursorPosition}px`
+}
+
+
 const objectsToUpdate = []
 
 const generateRandomTargetCoords = () =>
@@ -250,7 +313,7 @@ const wallGeometry = new THREE.PlaneGeometry(1, 1)
 const wallMaterial = new THREE.MeshPhysicalMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 0.35,
+    opacity: 0.9,
     roughness: 0.5,
     reflectivity: 0.17,
     side: THREE.DoubleSide
@@ -333,7 +396,7 @@ createSphere(
     'foot',
     {
         x: 0,
-        y: 6,
+        y: -4,
         z: 5,
     }
 )
@@ -454,14 +517,6 @@ const tick = () =>
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
 
-    // camera.updateMatrixWorld(); // make sure the camera matrix is updated
-    // // camera.matrixWorldInverse.getInverse( camera.matrixWorld );
-    // camera.matrixWorldInverse.copy( camera.matrixWorld ).invert()
-    // cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
-    // frustum.setFromProjectionMatrix( cameraViewProjectionMatrix );
-
-    // frustum is now ready to check all the objects you need
-
 
     // Update physic world
 
@@ -469,24 +524,11 @@ const tick = () =>
     // sphereBody.applyForce(new CANNON.Vec3(- 0.5, 0, 0), sphereBody.position)
 
     world.step(1 / 60, deltaTime, 3)
-
-    // for(const object of objectsToUpdate)
-    // {
-    //     // console.log(object.mesh.uuid);
-    //     if(frustum.intersectsObject( object.mesh ))
-    //     {
-    //         object.mesh.position.copy(object.body.position)
-    //         object.mesh.quaternion.copy(object.body.quaternion)
-    //     } else if(object.mesh.parent)
-    //     {
-    //         console.log('removed')
-    //         scene.remove(object.mesh)
-    //         world.removeBody(object.body)
-    //     }
         
+    // Update cursor
+    movePowerCursor(document.querySelector('.cursor'))
 
 
-    // }
     for(const object of objectsToUpdate)
     {
         object.mesh.position.copy(object.body.position)

@@ -15,6 +15,7 @@ body
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
+    background: #fffae8;
 }
 
 .webgl
@@ -38,4 +39,26 @@ h1 {
     font-size: 2.5em;
     text-transform: uppercase;
     line-height: 100%;
+}
+
+.powerBar {
+    position: fixed;
+    z-index: 2;
+    width: 200px;
+    height: 20px;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(0,194,255);
+    background: linear-gradient(90deg, rgba(0,194,255,1) 16%, rgba(255,154,0,1) 45%, rgba(255,154,0,1) 77%, rgba(255,0,0,1) 98%);
+}
+
+.cursor {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: -5px;
+    height: 30px;
+    width: 2px;
+    background: black;
 }
