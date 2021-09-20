@@ -431,6 +431,12 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 /**
+ * Frustum
+ */
+const frustum = new THREE.Frustum()
+const cameraViewProjectionMatrix = new THREE.Matrix4()
+
+/**
  * Animate
  */
 const clock = new THREE.Clock()
@@ -438,11 +444,24 @@ let oldElapsedTime = 0
 
 let currentIntersect = null
 
+console.log(camera.matrixWorld)
+console.log(camera.matrixWorldInv)
+console.log(camera.matrixWorldInverse)
+
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
+
+    // camera.updateMatrixWorld(); // make sure the camera matrix is updated
+    // // camera.matrixWorldInverse.getInverse( camera.matrixWorld );
+    // camera.matrixWorldInverse.copy( camera.matrixWorld ).invert()
+    // cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse );
+    // frustum.setFromProjectionMatrix( cameraViewProjectionMatrix );
+
+    // frustum is now ready to check all the objects you need
+
 
     // Update physic world
 
@@ -451,10 +470,28 @@ const tick = () =>
 
     world.step(1 / 60, deltaTime, 3)
 
+    // for(const object of objectsToUpdate)
+    // {
+    //     // console.log(object.mesh.uuid);
+    //     if(frustum.intersectsObject( object.mesh ))
+    //     {
+    //         object.mesh.position.copy(object.body.position)
+    //         object.mesh.quaternion.copy(object.body.quaternion)
+    //     } else if(object.mesh.parent)
+    //     {
+    //         console.log('removed')
+    //         scene.remove(object.mesh)
+    //         world.removeBody(object.body)
+    //     }
+        
+
+
+    // }
     for(const object of objectsToUpdate)
     {
         object.mesh.position.copy(object.body.position)
         object.mesh.quaternion.copy(object.body.quaternion)
+
     }
 
     // Cast a ray
