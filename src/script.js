@@ -68,11 +68,12 @@ document.addEventListener('mouseup', () =>
     if(currentIntersect.length)
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
-        const impactCoords = currentIntersect[0].point
-        console.log(impactCoords.x, impactCoords.y, Math.abs(impactCoords.z))
+        const impactCoords = currentIntersect[0].face.normal
+        console.log(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
+        console.log(currentIntersect[0].face.normal)
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3(0, power > 1000 ? 1000 : power, power > 1000 ? - 1000 : - power),
-            new CANNON.Vec3(impactCoords.x, impactCoords.y, Math.abs(impactCoords.z))
+            new CANNON.Vec3(impactCoords.x > 0 ? -200: 200, power > 1000 ? 1000 : power, power > 3000 ? - 3000 : - power),
+            new CANNON.Vec3(impactCoords.x / 10, impactCoords.y / 10, Math.abs(impactCoords.z))
         )
     }
 
@@ -126,6 +127,7 @@ document.addEventListener('mouseup', () =>
 /**
  * Utils
  */
+
 const objectsToUpdate = []
 
 // Sphere
@@ -200,12 +202,12 @@ const createSphere = (type, position) =>
 // Wall
 const wallGeometry = new THREE.PlaneGeometry(10, 10)
 const wallMaterial = new THREE.MeshPhysicalMaterial({
-color: 0xffffff,
-transparent: true,
-opacity: 0.35,
-roughness: 0.5,
-reflectivity: 0.17,
-side: THREE.DoubleSide
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.35,
+    roughness: 0.5,
+    reflectivity: 0.17,
+    side: THREE.DoubleSide
 })
 
 
@@ -259,7 +261,7 @@ const createWall = (position, rotation) =>
  */
 const world = new CANNON.World()
 world.broadphase = new CANNON.SAPBroadphase(world)
-world.allowSleep = true
+// world.allowSleep = true
 world.gravity.set(0, -9.82, 0)
 
 // Material
@@ -280,12 +282,12 @@ world.defaultContactMaterial = defaultContactMaterial
 /**
  * Walls
  */
-createWall([-5, 0, 0], {y: Math.PI * 0.5})
-createWall([5, 0, 0], {y: - Math.PI * 0.5})
-createWall([0, 0, -5], {y: 0})
-createWall([0, 0, 5], {y: Math.PI})
+// createWall([-5, 0, 0], {y: Math.PI * 0.5})
+// createWall([5, 0, 0], {y: - Math.PI * 0.5})
+createWall([0, 0, -50], {y: 0})
+// createWall([0, 0, 5], {y: Math.PI})
 createWall([0, -5, 0], {x: - Math.PI * 0.5})
-createWall([0, 5, 0], {x: Math.PI * 0.5})
+// createWall([0, 5, 0], {x: Math.PI * 0.5})
 
 
 /**
@@ -366,10 +368,19 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 createSphere(
     'foot',
-    // Math.random() * 0.5,
     {
-        x: (Math.random() - 0.5) * 3,
-        y: 3,
+        x: -6,
+        // x: (Math.random() - 0.5) * 6,
+        y: 6,
+        z: (Math.random() - 0.5) * 3,
+    }
+)
+createSphere(
+    'foot',
+    {
+        x: 6,
+        // x: (Math.random() - 0.5) * 6,
+        y: 6,
         z: (Math.random() - 0.5) * 3,
     }
 )
