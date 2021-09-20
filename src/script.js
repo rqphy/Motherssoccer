@@ -36,6 +36,13 @@ const footBallTexture = textureLoader.load('/textures/football.jpeg')
 const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
 
 /**
+ * Variables
+ */
+// const objectsToUpdate = []
+
+
+
+/**
  * Mouse
  */
 
@@ -77,6 +84,17 @@ document.addEventListener('mouseup', () =>
         )
             
         currentIntersect = null
+        createSphere(
+            'foot',
+            {
+                x: 0,
+                y: 6,
+                z: 5,
+            }
+        )
+        currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+
+
     }
 
     // for(const object of objectsToUpdate)
@@ -129,12 +147,12 @@ document.addEventListener('mouseup', () =>
 /**
  * Utils
  */
+const objectsToUpdate = []
+
 const generateRandomTargetCoords = () =>
 {
     return [(Math.random() - 0.5) * 50, Math.random() * 10, -29.9]
 }
-
-const objectsToUpdate = []
 
 // Sphere
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
@@ -226,10 +244,6 @@ const createTarget = (size, position) =>
     mesh.position.set(x, y, z)
     scene.add(mesh)
 }
-
-createTarget(2, generateRandomTargetCoords())
-createTarget(2, generateRandomTargetCoords())
-createTarget(2, generateRandomTargetCoords())
 
 // Wall
 const wallGeometry = new THREE.PlaneGeometry(1, 1)
@@ -333,6 +347,13 @@ createWall([0, 5, -30], {y: 0}, {x: 60, y: 20})
 // floor
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
 
+/**
+ * Targets
+ */
+
+createTarget(2, generateRandomTargetCoords())
+createTarget(2, generateRandomTargetCoords())
+createTarget(2, generateRandomTargetCoords())
 
 /**
  * Lights
@@ -438,7 +459,7 @@ const tick = () =>
 
     // Cast a ray
     raycaster.setFromCamera(mouse, camera)
-    currentIntersect = raycaster.intersectObject(objectsToUpdate[0].mesh)
+    currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
 
     // Update sphere
     // sphere.position.copy(sphereBody.position)
