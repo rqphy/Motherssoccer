@@ -40,7 +40,8 @@ const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
  */
 let powerCursorPosition = 0
 let powerCursorDirection = 'right'
-// const objectsToUpdate = []
+const targets = []
+const objectsToUpdate = []
 
 
 
@@ -186,7 +187,25 @@ document.addEventListener('mouseup', (_event) =>
 
 /**
  * Utils
- */
+*/
+const detectCollision = (object1, object2) =>
+{
+    // console.log(object1, object2)
+    // console.log('toto');
+
+    if(
+        object1.position.x + object1.scale.x >= object2.position.x - object2.scale.x
+        && object1.position.x - object1.scale.x <= object2.position.x + object2.scale.x
+        && object1.position.y + object1.scale.y >= object2.position.y - object2.scale.y
+        && object1.position.y - object1.scale.y <= object2.position.y + object2.scale.y
+        && object1.position.z + object1.scale.z <= object2.position.z + object2.scale.z
+    )
+    {
+        scene.remove(object2)
+        createTarget(2, generateRandomTargetCoords())
+    }
+}
+
 const movePowerCursor = (cursor) =>
 {
 
@@ -210,7 +229,7 @@ const movePowerCursor = (cursor) =>
 }
 
 
-const objectsToUpdate = []
+// const objectsToUpdate = []
 
 const generateRandomTargetCoords = () =>
 {
@@ -306,6 +325,8 @@ const createTarget = (size, position) =>
     mesh.rotation.x = Math.PI / 2
     mesh.position.set(x, y, z)
     scene.add(mesh)
+
+    targets.push(mesh)
 }
 
 // Wall
@@ -414,8 +435,6 @@ createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
  * Targets
  */
 
-createTarget(2, generateRandomTargetCoords())
-createTarget(2, generateRandomTargetCoords())
 createTarget(2, generateRandomTargetCoords())
 
 /**
@@ -539,6 +558,16 @@ const tick = () =>
     // Cast a ray
     raycaster.setFromCamera(mouse, camera)
     currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
+
+    // Check collisions
+
+    // console.log(objectsToUpdate[objectsToUpdate.length  - 2], targets[targets.length - 2]);
+
+    if(objectsToUpdate[objectsToUpdate.length  - 2] && targets[targets.length - 1])
+    {
+        detectCollision(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
+    }
+
 
     // Update sphere
     // sphere.position.copy(sphereBody.position)
