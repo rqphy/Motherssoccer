@@ -50,3 +50,17 @@ h1 {
     text-transform: uppercase;
     line-height: 100%;
 }
+
+.resetBall {
+    position: fixed;
+    z-index: 4;
+    left: 40px;
+    bottom: 30%;
+    padding: 20px 40px;
+    background: red;
+    color: black;
+    text-transform: uppercase;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+
+}

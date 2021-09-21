@@ -38,12 +38,20 @@ const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
 /**
  * Variables
  */
-let powerCursorPosition = 0
-let powerCursorDirection = 'right'
+const sizes = {
+    width : window.innerWidth,
+    height : window.innerHeight
+}
+
+let pannelSize = {
+    width: sizes.width > 780 ? 60 : 40,
+    height: sizes.height > 400 ? 20 : 10
+}
 let score = 0
 const targets = []
 const objectsToUpdate = []
 const scoreInput = document.querySelector('#score')
+const resetBall = document.querySelector('.resetBall')
 
 
 
@@ -52,6 +60,27 @@ const scoreInput = document.querySelector('#score')
  */
 
 const mouse = new THREE.Vector2()
+
+resetBall.addEventListener('click', () =>
+{
+    console.log(objectsToUpdate)
+    for(const object of objectsToUpdate)
+    {
+        scene.remove(object.mesh)
+        world.removeBody(object.body)
+
+    }
+
+    
+    createSphere(
+        'foot',
+        {
+            x: 0,
+            y: -4,
+            z: 5,
+        }
+    )
+})
 
 document.addEventListener('mousedown', (_event) => 
 {
@@ -68,13 +97,11 @@ document.addEventListener('mouseup', (_event) =>
         y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
 
-    console.log('x: ', (- currentMouse.x - mouse.x) * 2500, 'y: ', (- currentMouse.y - mouse.y) * 900)
-
     if(currentIntersect.length)
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3((- currentMouse.x - mouse.x) * 2500, (- currentMouse.y - mouse.y) * 900, -1000),
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * window.innerHeight * 0.9, -1000),
             new CANNON.Vec3(0, 0, 0)
         )
             
@@ -119,10 +146,10 @@ document.addEventListener('touchend', (_event) =>
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3((- currentMouse.x - mouse.x) * 2500, (- currentMouse.y - mouse.y) * 900, -1000),
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * window.innerHeight * 0.9, -1000),
             new CANNON.Vec3(0, 0, 0)
         )
-            
+
         currentIntersect = null
         setTimeout(() =>
         {
@@ -167,7 +194,7 @@ const detectCollision = (object1, object2) =>
 
 const generateRandomTargetCoords = () =>
 {
-    return [(Math.random() - 0.5) * 50, Math.random() * 10, -29.9]
+    return [(Math.random() - 0.5) * (pannelSize.width - 10), Math.random() * (pannelSize.height - 10), -29.9]
 }
 
 // Sphere
@@ -360,7 +387,7 @@ createSphere(
  */
 
 // front
-createWall([0, 5, -30], {y: 0}, {x: 60, y: 20})
+createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
 // floor
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
 
@@ -401,10 +428,6 @@ scene.add(directionalLight, directionalLight2)
 /**
  * Sizes
  */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
 
 window.addEventListener('resize', () =>
 {
@@ -444,12 +467,6 @@ renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-/**
- * Frustum
- */
-const frustum = new THREE.Frustum()
-const cameraViewProjectionMatrix = new THREE.Matrix4()
 
 /**
  * Animate
