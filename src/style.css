@@ -64,3 +64,16 @@ h1 {
     cursor: pointer;
 
 }
+
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 1.5em
+    }
+
+    .resetBall {
+        position: initial;
+        font-size: 14px;
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
+}
