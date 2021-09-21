@@ -194,7 +194,7 @@ const detectCollision = (object1, object2) =>
 
 const generateRandomTargetCoords = () =>
 {
-    return [(Math.random() - 0.5) * (pannelSize.width - 10), Math.random() * (pannelSize.height - 10), -29.9]
+    return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.9]
 }
 
 // Sphere
