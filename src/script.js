@@ -163,27 +163,6 @@ const detectCollision = (object1, object2) =>
     }
 }
 
-const movePowerCursor = (cursor) =>
-{
-
-    if(powerCursorPosition === 200)
-    {
-        powerCursorDirection = 'right'
-    } else if(powerCursorPosition === 0)
-    {
-        powerCursorDirection = 'left'
-    }
-
-    if(powerCursorDirection === 'left')
-    {
-        powerCursorPosition += 2
-    } else
-    {
-        powerCursorPosition -= 2
-    }
-    
-    cursor.style.left = `${powerCursorPosition}px`
-}
 
 
 // const objectsToUpdate = []
@@ -500,10 +479,6 @@ const tick = () =>
     // sphereBody.applyForce(new CANNON.Vec3(- 0.5, 0, 0), sphereBody.position)
 
     world.step(1 / 60, deltaTime, 3)
-        
-    // Update cursor
-    movePowerCursor(document.querySelector('.cursor'))
-
 
     for(const object of objectsToUpdate)
     {
