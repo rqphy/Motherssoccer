@@ -40,8 +40,10 @@ const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
  */
 let powerCursorPosition = 0
 let powerCursorDirection = 'right'
+let score = 0
 const targets = []
 const objectsToUpdate = []
+const scoreInput = document.querySelector('#score')
 
 
 
@@ -66,7 +68,51 @@ document.addEventListener('mouseup', (_event) =>
         y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
 
-    console.log('mosue', currentMouse.x - mouse.x, currentMouse.y - mouse.y)
+
+    if(currentIntersect.length)
+    {
+        const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        bodyBall.body.applyLocalForce(
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * 2500, (- currentMouse.y - mouse.y) * 900, -1000),
+            new CANNON.Vec3(0, 0, 0)
+        )
+            
+        currentIntersect = null
+        setTimeout(() =>
+        {
+            createSphere(
+                'foot',
+                {
+                    x: 0,
+                    y: -4,
+                    z: 5,
+                }
+            )
+        }, 1000)
+
+        currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+        
+    }
+})
+
+document.addEventListener('touchstart', (_event) => 
+{
+
+    mouse.x = ( _event.touches[0].clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( _event.touches[0].clientY / window.innerHeight ) * 2 + 1;
+
+})
+
+document.addEventListener('touchend', (_event) =>
+{
+    const currentMouse = {
+        // x: 0,
+        // y: 0
+        x: ( _event.changedTouches[0].clientX / window.innerWidth ) * 2 - 1,
+        y: - ( _event.changedTouches[0].clientY / window.innerHeight ) * 2 + 1
+    }
+
+
 
     if(currentIntersect.length)
     {
@@ -203,6 +249,7 @@ const detectCollision = (object1, object2) =>
     {
         scene.remove(object2)
         createTarget(2, generateRandomTargetCoords())
+        scoreInput.innerHTML = ++score
     }
 }
 
