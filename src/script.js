@@ -68,6 +68,7 @@ document.addEventListener('mouseup', (_event) =>
         y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
 
+    console.log('x: ', (- currentMouse.x - mouse.x) * 2500, 'y: ', (- currentMouse.y - mouse.y) * 900)
 
     if(currentIntersect.length)
     {
@@ -116,7 +117,6 @@ document.addEventListener('touchend', (_event) =>
 
     if(currentIntersect.length)
     {
-        console.log(currentIntersect)
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         bodyBall.body.applyLocalForce(
             new CANNON.Vec3((- currentMouse.x - mouse.x) * 2500, (- currentMouse.y - mouse.y) * 900, -1000),
@@ -146,8 +146,6 @@ document.addEventListener('touchend', (_event) =>
 */
 const detectCollision = (object1, object2) =>
 {
-    // console.log(object1, object2)
-    // console.log('toto');
 
     if(
         object1.position.x + object1.scale.x >= object2.position.x - object2.scale.x
@@ -250,7 +248,6 @@ const targetMaterial = new THREE.MeshBasicMaterial({
 const createTarget = (size, position) =>
 {
     // Threejs mesh
-    console.log(position);
     const [x, y, z] = position
     const scale = size || 1
     const mesh = new THREE.Mesh(
@@ -462,10 +459,6 @@ let oldElapsedTime = 0
 
 let currentIntersect = null
 
-console.log(camera.matrixWorld)
-console.log(camera.matrixWorldInv)
-console.log(camera.matrixWorldInverse)
-
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
@@ -493,7 +486,6 @@ const tick = () =>
 
     // Check collisions
 
-    // console.log(objectsToUpdate[objectsToUpdate.length  - 2], targets[targets.length - 2]);
 
     if(objectsToUpdate[objectsToUpdate.length  - 2] && targets[targets.length - 1])
     {
