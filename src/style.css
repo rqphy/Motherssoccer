@@ -56,13 +56,19 @@ h1 {
     z-index: 4;
     left: 40px;
     bottom: 30%;
-    padding: 20px 40px;
-    background: red;
+    padding: 10px 20px;
+    background: #fffae8;
+    border: 1px solid black;
     color: black;
     text-transform: uppercase;
     font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
+    font-size: .8em;
+}
 
+.resetBall:hover {
+    color: black;
+    background: white;
 }
 
 @media only screen and (max-width: 600px) {
