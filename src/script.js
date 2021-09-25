@@ -63,7 +63,6 @@ const mouse = new THREE.Vector2()
 
 resetBall.addEventListener('click', () =>
 {
-    console.log(objectsToUpdate)
     for(const object of objectsToUpdate)
     {
         scene.remove(object.mesh)
@@ -100,8 +99,10 @@ document.addEventListener('mouseup', (_event) =>
     if(currentIntersect.length)
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
+        console.log(windowHeight, window.innerHeight);
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * window.innerHeight * 0.9, -1000),
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
             new CANNON.Vec3(0, 0, 0)
         )
             
