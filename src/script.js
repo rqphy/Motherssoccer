@@ -52,11 +52,12 @@ const targets = []
 const objectsToUpdate = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
+const tryAgain = document.querySelector('.tryAgain')
 
 
 
 /**
- * Mouse
+ * Events
  */
 
 const mouse = new THREE.Vector2()
@@ -167,6 +168,11 @@ document.addEventListener('touchend', (_event) =>
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
     }
+})
+
+tryAgain.addEventListener('click', () =>
+{
+    location.reload()
 })
 
 /**

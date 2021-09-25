@@ -40,7 +40,7 @@ body
 
 }
 
-h1 {
+.title {
     padding-top: 40px;
     text-align: center;
     color: black;
@@ -51,11 +51,7 @@ h1 {
     line-height: 100%;
 }
 
-.resetBall {
-    position: fixed;
-    z-index: 4;
-    left: 40px;
-    bottom: 30%;
+.btn {
     padding: 10px 20px;
     background: #fffae8;
     border: 1px solid black;
@@ -66,20 +62,59 @@ h1 {
     font-size: .8em;
 }
 
-.resetBall:hover {
+.btn:hover {
     color: black;
     background: white;
 }
 
+.resetBall {
+    position: fixed;
+    z-index: 4;
+    left: 40px;
+    bottom: 30%;
+    
+}
+
+
+.post {
+    display: none;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    background-color: #fffae8;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.post.visible {
+    display: flex;
+}
+
+.post .score {
+    font-family: 'Paytone One', sans-serif;
+    font-size: 56px;
+}
+
+.post .btn {
+    padding: 20px 40px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
 @media only screen and (max-width: 600px) {
-    h1 {
+    .title {
         font-size: 1.5em
     }
 
     .resetBall {
         position: initial;
+        margin-top: 10px;
+    }
+
+    .btn {
         font-size: 14px;
         padding: 10px 20px;
-        margin-top: 10px;
     }
 }
