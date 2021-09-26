@@ -1,7 +1,5 @@
 import './style.css'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
 import * as CANNON from 'cannon-es'
 
 /**
@@ -514,10 +512,6 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 0, 20)
 scene.add(camera)
 
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-
 /**
  * Renderer
  */
@@ -544,12 +538,6 @@ const tick = () =>
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
 
-
-    // Update physic world
-
-    // Wind
-    // sphereBody.applyForce(new CANNON.Vec3(- 0.5, 0, 0), sphereBody.position)
-
     world.step(1 / 60, deltaTime, 3)
 
     for(const object of objectsToUpdate)
@@ -573,13 +561,6 @@ const tick = () =>
     {
         detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
     }
-
-
-    // Update sphere
-    // sphere.position.copy(sphereBody.position)
-
-    // Update controls
-    controls.update()
 
     // Render
     renderer.render(scene, camera)
