@@ -209,7 +209,8 @@ const detectCollision = (object1, object2) =>
     {
         scene.remove(object2)
         createTarget(2, generateRandomTargetCoords())
-        scoreInput.innerHTML = ++score
+        score += 100
+        scoreInput.innerHTML = score
     }
 }
 
