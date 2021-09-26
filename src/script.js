@@ -53,8 +53,21 @@ const objectsToUpdate = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const tryAgain = document.querySelector('.tryAgain')
+let remainingTime = 60
+const timer = document.querySelector('#timer')
 
-
+/**
+ * Timer
+ */
+setInterval(() =>
+{
+    if(remainingTime > 0)
+    {
+        timer.innerHTML = --remainingTime
+    } else {
+        console.log('game stop')
+    }
+}, 1000)
 
 /**
  * Events
