@@ -1,4 +1,5 @@
 # KickBall10000
-# Install
+## Install
 > npm install
+
 > npm run dev
