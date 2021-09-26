@@ -53,8 +53,9 @@ const objectsToUpdate = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
+const postGameScore = document.querySelector('#endScore')
 const tryAgain = document.querySelector('.tryAgain')
-let remainingTime = 60
+let remainingTime = 10
 const timer = document.querySelector('#timer')
 
 /**
@@ -68,6 +69,7 @@ window.addEventListener('load', () =>
         {
             timer.innerHTML = --remainingTime
         } else {
+            endScore.innerHTML = score
             postGameScreen.classList.add('visible')
         }
     }, 1000)
