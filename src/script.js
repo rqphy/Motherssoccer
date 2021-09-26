@@ -213,6 +213,15 @@ const playWallHitSound = () =>
     wallSound.play()
 }
 
+const winSound = new Audio('/sounds/win.mp3')
+const playWinSound = () =>
+{
+    winSound.volume = 0.5
+    winSound.currentTime = 0
+    winSound.play()
+}
+
+
 /**
  * Utils
 */
@@ -232,6 +241,12 @@ const detectCollisionWithTarget = (object1, object2) =>
             score += 100
             scoreInput.innerHTML = score
             playTargetHitSound()
+
+            if(score === 1000)
+            {
+                playWinSound()
+            }
+
         } else
         {
             playWallHitSound()
