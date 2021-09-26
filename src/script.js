@@ -194,24 +194,50 @@ tryAgain.addEventListener('click', () =>
 })
 
 /**
+ * Sound
+ */
+const targetSound = new Audio('/sounds/target.mp3')
+const playTargetHitSound = () =>
+{
+    targetSound.volume = 0.5
+    targetSound.currentTime = 0.5
+    targetSound.play()
+}
+
+const wallSound = new Audio('/sounds/bounce.mp3')
+const playWallHitSound = () =>
+{
+    wallSound.volume = 0.5
+    wallSound.currentTime = 3.2
+    wallSound.play()
+}
+
+/**
  * Utils
 */
-const detectCollision = (object1, object2) =>
+const detectCollisionWithTarget = (object1, object2) =>
 {
-
-    if(
-        object1.position.x + object1.scale.x >= object2.position.x - object2.scale.x
-        && object1.position.x - object1.scale.x <= object2.position.x + object2.scale.x
-        && object1.position.y + object1.scale.y >= object2.position.y - object2.scale.y
-        && object1.position.y - object1.scale.y <= object2.position.y + object2.scale.y
-        && object1.position.z + object1.scale.z <= object2.position.z + object2.scale.z
-    )
+    if(object1.position.z + object1.scale.z <= object2.position.z + object2.scale.z)
     {
-        scene.remove(object2)
-        createTarget(2, generateRandomTargetCoords())
-        score += 100
-        scoreInput.innerHTML = score
+        if(
+            object1.position.x + object1.scale.x >= object2.position.x - object2.scale.x
+            && object1.position.x - object1.scale.x <= object2.position.x + object2.scale.x
+            && object1.position.y + object1.scale.y >= object2.position.y - object2.scale.y
+            && object1.position.y - object1.scale.y <= object2.position.y + object2.scale.y
+        )
+        {
+            scene.remove(object2)
+            createTarget(2, generateRandomTargetCoords())
+            score += 100
+            scoreInput.innerHTML = score
+            playTargetHitSound()
+        } else
+        {
+            playWallHitSound()
+        }
     }
+
+    
 }
 
 
@@ -530,9 +556,12 @@ const tick = () =>
     // Check collisions
 
 
-    if(objectsToUpdate[objectsToUpdate.length  - 2] && targets[targets.length - 1])
+    if(
+        objectsToUpdate[objectsToUpdate.length  - 2]
+        && targets[targets.length - 1]
+    )
     {
-        detectCollision(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
+        detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
     }
 
 
