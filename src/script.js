@@ -55,7 +55,7 @@ const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
 const postGameScore = document.querySelector('#endScore')
 const tryAgain = document.querySelector('.tryAgain')
-let remainingTime = 10
+let remainingTime = 60
 const timer = document.querySelector('#timer')
 
 /**
