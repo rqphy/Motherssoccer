@@ -4,12 +4,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import * as CANNON from 'cannon-es'
 
-
-/**
- * Debug
- */
-// const gui = new dat.GUI()
-
 /**
  * Raycaster
  */
