@@ -52,6 +52,7 @@ const targets = []
 const objectsToUpdate = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
+const postGameScreen = document.querySelector('.post')
 const tryAgain = document.querySelector('.tryAgain')
 let remainingTime = 60
 const timer = document.querySelector('#timer')
@@ -59,15 +60,18 @@ const timer = document.querySelector('#timer')
 /**
  * Timer
  */
-setInterval(() =>
+window.addEventListener('load', () =>
 {
-    if(remainingTime > 0)
+    setInterval(() =>
     {
-        timer.innerHTML = --remainingTime
-    } else {
-        console.log('game stop')
-    }
-}, 1000)
+        if(remainingTime > 0)
+        {
+            timer.innerHTML = --remainingTime
+        } else {
+            postGameScreen.classList.add('visible')
+        }
+    }, 1000)
+})
 
 /**
  * Events
