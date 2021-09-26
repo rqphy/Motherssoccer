@@ -209,7 +209,7 @@ const wallSound = new Audio('/sounds/bounce.mp3')
 const playWallHitSound = () =>
 {
     wallSound.volume = 0.5
-    wallSound.currentTime = 3.2
+    wallSound.currentTime = 3.3
     wallSound.play()
 }
 
@@ -247,7 +247,7 @@ const detectCollisionWithTarget = (object1, object2) =>
 
 const generateRandomTargetCoords = () =>
 {
-    return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.9]
+    return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
 }
 
 // Sphere
