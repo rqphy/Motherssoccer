@@ -41,6 +41,7 @@ let pannelSize = {
 }
 let score = 0
 const targets = []
+const targetSize = 2.5
 const objectsToUpdate = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
@@ -201,7 +202,7 @@ const wallSound = new Audio('/sounds/bounce.mp3')
 const playWallHitSound = () =>
 {
     wallSound.volume = 0.5
-    wallSound.currentTime = 3.3
+    wallSound.currentTime = 3.2
     wallSound.play()
 }
 
@@ -229,7 +230,7 @@ const detectCollisionWithTarget = (object1, object2) =>
         )
         {
             scene.remove(object2)
-            createTarget(2, generateRandomTargetCoords())
+            createTarget(targetSize, generateRandomTargetCoords())
             score += 100
             scoreInput.innerHTML = score
             playTargetHitSound()
@@ -455,7 +456,7 @@ createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
  * Targets
  */
 
-createTarget(2, generateRandomTargetCoords())
+createTarget(targetSize, generateRandomTargetCoords())
 
 /**
  * Lights
