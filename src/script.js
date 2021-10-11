@@ -266,7 +266,6 @@ const detectCollisionWithWall = (object1, wall) =>
 const createImpact = (position) =>
 {
     const [x, y, z] = position
-    console.log(z)
 
     const mesh = new THREE.Mesh(
         new THREE.SphereGeometry(0.5, 20, 20),
@@ -565,8 +564,6 @@ const clock = new THREE.Clock()
 let oldElapsedTime = 0
 
 let currentIntersect = null
-
-console.log(walls)
 
 const tick = () =>
 {
