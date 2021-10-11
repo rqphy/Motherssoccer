@@ -41,6 +41,7 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 let score = 0
+const easterEgg = 800
 const targets = []
 const targetSize = 2.5
 const objectsToUpdate = []
@@ -238,7 +239,7 @@ const detectCollisionWithTarget = (object1, object2) =>
             scoreInput.innerHTML = score
             playTargetHitSound()
 
-            if(score === 1000)
+            if(score === easterEgg)
             {
                 playWinSound()
             }
