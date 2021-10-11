@@ -50,6 +50,7 @@ const postGameScore = document.querySelector('#endScore')
 const tryAgain = document.querySelector('.tryAgain')
 let remainingTime = 60
 const timer = document.querySelector('#timer')
+const walls = []
 
 /**
  * Timer
@@ -249,9 +250,14 @@ const detectCollisionWithTarget = (object1, object2) =>
     
 }
 
-
-
-// const objectsToUpdate = []
+const detectCollisionWithWall = (object1, wall) =>
+{
+    if(object1.position.z + object1.scale.z <= wall.position.z + wall.scale.z + 1)
+    {
+        console.log([object1.position.x, object1.position.y, object1.position.z]);
+        // createImpact([object1.position.x, object1.position.y, object1.position.z])
+    }
+}
 
 const generateRandomTargetCoords = () =>
 {
@@ -376,6 +382,7 @@ const createWall = (position, rotation, size) =>
     mesh.scale.set(size.x, size.y, 1)
     mesh.position.set(x, y, z)
     scene.add(mesh)
+    walls.push(mesh)
 
     //Cannonjs body
     const glassDepth = 0.1
@@ -533,6 +540,8 @@ let oldElapsedTime = 0
 
 let currentIntersect = null
 
+console.log(walls)
+
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
@@ -561,6 +570,14 @@ const tick = () =>
     )
     {
         detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
+    }
+
+    if(
+        objectsToUpdate[objectsToUpdate.length - 2]
+        && walls[0]
+    )
+    {
+        detectCollisionWithWall(objectsToUpdate[objectsToUpdate.length  - 2].mesh, walls[0])
     }
 
     // Render
