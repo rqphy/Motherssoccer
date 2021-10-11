@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
+import { TorusGeometry } from 'three'
 
 /**
  * Raycaster
@@ -51,6 +52,7 @@ const tryAgain = document.querySelector('.tryAgain')
 let remainingTime = 60
 const timer = document.querySelector('#timer')
 const walls = []
+const impact = []
 
 /**
  * Timer
@@ -254,9 +256,32 @@ const detectCollisionWithWall = (object1, wall) =>
 {
     if(object1.position.z + object1.scale.z <= wall.position.z + wall.scale.z + 1)
     {
-        console.log([object1.position.x, object1.position.y, object1.position.z]);
-        // createImpact([object1.position.x, object1.position.y, object1.position.z])
+        createImpact([object1.position.x, object1.position.y, object1.position.z])
     }
+}
+
+// Impact
+
+const createImpact = (position) =>
+{
+    const [x, y, z] = position
+    console.log(z)
+
+    const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(0.5, 20, 20),
+        new THREE.MeshStandardMaterial({ 
+            color: new THREE.Color('#000000'),
+            transparent: true,
+            opacity: 0.7
+        })
+    )
+
+    mesh.position.set(x, y, -29.95)
+    scene.remove(impact[0])
+    impact[0] = mesh
+    scene.add(impact[0])
+
+
 }
 
 const generateRandomTargetCoords = () =>
