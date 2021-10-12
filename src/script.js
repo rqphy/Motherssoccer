@@ -40,11 +40,12 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 let score = 0
-let windPower = 3
+let windPower = 10
 const easterEgg = 800
 const targets = []
 const targetSize = 2.5
 const objectsToUpdate = []
+let currentObjectBody
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
@@ -116,6 +117,7 @@ document.addEventListener('mouseup', (_event) =>
     if(currentIntersect.length)
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
             new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
@@ -590,19 +592,24 @@ const tick = () =>
     raycaster.setFromCamera(mouse, camera)
     currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
 
-    // Check collisions
+    // apply wind
+    if(currentObjectBody)
+    {
+        currentObjectBody.applyForce(
+            new CANNON.Vec3(windPower, 0, 0),
+            currentObjectBody.position
+        )
 
+    }
+
+    // Check collisions
 
     if(
         objectsToUpdate[objectsToUpdate.length  - 2]
         && targets[targets.length - 1]
     )
     {
-        // Update Wind
-        objectsToUpdate[objectsToUpdate.length  - 2].body.applyForce(
-            new CANNON.Vec3(windPower, 0, 0),
-            objectsToUpdate[objectsToUpdate.length  - 2].body.position
-        )
+
         detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
     }
 
