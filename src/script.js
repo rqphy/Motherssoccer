@@ -40,6 +40,7 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 let score = 0
+let windPower = 3
 const easterEgg = 800
 const targets = []
 const targetSize = 2.5
@@ -94,6 +95,7 @@ resetBall.addEventListener('click', () =>
             z: 5,
         }
     )
+
 })
 
 document.addEventListener('mousedown', (_event) => 
@@ -121,6 +123,8 @@ document.addEventListener('mouseup', (_event) =>
         )
             
         currentIntersect = null
+
+        // Create new ball
         setTimeout(() =>
         {
             createSphere(
@@ -132,6 +136,9 @@ document.addEventListener('mouseup', (_event) =>
                 }
             )
         }, 1000)
+
+        // Update wind
+        // windPower = Math.random() * 500
 
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
@@ -578,6 +585,7 @@ const tick = () =>
 
     }
 
+
     // Cast a ray
     raycaster.setFromCamera(mouse, camera)
     currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
@@ -590,6 +598,11 @@ const tick = () =>
         && targets[targets.length - 1]
     )
     {
+        // Update Wind
+        objectsToUpdate[objectsToUpdate.length  - 2].body.applyForce(
+            new CANNON.Vec3(windPower, 0, 0),
+            objectsToUpdate[objectsToUpdate.length  - 2].body.position
+        )
         detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
     }
 
