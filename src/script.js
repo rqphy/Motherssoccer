@@ -138,10 +138,7 @@ document.addEventListener('mouseup', (_event) =>
                 }
             )
         }, 1000)
-
-        // Update wind Power
-        windPower = Math.floor((0.5 - Math.random()) * 10)
-
+        
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
     }
@@ -245,11 +242,19 @@ const detectCollisionWithTarget = (object1, object2) =>
             score += 100
             scoreInput.innerHTML = score
             playTargetHitSound()
+            
 
             if(score === easterEgg)
             {
                 playWinSound()
             }
+
+            // Update wind Power
+            if(score >= 200)
+            {
+                windPower = Math.floor((0.5 - Math.random()) * 10)
+            }
+            console.log(windPower)
 
         } else
         {
