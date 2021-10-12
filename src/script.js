@@ -40,18 +40,23 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 let score = 0
+let windPower = 0
+const windPowerRange = 10
 const easterEgg = 800
 const targets = []
 const targetSize = 2.5
 const objectsToUpdate = []
+let currentObjectBody
+let remainingTime = 60
+const walls = []
+const impact = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
 const tryAgain = document.querySelector('.tryAgain')
-let remainingTime = 60
 const timer = document.querySelector('#timer')
-const walls = []
-const impact = []
+const wind = document.querySelector('#wind')
+const windCtn = document.querySelector('.wind')
 
 /**
  * Timer
@@ -94,6 +99,7 @@ resetBall.addEventListener('click', () =>
             z: 5,
         }
     )
+
 })
 
 document.addEventListener('mousedown', (_event) => 
@@ -114,6 +120,7 @@ document.addEventListener('mouseup', (_event) =>
     if(currentIntersect.length)
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
             new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
@@ -121,6 +128,8 @@ document.addEventListener('mouseup', (_event) =>
         )
             
         currentIntersect = null
+
+        // Create new ball
         setTimeout(() =>
         {
             createSphere(
@@ -132,7 +141,7 @@ document.addEventListener('mouseup', (_event) =>
                 }
             )
         }, 1000)
-
+        
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
     }
@@ -236,11 +245,21 @@ const detectCollisionWithTarget = (object1, object2) =>
             score += 100
             scoreInput.innerHTML = score
             playTargetHitSound()
+            
 
             if(score === easterEgg)
             {
                 playWinSound()
             }
+
+            // Update wind
+            if(score >= 200)
+            {
+                windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
+                wind.innerHTML = windPower
+                windCtn.classList.add('visible')
+            }
+            console.log(windPower)
 
         } else
         {
@@ -578,18 +597,29 @@ const tick = () =>
 
     }
 
+
     // Cast a ray
     raycaster.setFromCamera(mouse, camera)
     currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
 
-    // Check collisions
+    // apply wind
+    if(currentObjectBody)
+    {
+        currentObjectBody.applyForce(
+            new CANNON.Vec3(windPower, 0, 0),
+            currentObjectBody.position
+        )
 
+    }
+
+    // Check collisions
 
     if(
         objectsToUpdate[objectsToUpdate.length  - 2]
         && targets[targets.length - 1]
     )
     {
+
         detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
     }
 

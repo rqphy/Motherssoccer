@@ -75,6 +75,13 @@ body
     
 }
 
+.wind {
+    display: none;
+}
+
+.wind.visible {
+    display: block;
+}
 
 .post {
     display: none;
