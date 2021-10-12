@@ -40,7 +40,7 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 let score = 0
-let windPower = 10
+let windPower = 0
 const easterEgg = 800
 const targets = []
 const targetSize = 2.5
@@ -139,8 +139,8 @@ document.addEventListener('mouseup', (_event) =>
             )
         }, 1000)
 
-        // Update wind
-        // windPower = Math.random() * 500
+        // Update wind Power
+        windPower = Math.floor((0.5 - Math.random()) * 10)
 
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
