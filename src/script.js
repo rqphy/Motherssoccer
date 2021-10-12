@@ -47,14 +47,16 @@ const targets = []
 const targetSize = 2.5
 const objectsToUpdate = []
 let currentObjectBody
+let remainingTime = 60
+const walls = []
+const impact = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
 const tryAgain = document.querySelector('.tryAgain')
-let remainingTime = 60
 const timer = document.querySelector('#timer')
-const walls = []
-const impact = []
+const wind = document.querySelector('#wind')
+const windCtn = document.querySelector('.wind')
 
 /**
  * Timer
@@ -250,10 +252,12 @@ const detectCollisionWithTarget = (object1, object2) =>
                 playWinSound()
             }
 
-            // Update wind Power
+            // Update wind
             if(score >= 200)
             {
                 windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
+                wind.innerHTML = windPower
+                windCtn.classList.add('visible')
             }
             console.log(windPower)
 
