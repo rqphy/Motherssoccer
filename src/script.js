@@ -41,6 +41,7 @@ let pannelSize = {
 }
 let score = 0
 let windPower = 0
+const windPowerRange = 10
 const easterEgg = 800
 const targets = []
 const targetSize = 2.5
@@ -252,7 +253,7 @@ const detectCollisionWithTarget = (object1, object2) =>
             // Update wind Power
             if(score >= 200)
             {
-                windPower = Math.floor((0.5 - Math.random()) * 10)
+                windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
             }
             console.log(windPower)
 
