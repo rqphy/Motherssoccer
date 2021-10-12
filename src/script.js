@@ -497,7 +497,7 @@ createSphere(
  */
 
 // front
-createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
+createWall([0, 10, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
 // floor
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
 
