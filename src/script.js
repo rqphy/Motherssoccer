@@ -123,7 +123,13 @@ document.addEventListener('mousemove', (_event) =>
 
     if(mouseState)
     {
-        aimHelper.lookAt(new THREE.Vector3(- currentMouse.x, 0, 0))
+        aimHelper.lookAt(
+            new THREE.Vector3(
+                (- currentMouse.x) * (window.innerWidth / 30),
+                -4,
+                -30
+            )
+        )
     }
 
 
