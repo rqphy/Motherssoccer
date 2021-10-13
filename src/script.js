@@ -110,8 +110,12 @@ document.addEventListener('mousedown', (_event) =>
 
     mouse.x = ( _event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( _event.clientY / window.innerHeight ) * 2 + 1;
+    console.log(currentIntersect)
     mouseState = true
-    createAimHelper()
+    if(currentIntersect.length)
+    {
+        createAimHelper()
+    }
 })
 
 document.addEventListener('mousemove', (_event) =>
@@ -121,7 +125,7 @@ document.addEventListener('mousemove', (_event) =>
         y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
 
-    if(mouseState)
+    if(mouseState && aimHelper)
     {
         aimHelper.lookAt(
             new THREE.Vector3(
