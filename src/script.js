@@ -169,6 +169,7 @@ document.addEventListener('touchend', (_event) =>
     if(currentIntersect.length)
     {
         const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
             new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
