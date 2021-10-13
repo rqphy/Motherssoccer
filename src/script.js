@@ -39,6 +39,7 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+let mouseState = false
 let score = 0
 let windPower = 0
 const windPowerRange = 10
@@ -50,6 +51,8 @@ let currentObjectBody
 let remainingTime = 60
 const walls = []
 const impact = []
+let aimHelper
+
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
@@ -91,7 +94,7 @@ resetBall.addEventListener('click', () =>
     }
 
     
-    createSphere(
+    createBall(
         'foot',
         {
             x: 0,
@@ -107,6 +110,28 @@ document.addEventListener('mousedown', (_event) =>
 
     mouse.x = ( _event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( _event.clientY / window.innerHeight ) * 2 + 1;
+    mouseState = true
+    createAimHelper()
+})
+
+document.addEventListener('mousemove', (_event) =>
+{
+    const currentMouse = {
+        x: ( _event.clientX / window.innerWidth ) * 2 - 1,
+        y: - ( _event.clientY / window.innerHeight ) * 2 + 1
+    }
+
+    if(mouseState)
+    {
+        aimHelper.lookAt(
+            new THREE.Vector3(
+                (- currentMouse.x) * (window.innerWidth / 30),
+                -4,
+                -30
+            )
+        )
+    }
+
 
 })
 
@@ -116,6 +141,8 @@ document.addEventListener('mouseup', (_event) =>
         x: ( _event.clientX / window.innerWidth ) * 2 - 1,
         y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
+
+    mouseState = false
 
     if(currentIntersect.length)
     {
@@ -132,7 +159,7 @@ document.addEventListener('mouseup', (_event) =>
         // Create new ball
         setTimeout(() =>
         {
-            createSphere(
+            createBall(
                 'foot',
                 {
                     x: 0,
@@ -145,6 +172,9 @@ document.addEventListener('mouseup', (_event) =>
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
     }
+
+    // remove helper
+    scene.remove(aimHelper)
 })
 
 document.addEventListener('touchstart', (_event) => 
@@ -179,7 +209,7 @@ document.addEventListener('touchend', (_event) =>
         currentIntersect = null
         setTimeout(() =>
         {
-            createSphere(
+            createBall(
                 'foot',
                 {
                     x: 0,
@@ -278,6 +308,25 @@ const detectCollisionWithWall = (object1, wall) =>
     }
 }
 
+// Helper
+
+const helperGeometry = new THREE.BoxGeometry(0.25, 0.1, 5)
+const helperMaterial = new THREE.MeshStandardMaterial({
+    color: 0xff0000
+})
+const createAimHelper = () =>
+{
+    const mesh = new THREE.Mesh(
+        helperGeometry,
+        helperMaterial
+    )
+    mesh.position.set(0, -4, 3)
+    
+    aimHelper = mesh
+    scene.add(mesh)
+}
+
+
 // Impact
 
 const createImpact = (position) =>
@@ -321,7 +370,7 @@ const sphereBasketMaterial = new THREE.MeshStandardMaterial({
     map: basketBallTexture
 })
 
-const createSphere = (type, position) =>
+const createBall = (type, position) =>
 {
 
     // Threejs mesh
@@ -462,7 +511,6 @@ const createWall = (position, rotation, size) =>
  */
 const world = new CANNON.World()
 world.broadphase = new CANNON.SAPBroadphase(world)
-// world.allowSleep = true
 world.gravity.set(0, -9.82, 0)
 
 // Material
@@ -483,7 +531,7 @@ world.defaultContactMaterial = defaultContactMaterial
 /**
  * Ball
  */
-createSphere(
+createBall(
     'foot',
     {
         x: 0,
