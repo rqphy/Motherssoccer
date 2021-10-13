@@ -259,7 +259,6 @@ const detectCollisionWithTarget = (object1, object2) =>
                 wind.innerHTML = windPower
                 windCtn.classList.add('visible')
             }
-            console.log(windPower)
 
         } else
         {
