@@ -39,6 +39,7 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+let mouseState = false
 let score = 0
 let windPower = 0
 const windPowerRange = 10
@@ -109,8 +110,22 @@ document.addEventListener('mousedown', (_event) =>
 
     mouse.x = ( _event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( _event.clientY / window.innerHeight ) * 2 + 1;
-
+    mouseState = true
     createAimHelper()
+})
+
+document.addEventListener('mousemove', (_event) =>
+{
+    const currentMouse = {
+        x: ( _event.clientX / window.innerWidth ) * 2 - 1,
+        y: - ( _event.clientY / window.innerHeight ) * 2 + 1
+    }
+
+    if(mouseState)
+    {
+        aimHelper.lookAt(new THREE.Vector3(- currentMouse.x, 0, 0))
+    }
+
 
 })
 
@@ -120,6 +135,8 @@ document.addEventListener('mouseup', (_event) =>
         x: ( _event.clientX / window.innerWidth ) * 2 - 1,
         y: - ( _event.clientY / window.innerHeight ) * 2 + 1
     }
+
+    mouseState = false
 
     if(currentIntersect.length)
     {
@@ -287,7 +304,7 @@ const detectCollisionWithWall = (object1, wall) =>
 
 // Helper
 
-const helperGeometry = new THREE.BoxGeometry(0.25, 0.1, 2)
+const helperGeometry = new THREE.BoxGeometry(0.25, 0.1, 5)
 const helperMaterial = new THREE.MeshStandardMaterial({
     color: 0xff0000
 })
@@ -302,6 +319,7 @@ const createAimHelper = () =>
     aimHelper = mesh
     scene.add(mesh)
 }
+
 
 // Impact
 
