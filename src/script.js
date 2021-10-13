@@ -44,7 +44,7 @@ let windPower = 0
 const windPowerRange = 10
 const easterEgg = 800
 const targets = []
-const targetSize = 2.5
+const targetSize = 3
 const objectsToUpdate = []
 let currentObjectBody
 let remainingTime = 60
