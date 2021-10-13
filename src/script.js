@@ -93,7 +93,7 @@ resetBall.addEventListener('click', () =>
     }
 
     
-    createSphere(
+    createBall(
         'foot',
         {
             x: 0,
@@ -136,7 +136,7 @@ document.addEventListener('mouseup', (_event) =>
         // Create new ball
         setTimeout(() =>
         {
-            createSphere(
+            createBall(
                 'foot',
                 {
                     x: 0,
@@ -186,7 +186,7 @@ document.addEventListener('touchend', (_event) =>
         currentIntersect = null
         setTimeout(() =>
         {
-            createSphere(
+            createBall(
                 'foot',
                 {
                     x: 0,
@@ -297,7 +297,7 @@ const createAimHelper = () =>
         helperGeometry,
         helperMaterial
     )
-
+    mesh.position.set(0, -4, 3)
     
     aimHelper = mesh
     scene.add(mesh)
@@ -346,7 +346,7 @@ const sphereBasketMaterial = new THREE.MeshStandardMaterial({
     map: basketBallTexture
 })
 
-const createSphere = (type, position) =>
+const createBall = (type, position) =>
 {
 
     // Threejs mesh
@@ -508,7 +508,7 @@ world.defaultContactMaterial = defaultContactMaterial
 /**
  * Ball
  */
-createSphere(
+createBall(
     'foot',
     {
         x: 0,
