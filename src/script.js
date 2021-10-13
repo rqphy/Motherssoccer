@@ -50,6 +50,8 @@ let currentObjectBody
 let remainingTime = 60
 const walls = []
 const impact = []
+let aimHelper
+
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('.resetBall')
 const postGameScreen = document.querySelector('.post')
@@ -108,6 +110,8 @@ document.addEventListener('mousedown', (_event) =>
     mouse.x = ( _event.clientX / window.innerWidth ) * 2 - 1;
     mouse.y = - ( _event.clientY / window.innerHeight ) * 2 + 1;
 
+    createAimHelper()
+
 })
 
 document.addEventListener('mouseup', (_event) =>
@@ -145,6 +149,9 @@ document.addEventListener('mouseup', (_event) =>
         currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
         
     }
+
+    // remove helper
+    scene.remove(aimHelper)
 })
 
 document.addEventListener('touchstart', (_event) => 
@@ -276,6 +283,24 @@ const detectCollisionWithWall = (object1, wall) =>
     {
         createImpact([object1.position.x, object1.position.y, object1.position.z])
     }
+}
+
+// Helper
+
+const helperGeometry = new THREE.BoxGeometry(0.25, 0.1, 2)
+const helperMaterial = new THREE.MeshStandardMaterial({
+    color: 0xff0000
+})
+const createAimHelper = () =>
+{
+    const mesh = new THREE.Mesh(
+        helperGeometry,
+        helperMaterial
+    )
+
+    
+    aimHelper = mesh
+    scene.add(mesh)
 }
 
 // Impact
