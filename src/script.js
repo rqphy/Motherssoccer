@@ -384,7 +384,6 @@ const wallMaterial = new THREE.MeshPhysicalMaterial({
 
 const createWall = (position, rotation, size) =>
 {
-    console.log(size, rotation, position)
     const [x, y, z] = position
     // Threejs mesh
     const mesh = new THREE.Mesh(
@@ -420,7 +419,6 @@ const createWall = (position, rotation, size) =>
         )
     }
 
-    console.log(wallBody, mesh)
     world.addBody(wallBody)
 
 }
