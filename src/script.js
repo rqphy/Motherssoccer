@@ -22,10 +22,7 @@ scene.background = new THREE.Color(0xfffae8)
  */
 const textureLoader = new THREE.TextureLoader()
 
-const tennisBallTexture = textureLoader.load('/textures/tennisball.jpeg')
-const basketBallTexture = textureLoader.load('/textures/basket.jpeg')
 const footBallTexture = textureLoader.load('/textures/football.jpeg')
-const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
 
 /**
  * Variables
@@ -92,7 +89,7 @@ resetBall.addEventListener('click', () =>
 
     
     createSphere(
-        'foot',
+        
         {
             x: 0,
             y: -4,
@@ -133,7 +130,7 @@ document.addEventListener('mouseup', (_event) =>
         setTimeout(() =>
         {
             createSphere(
-                'foot',
+                
                 {
                     x: 0,
                     y: -4,
@@ -180,7 +177,7 @@ document.addEventListener('touchend', (_event) =>
         setTimeout(() =>
         {
             createSphere(
-                'foot',
+                
                 {
                     x: 0,
                     y: -4,
@@ -308,42 +305,17 @@ const generateRandomTargetCoords = () =>
 
 // Sphere
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
-const sphereTennisMaterial = new THREE.MeshStandardMaterial({
-    map: tennisBallTexture
-})
 const sphereFootMaterial = new THREE.MeshStandardMaterial({
     map: footBallTexture
 })
-const sphereVolleyMaterial = new THREE.MeshStandardMaterial({
-    map: volleyBallTexture
-})
-const sphereBasketMaterial = new THREE.MeshStandardMaterial({
-    map: basketBallTexture
-})
 
-const createSphere = (type, position) =>
+const createSphere = (position) =>
 {
 
     // Threejs mesh
 
-    let material = sphereTennisMaterial
-    let radius = 0.2
-
-    switch (type)
-    {
-        case 'basket':
-            material = sphereBasketMaterial
-            radius = 1
-            break
-        case 'foot':
-            material = sphereFootMaterial
-            radius = 0.7
-            break
-        case 'volley':
-            material = sphereVolleyMaterial
-            radius = 0.8
-            break
-    }
+    let material = sphereFootMaterial
+    let radius = 0.7
 
     const mesh = new THREE.Mesh(
         sphereGeometry,
@@ -484,7 +456,6 @@ world.defaultContactMaterial = defaultContactMaterial
  * Ball
  */
 createSphere(
-    'foot',
     {
         x: 0,
         y: -4,
