@@ -401,20 +401,11 @@ const createWall = (position, rotation, size) =>
 
     //Cannonjs body
     const glassDepth = 0.1
-    const wallShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, glassDepth))
+    const wallShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, glassDepth / 2))
     const wallBody = new CANNON.Body()
     wallBody.mass = 0
     wallBody.addShape(wallShape)
-    wallBody.position.set(
-        x,
-        y,
-        z
-    )
-    // wallBody.position.set(
-    //     x > 0 ? x - glassDepth : x + glassDepth,
-    //     y > 0 ? y - glassDepth : y + glassDepth,
-    //     z > 0 ? z - glassDepth : z + glassDepth
-    // )
+    wallBody.position.set(x, y, z)
     if(rotation.y)
     {
         wallBody.quaternion.setFromAxisAngle(
