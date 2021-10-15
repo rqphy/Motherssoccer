@@ -36,8 +36,13 @@ const bgTexture = textureLoader.load('/textures/bg.jpg', (texture) =>
     scene.background = texture
 })
 const fenceTexture = textureLoader.load('/textures/fence.png')
-fenceTexture.wrapS = THREE.RepeatWrapping;
-fenceTexture.repeat.set( 10, 1 );
+fenceTexture.wrapS = THREE.RepeatWrapping
+fenceTexture.repeat.set( 10, 1 )
+
+
+const floorTexture = textureLoader.load('/textures/floor.jpg')
+floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
+floorTexture.repeat.set( 30, 30 )
 
 
 const wallTexture = textureLoader.load('/textures/wall.png')
@@ -471,7 +476,7 @@ const createFloor = (position) =>
     // Three js
     const floorGeometry = new THREE.BoxGeometry(500, 500)
     const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffffff
+        map: floorTexture
     })
     const mesh = new THREE.Mesh(
         floorGeometry,
@@ -551,12 +556,9 @@ const wallMaterial = new THREE.MeshPhysicalMaterial({
 createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height}, wallMaterial)
 // carpet
 const carpetMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
+    color: 0x660066,
     transparent: true,
-    opacity: 0.9,
-    roughness: 0.5,
-    reflectivity: 0.17,
-    side: THREE.DoubleSide
+    opacity: 0.2
 })
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10}, carpetMaterial)
 
