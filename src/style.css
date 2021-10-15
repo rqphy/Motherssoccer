@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
 
+@font-face {
+    font-family: "Big Noodle";
+    src: url("../static/fonts/big_noodle_titling_oblique.woff2") format("woff2");
+}
+
+
 *
 {
     margin: 0;
@@ -35,17 +41,17 @@ body
     flex-direction: column;
     align-items: center;
     width: 100%;
-    font-family: 'Paytone One', sans-serif;
+    font-family: Big Noodle;
     font-size: 24px;
-
+    color: #ffffff;
 }
 
 .title {
     padding-top: 40px;
     text-align: center;
-    color: black;
+    color: #ffffff;
     z-index: 2;
-    font-family: 'Paytone One', sans-serif;
+    font-family: Big Noodle;
     font-size: 2.5em;
     text-transform: uppercase;
     line-height: 100%;
@@ -54,16 +60,15 @@ body
 .btn {
     padding: 10px 20px;
     background: #fffae8;
-    border: 1px solid black;
-    color: black;
+    border: 1px solid #ffffff;
+    color: #000000;
     text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Big Noodle;
     cursor: pointer;
     font-size: .8em;
 }
 
 .btn:hover {
-    color: black;
     background: white;
 }
 
@@ -100,7 +105,7 @@ body
 }
 
 .post .score {
-    font-family: 'Paytone One', sans-serif;
+    font-family: Big Noodle;
     font-size: 56px;
 }
 
