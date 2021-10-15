@@ -263,16 +263,27 @@ const detectCollisionWithTarget = (object1, object2) =>
             && object1.position.y - object1.scale.y <= object2.position.y + object2.scale.y
         )
         {
-            scene.remove(object2)
-            createTarget(targetSize, generateRandomTargetCoords())
-            score += 100
-            scoreInput.innerHTML = score
-            playTargetHitSound()
+
             if(targetSize > 3)
             {
                 targetSize--
             }
-            
+
+            scene.remove(object2)
+            scene.remove(object1)
+            targets[0] = null
+            setTimeout(() =>
+            {
+                if(!targets[0])
+                {
+                    createTarget(targetSize, generateRandomTargetCoords())
+                }
+            }, 500)
+
+            score += 100
+            scoreInput.innerHTML = score
+
+            playTargetHitSound()
 
             if(score === easterEgg)
             {
@@ -398,7 +409,8 @@ const createTarget = (size, position) =>
     mesh.position.set(x, y, z)
     scene.add(mesh)
 
-    targets.push(mesh)
+    targets[0] = mesh
+    console.log(targets)
 }
 
 // Wall
