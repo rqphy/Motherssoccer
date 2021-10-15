@@ -46,6 +46,39 @@ body
     color: #ffffff;
 }
 
+.infos {
+    z-index: 2;
+    position: fixed;
+    left: 40px;
+    top: 20px;
+}
+
+.info {
+    background-color: #00000050;
+    height: 40px;
+    width: 100px;
+    margin-top: 5px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Big Noodle;
+    color: #ffffff;
+}
+
+.info svg {
+    height: 90%;
+}
+
+.info span {
+    font-size: 36px;
+}
+
+.info p {
+    font-size: 24px;
+    margin-right: 14px;
+}
+
 .title {
     padding-top: 40px;
     text-align: center;

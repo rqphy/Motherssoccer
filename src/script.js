@@ -31,6 +31,13 @@ const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
 const bricksRoughnessTexture = textureLoader.load('/textures/bricks/roughness.jpg')
 
 
+const bgTexture = textureLoader.load('/textures/bg.jpg', (texture) =>
+{
+    scene.background = texture
+})
+const wallTexture = textureLoader.load('/textures/wall.png')
+
+
 /**
  * Variables
  */
@@ -430,7 +437,7 @@ const createFloor = (position) =>
     // Three js
     const floorGeometry = new THREE.BoxGeometry(500, 500)
     const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0x000000
+        color: 0xffffff
     })
     const mesh = new THREE.Mesh(
         floorGeometry,
@@ -495,12 +502,17 @@ createSphere(
  * Walls
  */
 
-// front
+// front wall
+// const wallMaterial = new THREE.MeshPhysicalMaterial({
+//     map: bricksColorTexture,
+//     aoMap: bricksAmbientOcclusionTexture,
+//     normalMap: bricksNormalTexture,
+//     roughnessMap: bricksRoughnessTexture
+// })
 const wallMaterial = new THREE.MeshPhysicalMaterial({
-    map: bricksColorTexture,
-    aoMap: bricksAmbientOcclusionTexture,
-    normalMap: bricksNormalTexture,
-    roughnessMap: bricksRoughnessTexture
+    map: wallTexture,
+    transparent: true,
+    // opacity: 0.4
 })
 createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height}, wallMaterial)
 // carpet
