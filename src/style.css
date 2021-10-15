@@ -73,6 +73,28 @@ body
     margin-left: 6px;
 }
 
+.reset {
+    z-index: 2;
+    position: fixed;
+    left: 40px;
+    bottom: 20px;
+    font-family: Big Noodle;
+    font-size: 36px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.reset:hover {
+    transform: scale(1.15);
+}
+
+.reset svg {
+    width: 28px;
+    margin-right: 8px;
+}
 
 .info span {
     font-size: 36px;
