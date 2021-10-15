@@ -379,23 +379,16 @@ const createTarget = (size, position) =>
 
 // Wall
 const wallGeometry = new THREE.PlaneGeometry(1, 1)
-const wallMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.9,
-    roughness: 0.5,
-    reflectivity: 0.17,
-    side: THREE.DoubleSide
-})
 
 
-const createWall = (position, rotation, size) =>
+
+const createWall = (position, rotation, size, material) =>
 {
     const [x, y, z] = position
     // Threejs mesh
     const mesh = new THREE.Mesh(
         wallGeometry,
-        wallMaterial
+        material
     )
     mesh.receiveShadow = true
     mesh.rotation.x = rotation.x || 0
@@ -503,9 +496,23 @@ createSphere(
  */
 
 // front
-createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
+const wallMaterial = new THREE.MeshPhysicalMaterial({
+    map: bricksColorTexture,
+    aoMap: bricksAmbientOcclusionTexture,
+    normalMap: bricksNormalTexture,
+    roughnessMap: bricksRoughnessTexture
+})
+createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height}, wallMaterial)
 // carpet
-createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
+const carpetMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.9,
+    roughness: 0.5,
+    reflectivity: 0.17,
+    side: THREE.DoubleSide
+})
+createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10}, carpetMaterial)
 // floor
 createFloor([0, -5, 5])
 
