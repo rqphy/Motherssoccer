@@ -430,7 +430,7 @@ const createFloor = (position) =>
     // Three js
     const floorGeometry = new THREE.BoxGeometry(500, 500)
     const floorMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffff00
+        color: 0x000000
     })
     const mesh = new THREE.Mesh(
         floorGeometry,
@@ -496,7 +496,7 @@ createSphere(
  */
 
 // front
-createWall([0, 10, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
+createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
 // carpet
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
 // floor
