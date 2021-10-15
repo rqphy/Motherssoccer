@@ -78,7 +78,6 @@ const postGameScreen = document.querySelector('.post')
 const tryAgain = document.querySelector('.tryAgain')
 const timer = document.querySelector('#timer')
 const wind = document.querySelector('#wind')
-const windCtn = document.querySelector('.wind')
 
 /**
  * Timer
@@ -295,7 +294,6 @@ const detectCollisionWithTarget = (object1, object2) =>
             {
                 windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
                 wind.innerHTML = windPower
-                windCtn.classList.add('visible')
             }
 
         } else
@@ -410,7 +408,6 @@ const createTarget = (size, position) =>
     scene.add(mesh)
 
     targets[0] = mesh
-    console.log(targets)
 }
 
 // Wall
