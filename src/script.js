@@ -44,6 +44,7 @@ const floorTexture = textureLoader.load('/textures/floor.jpg')
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
 floorTexture.repeat.set( 30, 30 )
 
+const targetTexture = textureLoader.load('/textures/target.png')
 
 const wallTexture = textureLoader.load('/textures/wall.png')
 
@@ -374,7 +375,8 @@ const createSphere = (position) =>
 // Target
 const targetGeometry = new THREE.CylinderGeometry(1, 1, 0.2, 32)
 const targetMaterial = new THREE.MeshBasicMaterial({
-    color: 0xff0000,
+    map: targetTexture,
+    transparent: true,
 })
 
 const createTarget = (size, position) =>
@@ -387,7 +389,8 @@ const createTarget = (size, position) =>
         targetMaterial
     )
     mesh.scale.set(scale, 0.2, scale)
-    mesh.rotation.x = Math.PI / 2
+    mesh.rotation.x = Math.PI / - 2
+    mesh.rotation.y = Math.PI / 2
     mesh.position.set(x, y, z)
     scene.add(mesh)
 
