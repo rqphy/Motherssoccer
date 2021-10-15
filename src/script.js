@@ -35,6 +35,11 @@ const bgTexture = textureLoader.load('/textures/bg.jpg', (texture) =>
 {
     scene.background = texture
 })
+const fenceTexture = textureLoader.load('/textures/fence.png')
+fenceTexture.wrapS = THREE.RepeatWrapping;
+fenceTexture.repeat.set( 10, 1 );
+
+
 const wallTexture = textureLoader.load('/textures/wall.png')
 
 
@@ -430,6 +435,35 @@ const createWall = (position, rotation, size, material) =>
 
 }
 
+const createFence = (position, size) => {
+    const [x, y, z] = position
+
+    // Three js 
+    const fenceGeometry = new THREE.BoxGeometry(1, 1)
+    const fenceMaterial = new THREE.MeshStandardMaterial({
+        map: fenceTexture,
+        transparent: true
+    })
+    const mesh = new THREE.Mesh(
+        fenceGeometry,
+        fenceMaterial
+    )
+    mesh.receiveShadow = true
+    mesh.scale.set(size.x, size.y)
+    mesh.position.set(x, y, z)
+    scene.add(mesh)
+
+    // Cannon js
+    const fenceShape = new CANNON.Plane()
+    const fenceBody = new CANNON.Body()
+    fenceBody.mass = 0
+    fenceBody.addShape(fenceShape)
+    fenceBody.position.set(x, y, z)
+
+    world.addBody(fenceBody)
+
+}
+
 const createFloor = (position) =>
 {
     const [x, y, z] = position
@@ -525,6 +559,10 @@ const carpetMaterial = new THREE.MeshPhysicalMaterial({
     side: THREE.DoubleSide
 })
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10}, carpetMaterial)
+
+// Fence
+createFence([0, -5, -70], {x: 500, y: 40})
+
 // floor
 createFloor([0, -5, 5])
 
