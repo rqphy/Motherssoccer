@@ -66,7 +66,7 @@ let windPower = 0
 const windPowerRange = 10
 const easterEgg = 800
 const targets = []
-const targetSize = 3
+let targetSize = 8
 const objectsToUpdate = []
 let currentObjectBody
 let remainingTime = 60
@@ -268,6 +268,10 @@ const detectCollisionWithTarget = (object1, object2) =>
             score += 100
             scoreInput.innerHTML = score
             playTargetHitSound()
+            if(targetSize > 3)
+            {
+                targetSize--
+            }
             
 
             if(score === easterEgg)
