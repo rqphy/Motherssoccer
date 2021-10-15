@@ -423,6 +423,38 @@ const createWall = (position, rotation, size) =>
 
 }
 
+const createFloor = (position) =>
+{
+    const [x, y, z] = position
+
+    // Three js
+    const floorGeometry = new THREE.BoxGeometry(500, 500)
+    const floorMaterial = new THREE.MeshStandardMaterial({
+        color: 0xffff00
+    })
+    const mesh = new THREE.Mesh(
+        floorGeometry,
+        floorMaterial
+    )
+    mesh.receiveShadow = true
+    mesh.position.set(x, y - 1, z)
+    mesh.rotation.x = Math.PI * 0.5
+    scene.add(mesh)
+
+    // Cannon js
+    const floorShape = new CANNON.Plane()
+    const floorBody = new CANNON.Body()
+    floorBody.mass = 0
+    floorBody.addShape(floorShape)
+    floorBody.position.set(x, y, z)
+    floorBody.quaternion.setFromAxisAngle(
+        new CANNON.Vec3(-1, 0, 0),
+        Math.PI * 0.5
+    )
+
+    world.addBody(floorBody)
+
+}
 
 
 /**
@@ -465,8 +497,10 @@ createSphere(
 
 // front
 createWall([0, 10, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
-// floor
+// carpet
 createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
+// floor
+createFloor([0, -5, 5])
 
 /**
  * Targets
