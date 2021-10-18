@@ -99,10 +99,10 @@ const mouse = new THREE.Vector2()
 
 resetBall.addEventListener('click', () =>
 {
-    for(const object of balls)
+    for(const ball of balls)
     {
-        scene.remove(object.mesh)
-        world.removeBody(object.body)
+        scene.remove(ball.mesh)
+        world.removeBody(ball.body)
 
     }
 
@@ -322,7 +322,7 @@ const createBall = (position) =>
 
     body.name = 'ball'
 
-    // Save in object to update
+    // Save in balls
     balls.push({
         mesh,
         body
@@ -698,10 +698,10 @@ const tick = () =>
         removeBodies = []
     }
 
-    for(const object of balls)
+    for(const ball of balls)
     {
-        object.mesh.position.copy(object.body.position)
-        object.mesh.quaternion.copy(object.body.quaternion)
+        ball.mesh.position.copy(ball.body.position)
+        ball.mesh.quaternion.copy(ball.body.quaternion)
 
     }
 
