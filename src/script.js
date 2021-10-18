@@ -249,37 +249,6 @@ const playWinSound = () =>
  * Utils
 */
 
-const detectCollisionWithWall = (object1, wall) =>
-{
-    if(object1.position.z + object1.scale.z <= wall.position.z + wall.scale.z + 1)
-    {
-        createImpact([object1.position.x, object1.position.y, object1.position.z])
-    }
-}
-
-// Impact
-
-const createImpact = (position) =>
-{
-    const [x, y, z] = position
-
-    const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(0.5, 20, 20),
-        new THREE.MeshStandardMaterial({ 
-            color: new THREE.Color('#000000'),
-            transparent: true,
-            opacity: 0.7
-        })
-    )
-
-    mesh.position.set(x, y, -29.95)
-    scene.remove(impact[0])
-    impact[0] = mesh
-    scene.add(impact[0])
-
-
-}
-
 const generateRandomTargetCoords = () =>
 {
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
