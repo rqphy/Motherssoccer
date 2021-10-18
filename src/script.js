@@ -31,7 +31,9 @@ const bgTexture = textureLoader.load('/textures/bg.jpg', (texture) =>
 })
 const fenceTexture = textureLoader.load('/textures/fence.png')
 fenceTexture.wrapS = THREE.RepeatWrapping
-fenceTexture.repeat.set( 10, 1 )
+fenceTexture.repeat.set( 12, 1 )
+
+const carpetTexture = textureLoader.load('/textures/zone.png')
 
 
 const floorTexture = textureLoader.load('/textures/floor.jpg')
@@ -470,6 +472,15 @@ const createWall = (position, rotation, size, material) =>
 
     world.addBody(wallBody)
 
+    // WallCollider
+    wallBody.addEventListener('collide', (_event) =>
+    {
+        if(_event.body.name === 'ball' && !rotation.x)
+        {
+            console.log(_event)
+        }
+    })
+
 }
 
 const createFence = (position, size) => {
@@ -585,17 +596,27 @@ const wallMaterial = new THREE.MeshPhysicalMaterial({
     transparent: true,
     // opacity: 0.4
 })
-createWall([0, 5, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height}, wallMaterial)
+createWall(
+    [0, 5, -30],
+    {y: 0},
+    {x: pannelSize.width, y: pannelSize.height},
+    wallMaterial
+)
+
 // carpet
 const carpetMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0x660066,
-    transparent: true,
-    opacity: 0.2
+    map: carpetTexture,
+    transparent: true
 })
-createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10}, carpetMaterial)
+createWall(
+    [0, -5, 5],
+    {x: - Math.PI * 0.5},
+    {x: 10, y: 10},
+    carpetMaterial
+)
 
 // Fence
-createFence([0, -5, -70], {x: 500, y: 40})
+createFence([0, 4, -70], {x: 500, y: 20})
 
 // floor
 createFloor([0, -5, 5])
@@ -720,13 +741,13 @@ const tick = () =>
 
     }
 
-    if(
-        balls[balls.length - 2]
-        && walls[0]
-    )
-    {
-        detectCollisionWithWall(balls[balls.length  - 2].mesh, walls[0])
-    }
+    // if(
+    //     balls[balls.length - 2]
+    //     && walls[0]
+    // )
+    // {
+    //     // detectCollisionWithWall(balls[balls.length  - 2].mesh, walls[0])
+    // }
 
     // Render
     renderer.render(scene, camera)
