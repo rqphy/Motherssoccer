@@ -62,7 +62,7 @@ const windPowerRange = 10
 const easterEgg = 800
 const targets = []
 let targetSize = 8
-const objectsToUpdate = []
+const balls = []
 let currentObjectBody
 let remainingTime = 600
 const walls = []
@@ -99,7 +99,7 @@ const mouse = new THREE.Vector2()
 
 resetBall.addEventListener('click', () =>
 {
-    for(const object of objectsToUpdate)
+    for(const object of balls)
     {
         scene.remove(object.mesh)
         world.removeBody(object.body)
@@ -135,7 +135,7 @@ document.addEventListener('mouseup', (_event) =>
 
     if(currentIntersect.length)
     {
-        const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        const bodyBall = balls.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
@@ -158,7 +158,7 @@ document.addEventListener('mouseup', (_event) =>
             )
         }, 1000)
         
-        currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+        currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh)
         
     }
 })
@@ -184,7 +184,7 @@ document.addEventListener('touchend', (_event) =>
 
     if(currentIntersect.length)
     {
-        const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        const bodyBall = balls.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
@@ -205,7 +205,7 @@ document.addEventListener('touchend', (_event) =>
             )
         }, 1000)
 
-        currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+        currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh)
         
     }
 })
@@ -323,10 +323,12 @@ const createBall = (position) =>
     body.name = 'ball'
 
     // Save in object to update
-    objectsToUpdate.push({
+    balls.push({
         mesh,
         body
     })
+
+    
 }
 
 // Target
@@ -695,7 +697,7 @@ const tick = () =>
         removeBodies = []
     }
 
-    for(const object of objectsToUpdate)
+    for(const object of balls)
     {
         object.mesh.position.copy(object.body.position)
         object.mesh.quaternion.copy(object.body.quaternion)
@@ -705,7 +707,7 @@ const tick = () =>
 
     // Cast a ray
     raycaster.setFromCamera(mouse, camera)
-    currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
+    currentIntersect = raycaster.intersectObject(balls[balls.length  -1].mesh)
 
     // apply wind
     if(currentObjectBody)
@@ -718,11 +720,11 @@ const tick = () =>
     }
 
     if(
-        objectsToUpdate[objectsToUpdate.length - 2]
+        balls[balls.length - 2]
         && walls[0]
     )
     {
-        detectCollisionWithWall(objectsToUpdate[objectsToUpdate.length  - 2].mesh, walls[0])
+        detectCollisionWithWall(balls[balls.length  - 2].mesh, walls[0])
     }
 
     // Render
