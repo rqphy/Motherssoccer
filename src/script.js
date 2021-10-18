@@ -472,15 +472,6 @@ const createWall = (position, rotation, size, material) =>
 
     world.addBody(wallBody)
 
-    // WallCollider
-    wallBody.addEventListener('collide', (_event) =>
-    {
-        if(_event.body.name === 'ball' && !rotation.x)
-        {
-            console.log(_event)
-        }
-    })
-
 }
 
 const createFence = (position, size) => {
@@ -740,14 +731,6 @@ const tick = () =>
         )
 
     }
-
-    // if(
-    //     balls[balls.length - 2]
-    //     && walls[0]
-    // )
-    // {
-    //     // detectCollisionWithWall(balls[balls.length  - 2].mesh, walls[0])
-    // }
 
     // Render
     renderer.render(scene, camera)
