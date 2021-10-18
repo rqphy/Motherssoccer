@@ -141,7 +141,7 @@ document.addEventListener('mouseup', (_event) =>
         currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight * 0.8, -1250),
             new CANNON.Vec3(0, 0, 0)
         )
             
@@ -410,7 +410,7 @@ const createTarget = (size, position) =>
             }
 
             // Update wind
-            if(score >= 200)
+            if(score >= 2000)
             {
                 windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
                 wind.innerHTML = windPower
