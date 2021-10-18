@@ -22,27 +22,27 @@ scene.background = new THREE.Color(0x000000)
  */
 const textureLoader = new THREE.TextureLoader()
 
-const footBallTexture = textureLoader.load('/textures/football.jpeg')
+const footBallTexture = textureLoader.load('./textures/football.jpeg')
 
 
-const bgTexture = textureLoader.load('/textures/bg.jpg', (texture) =>
+const bgTexture = textureLoader.load('./textures/bg.jpg', (texture) =>
 {
     scene.background = texture
 })
-const fenceTexture = textureLoader.load('/textures/fence.png')
+const fenceTexture = textureLoader.load('./textures/fence.png')
 fenceTexture.wrapS = THREE.RepeatWrapping
 fenceTexture.repeat.set( 12, 1 )
 
-const carpetTexture = textureLoader.load('/textures/zone.png')
+const carpetTexture = textureLoader.load('./textures/zone.png')
 
 
-const floorTexture = textureLoader.load('/textures/floor.jpg')
+const floorTexture = textureLoader.load('./textures/floor.jpg')
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
 floorTexture.repeat.set( 30, 30 )
 
-const targetTexture = textureLoader.load('/textures/target.png')
+const targetTexture = textureLoader.load('./textures/target.png')
 
-const wallTexture = textureLoader.load('/textures/wall.png')
+const wallTexture = textureLoader.load('./textures/wall.png')
 
 
 /**
