@@ -25,12 +25,6 @@ const textureLoader = new THREE.TextureLoader()
 const footBallTexture = textureLoader.load('/textures/football.jpeg')
 
 
-const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
-const bricksAmbientOcclusionTexture = textureLoader.load('/textures/bricks/ambientOcclusion.jpg')
-const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
-const bricksRoughnessTexture = textureLoader.load('/textures/bricks/roughness.jpg')
-
-
 const bgTexture = textureLoader.load('/textures/bg.jpg', (texture) =>
 {
     scene.background = texture
@@ -61,6 +55,7 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+let removeBodies = []
 let score = 0
 let windPower = 0
 const windPowerRange = 10
@@ -69,7 +64,7 @@ const targets = []
 let targetSize = 8
 const objectsToUpdate = []
 let currentObjectBody
-let remainingTime = 60
+let remainingTime = 600
 const walls = []
 const impact = []
 const scoreInput = document.querySelector('#score')
@@ -251,59 +246,6 @@ const playWinSound = () =>
 /**
  * Utils
 */
-const detectCollisionWithTarget = (object1, object2) =>
-{
-    if(object1.position.z + object1.scale.z <= object2.position.z + object2.scale.z)
-    {
-        if(
-            object1.position.x + object1.scale.x >= object2.position.x - object2.scale.x
-            && object1.position.x - object1.scale.x <= object2.position.x + object2.scale.x
-            && object1.position.y + object1.scale.y >= object2.position.y - object2.scale.y
-            && object1.position.y - object1.scale.y <= object2.position.y + object2.scale.y
-        )
-        {
-
-            if(targetSize > 3)
-            {
-                targetSize--
-            }
-
-            scene.remove(object2)
-            scene.remove(object1)
-            targets[0] = null
-            setTimeout(() =>
-            {
-                if(!targets[0])
-                {
-                    createTarget(targetSize, generateRandomTargetCoords())
-                }
-            }, 500)
-
-            score += 100
-            scoreInput.innerHTML = score
-
-            playTargetHitSound()
-
-            if(score === easterEgg)
-            {
-                playWinSound()
-            }
-
-            // Update wind
-            if(score >= 200)
-            {
-                windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
-                wind.innerHTML = windPower
-            }
-
-        } else
-        {
-            playWallHitSound()
-        }
-    }
-
-    
-}
 
 const detectCollisionWithWall = (object1, wall) =>
 {
@@ -378,6 +320,8 @@ const createSphere = (position) =>
     body.position.copy(position)
     world.addBody(body)
 
+    body.name = 'ball'
+
     // Save in object to update
     objectsToUpdate.push({
         mesh,
@@ -407,7 +351,76 @@ const createTarget = (size, position) =>
     mesh.position.set(x, y, z)
     scene.add(mesh)
 
-    targets[0] = mesh
+    // Cannonjs body
+
+    const depth = 0.1
+    const targetShape = new CANNON.Cylinder(scale, scale, depth, 32)
+    const targetBody = new CANNON.Body()
+    targetBody.mass = 0
+    targetBody.addShape(targetShape)
+    targetBody.position.set(x, y, z)
+    targetBody.quaternion.setFromAxisAngle(
+        new CANNON.Vec3(1, 0, 0),
+        Math.PI / 2
+    )
+
+    world.addBody(targetBody)
+
+
+    // Target collider
+
+    targetBody.addEventListener('collide', (_event) =>
+    {
+        if(_event.body.name = 'ball')
+        {
+            
+            if(targetSize > 3)
+            {
+                targetSize--
+            }
+            
+            scene.remove(mesh)
+            
+            targets[0] = null
+
+            setTimeout(() =>
+            {
+                if(!targets[0])
+                {
+                    createTarget(targetSize, generateRandomTargetCoords())
+                }
+            }, 500)
+
+
+            score += 100
+            scoreInput.innerHTML = score
+
+
+
+            playTargetHitSound()
+
+            if(score === easterEgg)
+            {
+                playWinSound()
+            }
+
+            // Update wind
+            if(score >= 200)
+            {
+                windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
+                wind.innerHTML = windPower
+            }
+
+
+            removeBodies.push(_event.body, targetBody)
+            console.log(removeBodies);
+
+            
+        }
+    })
+
+    targets[0] = [mesh, targetBody]
+
 }
 
 // Wall
@@ -672,6 +685,15 @@ const tick = () =>
     oldElapsedTime = elapsedTime
 
     world.step(1 / 60, deltaTime, 3)
+    if(removeBodies)
+    {
+        for(const body of removeBodies)
+        {
+            world.removeBody(body)
+        }
+
+        removeBodies = []
+    }
 
     for(const object of objectsToUpdate)
     {
@@ -693,17 +715,6 @@ const tick = () =>
             currentObjectBody.position
         )
 
-    }
-
-    // Check collisions
-
-    if(
-        objectsToUpdate[objectsToUpdate.length  - 2]
-        && targets[targets.length - 1]
-    )
-    {
-
-        detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
     }
 
     if(
