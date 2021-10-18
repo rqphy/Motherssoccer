@@ -382,7 +382,8 @@ const createTarget = (size, position) =>
             }
             
             scene.remove(mesh)
-            
+            scene.remove(balls[balls.length - 2].mesh)
+
             targets[0] = null
 
             setTimeout(() =>
