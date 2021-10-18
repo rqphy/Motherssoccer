@@ -108,7 +108,7 @@ resetBall.addEventListener('click', () =>
 
     }
 
-    
+
     createBall(
         
         {

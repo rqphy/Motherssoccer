@@ -79,7 +79,7 @@ body
 }
 
 .reset {
-    z-index: 2;
+    z-index: 3;
     position: fixed;
     left: 40px;
     bottom: 20px;
@@ -135,14 +135,6 @@ body
 
 .btn:hover {
     background: white;
-}
-
-.resetBall {
-    position: fixed;
-    z-index: 4;
-    left: 40px;
-    bottom: 30%;
-    
 }
 
 .wind {
