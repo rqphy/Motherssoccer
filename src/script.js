@@ -287,7 +287,7 @@ const createScoreIndicator = (score, position) =>
         {
             font,
             fontFamily: 'Arial, Helvetica, sans-serif',
-            size: 2,
+            size: 3,
             height: 0.2,
             curveSegments: 5,
             bevelEnabled: true,
