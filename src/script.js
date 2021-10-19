@@ -25,7 +25,7 @@ scene.background = new THREE.Color(0x000000)
 
 const fontLoader = new THREE.FontLoader()
 
-let font
+let font = null
 fontLoader.load(
     './fonts/BigNoodleTitling_Oblique.json',
     (loadedFont) =>
@@ -74,6 +74,7 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+let scoreIndicator = null
 let removeBodies = []
 let score = 0
 let windPower = 0
@@ -275,7 +276,7 @@ const generateRandomTargetCoords = () =>
 // Score indicator
 
 const scoreTextMaterial = new THREE.MeshStandardMaterial({
-    color: 0xff0000
+    color: 0xffff00
 })
 
 const createScoreIndicator = (score, position) =>
@@ -286,7 +287,7 @@ const createScoreIndicator = (score, position) =>
         {
             font,
             fontFamily: 'Arial, Helvetica, sans-serif',
-            size: 5,
+            size: 2,
             height: 0.2,
             curveSegments: 5,
             bevelEnabled: true,
@@ -304,6 +305,8 @@ const createScoreIndicator = (score, position) =>
 
     mesh.position.set(x, y, z)
     scene.add(mesh)
+
+    scoreIndicator = mesh
 }
 
 // Sphere
@@ -424,6 +427,12 @@ const createTarget = (size, position) =>
             scoreInput.innerHTML = score
 
             createScoreIndicator('+100', targetPosition)
+
+            setTimeout(() =>
+            {
+                scene.remove(scoreIndicator)
+                scoreIndicator = null
+            }, 1000)
 
             playTargetHitSound()
 
@@ -753,6 +762,18 @@ const tick = () =>
             currentObjectBody.position
         )
 
+    }
+
+    // Score indicator update
+    if(scoreIndicator)
+    {
+        const scale = scoreIndicator.scale
+        const scaleCoef = 0.01
+        scoreIndicator.scale.set(
+            scale.x - scaleCoef,
+            scale.y - scaleCoef,
+            scale.z - scaleCoef,
+        )
     }
 
     // Render
