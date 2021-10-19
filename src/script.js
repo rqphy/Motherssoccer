@@ -2,6 +2,8 @@ import './style.css'
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 
+// import typefaceFont from 'three/examples/fonts/helvetiker_regular.typeface.json'
+
 /**
  * Raycaster
  */
@@ -16,6 +18,21 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x000000)
+
+/**
+ * Fonts
+ */
+
+const fontLoader = new THREE.FontLoader()
+
+let font
+fontLoader.load(
+    './fonts/BigNoodleTitling_Oblique.json',
+    (loadedFont) =>
+    {
+        font = loadedFont
+    }
+)
 
 /**
  * Textures
@@ -254,6 +271,41 @@ const generateRandomTargetCoords = () =>
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
 }
 
+
+// Score indicator
+
+const scoreTextMaterial = new THREE.MeshStandardMaterial({
+    color: 0xff0000
+})
+
+const createScoreIndicator = (score, position) =>
+{
+    const [x, y, z] = position
+    const geometry = new THREE.TextGeometry(
+        score,
+        {
+            font,
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            size: 5,
+            height: 0.2,
+            curveSegments: 5,
+            bevelEnabled: true,
+            bevelThickness: 0.03,
+            bevelSize: 0.02,
+            bevelOffset: 0,
+            bevelSegments: 4
+        }
+    )
+
+    geometry.computeBoundingBox()
+    geometry.center()
+
+    const mesh = new THREE.Mesh(geometry, scoreTextMaterial)
+
+    mesh.position.set(x, y, z)
+    scene.add(mesh)
+}
+
 // Sphere
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
 const sphereFootMaterial = new THREE.MeshStandardMaterial({
@@ -346,7 +398,9 @@ const createTarget = (size, position) =>
     {
         if(_event.body.name = 'ball')
         {
-            
+         
+            const targetPosition = [mesh.position.x, mesh.position.y, mesh.position.z]
+
             if(targetSize > 3)
             {
                 targetSize--
@@ -369,7 +423,7 @@ const createTarget = (size, position) =>
             score += 100
             scoreInput.innerHTML = score
 
-
+            createScoreIndicator('+100', targetPosition)
 
             playTargetHitSound()
 
