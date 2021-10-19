@@ -450,7 +450,6 @@ const createTarget = (size, position) =>
 
 
             removeBodies.push(_event.body, targetBody)
-            console.log(removeBodies);
 
             
         }
