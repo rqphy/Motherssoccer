@@ -75,8 +75,8 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 const obstacles = []
-const obstacleSpeed = 0.3
-const obstaclesDuration = 5000
+const obstacleSpeed = 0.1
+const obstaclesDuration = 8000
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
@@ -299,7 +299,7 @@ const createObstacle = (direction, autoDestruct) =>
     const position = {
         x: direction > 0 ? -20: 20,
         y: -4,
-        z: -10
+        z: -6
     }
 
 
