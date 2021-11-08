@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Paytone+One&display=swap');
 
+@font-face {
+    font-family: "Big Noodle";
+    src: url("../static/fonts/big_noodle_titling_oblique.woff2") format("woff2");
+}
+
+
 *
 {
     margin: 0;
@@ -27,25 +33,90 @@ body
     pointer-events: none;
 }
 
-.ctn
-{
+.infos {
+    z-index: 2;
     position: fixed;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    font-family: 'Paytone One', sans-serif;
-    font-size: 24px;
+    left: 40px;
+    top: 20px;
+}
 
+.info {
+    background-color: #00000050;
+    height: 40px;
+    width: 100px;
+    margin-top: 5px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: Big Noodle;
+    color: #ffffff;
+}
+
+.info svg {
+    height: 90%;
+}
+.info #ball, .info #windy {
+    margin-left: 6px;
+}
+
+.logo {
+    z-index: 2;
+    position: fixed;
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20%;
+    min-width: 280px;
+    max-width: 420px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-image: url('../static/logo.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100%;
+}
+
+.reset {
+    z-index: 3;
+    position: fixed;
+    left: 40px;
+    bottom: 20px;
+    font-family: Big Noodle;
+    font-size: 36px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    transition: all .1s ease-in-out;
+}
+
+.reset:hover {
+    transform: scale(1.15);
+}
+
+.reset svg {
+    width: 28px;
+    margin-right: 8px;
+}
+
+.info span {
+    font-size: 36px;
+}
+
+.info p {
+    font-size: 24px;
+    margin-right: 14px;
 }
 
 .title {
     padding-top: 40px;
     text-align: center;
-    color: black;
+    color: #ffffff;
     z-index: 2;
-    font-family: 'Paytone One', sans-serif;
+    font-family: Big Noodle;
     font-size: 2.5em;
     text-transform: uppercase;
     line-height: 100%;
@@ -54,25 +125,16 @@ body
 .btn {
     padding: 10px 20px;
     background: #fffae8;
-    border: 1px solid black;
-    color: black;
+    border: 1px solid #ffffff;
+    color: #000000;
     text-transform: uppercase;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Big Noodle;
     cursor: pointer;
     font-size: .8em;
 }
 
 .btn:hover {
-    color: black;
     background: white;
-}
-
-.resetBall {
-    position: fixed;
-    z-index: 4;
-    left: 40px;
-    bottom: 30%;
-    
 }
 
 .wind {
@@ -100,7 +162,7 @@ body
 }
 
 .post .score {
-    font-family: 'Paytone One', sans-serif;
+    font-family: Big Noodle;
     font-size: 56px;
 }
 

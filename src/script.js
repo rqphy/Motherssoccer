@@ -2,6 +2,8 @@ import './style.css'
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 
+// import typefaceFont from 'three/examples/fonts/helvetiker_regular.typeface.json'
+
 /**
  * Raycaster
  */
@@ -15,17 +17,50 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-scene.background = new THREE.Color(0xfffae8)
+scene.background = new THREE.Color(0x000000)
+
+/**
+ * Fonts
+ */
+
+const fontLoader = new THREE.FontLoader()
+
+let font = null
+fontLoader.load(
+    './fonts/BigNoodleTitling_Oblique.json',
+    (loadedFont) =>
+    {
+        font = loadedFont
+    }
+)
 
 /**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
 
-const tennisBallTexture = textureLoader.load('/textures/tennisball.jpeg')
-const basketBallTexture = textureLoader.load('/textures/basket.jpeg')
-const footBallTexture = textureLoader.load('/textures/football.jpeg')
-const volleyBallTexture = textureLoader.load('/textures/volleyball.jpg')
+const footBallTexture = textureLoader.load('./textures/football.jpeg')
+
+
+const bgTexture = textureLoader.load('./textures/bg.jpg', (texture) =>
+{
+    scene.background = texture
+})
+const fenceTexture = textureLoader.load('./textures/fence.png')
+fenceTexture.wrapS = THREE.RepeatWrapping
+fenceTexture.repeat.set( 12, 1 )
+
+const carpetTexture = textureLoader.load('./textures/zone.png')
+
+
+const floorTexture = textureLoader.load('./textures/floor.jpg')
+floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
+floorTexture.repeat.set( 30, 30 )
+
+const targetTexture = textureLoader.load('./textures/target.png')
+
+const wallTexture = textureLoader.load('./textures/wall.png')
+
 
 /**
  * Variables
@@ -39,24 +74,25 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+let scoreIndicator = null
+let removeBodies = []
 let score = 0
 let windPower = 0
 const windPowerRange = 10
-const easterEgg = 800
+const easterEgg = 1000
 const targets = []
-const targetSize = 3
-const objectsToUpdate = []
+let targetSize = 8
+const balls = []
 let currentObjectBody
-let remainingTime = 60
+let remainingTime = 600
 const walls = []
 const impact = []
 const scoreInput = document.querySelector('#score')
-const resetBall = document.querySelector('.resetBall')
+const resetBall = document.querySelector('#reset')
 const postGameScreen = document.querySelector('.post')
 const tryAgain = document.querySelector('.tryAgain')
 const timer = document.querySelector('#timer')
 const wind = document.querySelector('#wind')
-const windCtn = document.querySelector('.wind')
 
 /**
  * Timer
@@ -83,16 +119,16 @@ const mouse = new THREE.Vector2()
 
 resetBall.addEventListener('click', () =>
 {
-    for(const object of objectsToUpdate)
+    for(const ball of balls)
     {
-        scene.remove(object.mesh)
-        world.removeBody(object.body)
+        scene.remove(ball.mesh)
+        world.removeBody(ball.body)
 
     }
 
-    
-    createSphere(
-        'foot',
+
+    createBall(
+        
         {
             x: 0,
             y: -4,
@@ -119,11 +155,11 @@ document.addEventListener('mouseup', (_event) =>
 
     if(currentIntersect.length)
     {
-        const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        const bodyBall = balls.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight * 0.8, -1250),
             new CANNON.Vec3(0, 0, 0)
         )
             
@@ -132,8 +168,8 @@ document.addEventListener('mouseup', (_event) =>
         // Create new ball
         setTimeout(() =>
         {
-            createSphere(
-                'foot',
+            createBall(
+                
                 {
                     x: 0,
                     y: -4,
@@ -142,7 +178,7 @@ document.addEventListener('mouseup', (_event) =>
             )
         }, 1000)
         
-        currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+        currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh)
         
     }
 })
@@ -168,19 +204,19 @@ document.addEventListener('touchend', (_event) =>
 
     if(currentIntersect.length)
     {
-        const bodyBall = objectsToUpdate.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
+        const bodyBall = balls.find(obj => obj.mesh.uuid === currentIntersect[0].object.uuid)
         currentObjectBody = bodyBall.body
         const windowHeight = window.innerHeight > 1200 ? window.innerHeight : 1200
         bodyBall.body.applyLocalForce(
-            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight, -1000),
+            new CANNON.Vec3((- currentMouse.x - mouse.x) * window.innerWidth * 1.8 , (- currentMouse.y - mouse.y) * windowHeight * 0.8, -1250),
             new CANNON.Vec3(0, 0, 0)
         )
             
         currentIntersect = null
         setTimeout(() =>
         {
-            createSphere(
-                'foot',
+            createBall(
+                
                 {
                     x: 0,
                     y: -4,
@@ -189,7 +225,7 @@ document.addEventListener('touchend', (_event) =>
             )
         }, 1000)
 
-        currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length - 1].mesh)
+        currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh)
         
     }
 })
@@ -230,120 +266,62 @@ const playWinSound = () =>
 /**
  * Utils
 */
-const detectCollisionWithTarget = (object1, object2) =>
-{
-    if(object1.position.z + object1.scale.z <= object2.position.z + object2.scale.z)
-    {
-        if(
-            object1.position.x + object1.scale.x >= object2.position.x - object2.scale.x
-            && object1.position.x - object1.scale.x <= object2.position.x + object2.scale.x
-            && object1.position.y + object1.scale.y >= object2.position.y - object2.scale.y
-            && object1.position.y - object1.scale.y <= object2.position.y + object2.scale.y
-        )
-        {
-            scene.remove(object2)
-            createTarget(targetSize, generateRandomTargetCoords())
-            score += 100
-            scoreInput.innerHTML = score
-            playTargetHitSound()
-            
-
-            if(score === easterEgg)
-            {
-                playWinSound()
-            }
-
-            // Update wind
-            if(score >= 200)
-            {
-                windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
-                wind.innerHTML = windPower
-                windCtn.classList.add('visible')
-            }
-
-        } else
-        {
-            playWallHitSound()
-        }
-    }
-
-    
-}
-
-const detectCollisionWithWall = (object1, wall) =>
-{
-    if(object1.position.z + object1.scale.z <= wall.position.z + wall.scale.z + 1)
-    {
-        createImpact([object1.position.x, object1.position.y, object1.position.z])
-    }
-}
-
-// Impact
-
-const createImpact = (position) =>
-{
-    const [x, y, z] = position
-
-    const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(0.5, 20, 20),
-        new THREE.MeshStandardMaterial({ 
-            color: new THREE.Color('#000000'),
-            transparent: true,
-            opacity: 0.7
-        })
-    )
-
-    mesh.position.set(x, y, -29.95)
-    scene.remove(impact[0])
-    impact[0] = mesh
-    scene.add(impact[0])
-
-
-}
 
 const generateRandomTargetCoords = () =>
 {
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
 }
 
+
+// Score indicator
+
+const scoreTextMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffff00
+})
+
+const createScoreIndicator = (score, position) =>
+{
+    const [x, y, z] = position
+    const geometry = new THREE.TextGeometry(
+        score,
+        {
+            font,
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            size: 3,
+            height: 0.2,
+            curveSegments: 5,
+            bevelEnabled: true,
+            bevelThickness: 0.03,
+            bevelSize: 0.02,
+            bevelOffset: 0,
+            bevelSegments: 4
+        }
+    )
+
+    geometry.computeBoundingBox()
+    geometry.center()
+
+    const mesh = new THREE.Mesh(geometry, scoreTextMaterial)
+
+    mesh.position.set(x, y, z)
+    scene.add(mesh)
+
+    scoreIndicator = mesh
+}
+
 // Sphere
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
-const sphereTennisMaterial = new THREE.MeshStandardMaterial({
-    map: tennisBallTexture
-})
 const sphereFootMaterial = new THREE.MeshStandardMaterial({
     map: footBallTexture
 })
-const sphereVolleyMaterial = new THREE.MeshStandardMaterial({
-    map: volleyBallTexture
-})
-const sphereBasketMaterial = new THREE.MeshStandardMaterial({
-    map: basketBallTexture
-})
 
-const createSphere = (type, position) =>
+const createBall = (position) =>
 {
 
     // Threejs mesh
 
-    let material = sphereTennisMaterial
-    let radius = 0.2
-
-    switch (type)
-    {
-        case 'basket':
-            material = sphereBasketMaterial
-            radius = 1
-            break
-        case 'foot':
-            material = sphereFootMaterial
-            radius = 0.7
-            break
-        case 'volley':
-            material = sphereVolleyMaterial
-            radius = 0.8
-            break
-    }
+    let material = sphereFootMaterial
+    let radius = 0.7
 
     const mesh = new THREE.Mesh(
         sphereGeometry,
@@ -368,17 +346,22 @@ const createSphere = (type, position) =>
     body.position.copy(position)
     world.addBody(body)
 
-    // Save in object to update
-    objectsToUpdate.push({
+    body.name = 'ball'
+
+    // Save in balls
+    balls.push({
         mesh,
         body
     })
+
+    
 }
 
 // Target
 const targetGeometry = new THREE.CylinderGeometry(1, 1, 0.2, 32)
 const targetMaterial = new THREE.MeshBasicMaterial({
-    color: 0xff0000,
+    map: targetTexture,
+    transparent: true,
 })
 
 const createTarget = (size, position) =>
@@ -391,32 +374,103 @@ const createTarget = (size, position) =>
         targetMaterial
     )
     mesh.scale.set(scale, 0.2, scale)
-    mesh.rotation.x = Math.PI / 2
+    mesh.rotation.x = Math.PI / - 2
+    mesh.rotation.y = Math.PI / 2
     mesh.position.set(x, y, z)
     scene.add(mesh)
 
-    targets.push(mesh)
+    // Cannonjs body
+
+    const depth = 0.1
+    const targetShape = new CANNON.Cylinder(scale, scale, depth, 32)
+    const targetBody = new CANNON.Body()
+    targetBody.mass = 0
+    targetBody.addShape(targetShape)
+    targetBody.position.set(x, y, z)
+    targetBody.quaternion.setFromAxisAngle(
+        new CANNON.Vec3(1, 0, 0),
+        Math.PI / 2
+    )
+
+    world.addBody(targetBody)
+
+
+    // Target collider
+
+    targetBody.addEventListener('collide', (_event) =>
+    {
+        if(_event.body.name = 'ball')
+        {
+         
+            const targetPosition = [mesh.position.x, mesh.position.y, mesh.position.z]
+
+            if(targetSize > 3)
+            {
+                targetSize--
+            }
+            
+            scene.remove(mesh)
+            scene.remove(balls[balls.length - 2].mesh)
+
+            targets[0] = null
+
+            setTimeout(() =>
+            {
+                if(!targets[0])
+                {
+                    createTarget(targetSize, generateRandomTargetCoords())
+                }
+            }, 500)
+
+
+            score += 100
+            scoreInput.innerHTML = score
+
+            createScoreIndicator('+100', targetPosition)
+
+            setTimeout(() =>
+            {
+                scene.remove(scoreIndicator)
+                scoreIndicator = null
+            }, 1000)
+
+            playTargetHitSound()
+
+            if(score === easterEgg)
+            {
+                playWinSound()
+            }
+
+            // Update wind
+            if(score >= 2000)
+            {
+                windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
+                wind.innerHTML = windPower
+            }
+
+
+            removeBodies.push(_event.body, targetBody)
+
+            
+        }
+    })
+
+    targets[0] = [mesh, targetBody]
+
 }
 
 // Wall
 const wallGeometry = new THREE.PlaneGeometry(1, 1)
-const wallMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.9,
-    roughness: 0.5,
-    reflectivity: 0.17,
-    side: THREE.DoubleSide
-})
 
 
-const createWall = (position, rotation, size) =>
+
+const createWall = (position, rotation, size, material) =>
 {
     const [x, y, z] = position
     // Threejs mesh
     const mesh = new THREE.Mesh(
         wallGeometry,
-        wallMaterial
+        material
     )
     mesh.receiveShadow = true
     mesh.rotation.x = rotation.x || 0
@@ -428,15 +482,11 @@ const createWall = (position, rotation, size) =>
 
     //Cannonjs body
     const glassDepth = 0.1
-    const wallShape = new CANNON.Plane()
+    const wallShape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, glassDepth / 2))
     const wallBody = new CANNON.Body()
     wallBody.mass = 0
     wallBody.addShape(wallShape)
-    wallBody.position.set(
-        x > 0 ? x - glassDepth : x + glassDepth,
-        y > 0 ? y - glassDepth : y + glassDepth,
-        z > 0 ? z - glassDepth : z + glassDepth
-    )
+    wallBody.position.set(x, y, z)
     if(rotation.y)
     {
         wallBody.quaternion.setFromAxisAngle(
@@ -455,6 +505,67 @@ const createWall = (position, rotation, size) =>
 
 }
 
+const createFence = (position, size) => {
+    const [x, y, z] = position
+
+    // Three js 
+    const fenceGeometry = new THREE.BoxGeometry(1, 1)
+    const fenceMaterial = new THREE.MeshStandardMaterial({
+        map: fenceTexture,
+        transparent: true
+    })
+    const mesh = new THREE.Mesh(
+        fenceGeometry,
+        fenceMaterial
+    )
+    mesh.receiveShadow = true
+    mesh.scale.set(size.x, size.y)
+    mesh.position.set(x, y, z)
+    scene.add(mesh)
+
+    // Cannon js
+    const fenceShape = new CANNON.Plane()
+    const fenceBody = new CANNON.Body()
+    fenceBody.mass = 0
+    fenceBody.addShape(fenceShape)
+    fenceBody.position.set(x, y, z)
+
+    world.addBody(fenceBody)
+
+}
+
+const createFloor = (position) =>
+{
+    const [x, y, z] = position
+
+    // Three js
+    const floorGeometry = new THREE.BoxGeometry(500, 500)
+    const floorMaterial = new THREE.MeshStandardMaterial({
+        map: floorTexture
+    })
+    const mesh = new THREE.Mesh(
+        floorGeometry,
+        floorMaterial
+    )
+    mesh.receiveShadow = true
+    mesh.position.set(x, y - 1, z)
+    mesh.rotation.x = Math.PI * 0.5
+    scene.add(mesh)
+
+    // Cannon js
+    const floorShape = new CANNON.Plane()
+    const floorBody = new CANNON.Body()
+    floorBody.mass = 0
+    floorBody.addShape(floorShape)
+    floorBody.position.set(x, y, z)
+    floorBody.quaternion.setFromAxisAngle(
+        new CANNON.Vec3(-1, 0, 0),
+        Math.PI * 0.5
+    )
+
+    world.addBody(floorBody)
+
+}
 
 
 /**
@@ -483,8 +594,7 @@ world.defaultContactMaterial = defaultContactMaterial
 /**
  * Ball
  */
-createSphere(
-    'foot',
+createBall(
     {
         x: 0,
         y: -4,
@@ -496,10 +606,42 @@ createSphere(
  * Walls
  */
 
-// front
-createWall([0, 10, -30], {y: 0}, {x: pannelSize.width, y: pannelSize.height})
+// front wall
+// const wallMaterial = new THREE.MeshPhysicalMaterial({
+//     map: bricksColorTexture,
+//     aoMap: bricksAmbientOcclusionTexture,
+//     normalMap: bricksNormalTexture,
+//     roughnessMap: bricksRoughnessTexture
+// })
+const wallMaterial = new THREE.MeshPhysicalMaterial({
+    map: wallTexture,
+    transparent: true,
+    // opacity: 0.4
+})
+createWall(
+    [0, 5, -30],
+    {y: 0},
+    {x: pannelSize.width, y: pannelSize.height},
+    wallMaterial
+)
+
+// carpet
+const carpetMaterial = new THREE.MeshPhysicalMaterial({
+    map: carpetTexture,
+    transparent: true
+})
+createWall(
+    [0, -5, 5],
+    {x: - Math.PI * 0.5},
+    {x: 10, y: 10},
+    carpetMaterial
+)
+
+// Fence
+createFence([0, 4, -70], {x: 500, y: 20})
+
 // floor
-createWall([0, -5, 5], {x: - Math.PI * 0.5}, {x: 10, y: 10})
+createFloor([0, -5, 5])
 
 /**
  * Targets
@@ -589,18 +731,27 @@ const tick = () =>
     oldElapsedTime = elapsedTime
 
     world.step(1 / 60, deltaTime, 3)
-
-    for(const object of objectsToUpdate)
+    if(removeBodies)
     {
-        object.mesh.position.copy(object.body.position)
-        object.mesh.quaternion.copy(object.body.quaternion)
+        for(const body of removeBodies)
+        {
+            world.removeBody(body)
+        }
+
+        removeBodies = []
+    }
+
+    for(const ball of balls)
+    {
+        ball.mesh.position.copy(ball.body.position)
+        ball.mesh.quaternion.copy(ball.body.quaternion)
 
     }
 
 
     // Cast a ray
     raycaster.setFromCamera(mouse, camera)
-    currentIntersect = raycaster.intersectObject(objectsToUpdate[objectsToUpdate.length  -1].mesh)
+    currentIntersect = raycaster.intersectObject(balls[balls.length  -1].mesh)
 
     // apply wind
     if(currentObjectBody)
@@ -612,23 +763,16 @@ const tick = () =>
 
     }
 
-    // Check collisions
-
-    if(
-        objectsToUpdate[objectsToUpdate.length  - 2]
-        && targets[targets.length - 1]
-    )
+    // Score indicator update
+    if(scoreIndicator)
     {
-
-        detectCollisionWithTarget(objectsToUpdate[objectsToUpdate.length  - 2].mesh, targets[targets.length - 1])
-    }
-
-    if(
-        objectsToUpdate[objectsToUpdate.length - 2]
-        && walls[0]
-    )
-    {
-        detectCollisionWithWall(objectsToUpdate[objectsToUpdate.length  - 2].mesh, walls[0])
+        const scale = scoreIndicator.scale
+        const scaleCoef = 0.01
+        scoreIndicator.scale.set(
+            scale.x - scaleCoef,
+            scale.y - scaleCoef,
+            scale.z - scaleCoef,
+        )
     }
 
     // Render
