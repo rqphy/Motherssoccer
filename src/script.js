@@ -75,6 +75,8 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 const obstacles = []
+const obstacleSpeed = 0.3
+const obstaclesDuration = 5000
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
@@ -271,7 +273,22 @@ const generateRandomTargetCoords = () =>
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
 }
 
-const createObstacle = () =>
+const generateObstacles = () =>
+{
+    createObstacle(
+        Math.random() > 0.5 ? -obstacleSpeed : obstacleSpeed,
+        obstaclesDuration
+    )
+    setInterval(() =>
+    {
+        createObstacle(
+            Math.random() > 0.5 ? -obstacleSpeed : obstacleSpeed,
+            obstaclesDuration
+        )
+    }, 5000)
+}
+
+const createObstacle = (direction, autoDestruct) =>
 {
     const size = {
         x: 6,
@@ -279,7 +296,13 @@ const createObstacle = () =>
         z: 0.1
     }
 
-    const position = {x: -5, y: -4, z: -10}
+    const position = {
+        x: direction > 0 ? -20: 20,
+        y: -4,
+        z: -10
+    }
+
+
     // Threejs
     const geometry = new THREE.BoxGeometry(size.x, size.y)
     const material = new THREE.MeshStandardMaterial({
@@ -306,8 +329,15 @@ const createObstacle = () =>
 
     obstacles.push({
         mesh,
-        body
+        body,
+        direction
     })
+
+    setTimeout(() =>
+    {
+        scene.remove(mesh)
+        world.removeBody(body)
+    }, autoDestruct)
 
 }
 
@@ -639,7 +669,7 @@ createBall(
     }
 )
 
-createObstacle()
+generateObstacles()
 
 /**
  * Walls
@@ -781,7 +811,7 @@ const tick = () =>
 
     for(const obstacle of obstacles)
     {
-        obstacle.body.position.x += 0.1
+        obstacle.body.position.x += obstacle.direction
         
         obstacle.mesh.position.copy(obstacle.body.position)
     }
