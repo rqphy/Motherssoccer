@@ -299,7 +299,7 @@ const createObstacle = (direction, autoDestruct) =>
     const position = {
         x: direction > 0 ? -20: 20,
         y: -4,
-        z: -6
+        z: Math.floor(Math.random() * -7) -3
     }
 
 
