@@ -74,6 +74,7 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+const obstacles = []
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
@@ -272,6 +273,49 @@ const generateRandomTargetCoords = () =>
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
 }
 
+const createObstacle = () =>
+{
+    const size = {
+        x: 3,
+        y: 6
+    }
+
+    const position = [
+        -5,
+        0,
+        0
+    ]
+    // Threejs
+    const geometry = new THREE.BoxGeometry(size.x, size.y)
+    const material = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+        wireframe: true
+    })
+
+    const mesh = new THREE.Mesh(
+        geometry,
+        material
+    )
+
+    mesh.receiveShadow = true
+    mesh.position.set(...position)
+    scene.add(mesh)
+
+    // Cannonjs
+    const obstacleShape = new CANNON.Box(new CANNON.Vec3(size.x , size.y ))
+    const body = new CANNON.Body()
+    body.mass = 0
+    body.addShape(obstacleShape)
+    body.position.set(...position)
+
+    world.addBody(body)
+
+    obstacles.push({
+        mesh,
+        body
+    })
+
+}
 
 // Score indicator
 
@@ -602,6 +646,8 @@ createBall(
     }
 )
 
+createObstacle()
+
 /**
  * Walls
  */
@@ -746,6 +792,17 @@ const tick = () =>
         ball.mesh.position.copy(ball.body.position)
         ball.mesh.quaternion.copy(ball.body.quaternion)
 
+    }
+
+    for(const obstacle of obstacles)
+    {
+        // obstacle.body.applyForce(
+        //     new CANNON.Vec3(50, 0, 0),
+        //     obstacle.body.position
+        // )
+        obstacle.body.position.x += 0.05
+        
+        obstacle.mesh.position.copy(obstacle.body.position)
     }
 
 
