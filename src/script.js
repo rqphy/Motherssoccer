@@ -291,7 +291,6 @@ const createObstacle = () =>
         material
     )
 
-    mesh.receiveShadow = true
     mesh.position.copy(position)
     scene.add(mesh)
 
@@ -782,17 +781,9 @@ const tick = () =>
 
     for(const obstacle of obstacles)
     {
-
-        obstacle.body.applyForce(
-            new CANNON.Vec3(1, 0, 0),
-            obstacle.body.position
-        )
-        console.log(obstacle.body.position)
-        // obstacle.body.position.x += 0.01
+        obstacle.body.position.x += 0.1
         
         obstacle.mesh.position.copy(obstacle.body.position)
-        // obstacle.mesh.quaternion.copy(obstacle.body.quaternion)
-
     }
 
 
