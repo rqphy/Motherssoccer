@@ -86,7 +86,6 @@ let targetSize = 8
 const balls = []
 let currentObjectBody
 let remainingTime = 600
-const impact = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('#reset')
 const postGameScreen = document.querySelector('.post')
