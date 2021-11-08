@@ -86,7 +86,6 @@ let targetSize = 8
 const balls = []
 let currentObjectBody
 let remainingTime = 600
-const walls = []
 const impact = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('#reset')
@@ -522,7 +521,6 @@ const createWall = (position, rotation, size, material) =>
     mesh.scale.set(size.x, size.y, 1)
     mesh.position.set(x, y, z)
     scene.add(mesh)
-    walls.push(mesh)
 
     //Cannonjs body
     const glassDepth = 0.1
@@ -651,14 +649,6 @@ createObstacle()
 /**
  * Walls
  */
-
-// front wall
-// const wallMaterial = new THREE.MeshPhysicalMaterial({
-//     map: bricksColorTexture,
-//     aoMap: bricksAmbientOcclusionTexture,
-//     normalMap: bricksNormalTexture,
-//     roughnessMap: bricksRoughnessTexture
-// })
 const wallMaterial = new THREE.MeshPhysicalMaterial({
     map: wallTexture,
     transparent: true,
