@@ -274,20 +274,16 @@ const generateRandomTargetCoords = () =>
 const createObstacle = () =>
 {
     const size = {
-        x: 3,
-        y: 6
+        x: 6,
+        y: 14,
+        z: 0.1
     }
 
-    const position = [
-        -5,
-        0,
-        0
-    ]
+    const position = {x: -5, y: -4, z: -10}
     // Threejs
     const geometry = new THREE.BoxGeometry(size.x, size.y)
     const material = new THREE.MeshStandardMaterial({
         color: 0xff0000,
-        wireframe: true
     })
 
     const mesh = new THREE.Mesh(
@@ -296,15 +292,16 @@ const createObstacle = () =>
     )
 
     mesh.receiveShadow = true
-    mesh.position.set(...position)
+    mesh.position.copy(position)
     scene.add(mesh)
 
     // Cannonjs
-    const obstacleShape = new CANNON.Box(new CANNON.Vec3(size.x , size.y ))
+    const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z))
     const body = new CANNON.Body()
     body.mass = 0
-    body.addShape(obstacleShape)
-    body.position.set(...position)
+    body.addShape(shape)
+    body.material = defaultMaterial
+    body.position.copy(position)
 
     world.addBody(body)
 
@@ -785,13 +782,17 @@ const tick = () =>
 
     for(const obstacle of obstacles)
     {
-        // obstacle.body.applyForce(
-        //     new CANNON.Vec3(50, 0, 0),
-        //     obstacle.body.position
-        // )
-        obstacle.body.position.x += 0.05
+
+        obstacle.body.applyForce(
+            new CANNON.Vec3(1, 0, 0),
+            obstacle.body.position
+        )
+        console.log(obstacle.body.position)
+        // obstacle.body.position.x += 0.01
         
         obstacle.mesh.position.copy(obstacle.body.position)
+        // obstacle.mesh.quaternion.copy(obstacle.body.quaternion)
+
     }
 
 
