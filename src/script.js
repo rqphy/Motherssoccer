@@ -95,8 +95,8 @@ let pannelSize = {
     height: sizes.height > 400 ? 20 : 10
 }
 const obstacles = []
-const obstacleSpeed = 0.1
-const obstaclesDuration = 8000
+const obstacleSpeed = 0.5
+const obstaclesDuration = 6000
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
