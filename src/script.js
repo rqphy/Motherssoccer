@@ -74,6 +74,9 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
+const obstacles = []
+const obstacleSpeed = 0.1
+const obstaclesDuration = 8000
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
@@ -85,8 +88,6 @@ let targetSize = 8
 const balls = []
 let currentObjectBody
 let remainingTime = 600
-const walls = []
-const impact = []
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('#reset')
 const postGameScreen = document.querySelector('.post')
@@ -272,6 +273,73 @@ const generateRandomTargetCoords = () =>
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
 }
 
+const generateObstacles = () =>
+{
+    createObstacle(
+        Math.random() > 0.5 ? -obstacleSpeed : obstacleSpeed,
+        obstaclesDuration
+    )
+    setInterval(() =>
+    {
+        createObstacle(
+            Math.random() > 0.5 ? -obstacleSpeed : obstacleSpeed,
+            obstaclesDuration
+        )
+    }, 5000)
+}
+
+const createObstacle = (direction, autoDestruct) =>
+{
+    const size = {
+        x: 6,
+        y: 14,
+        z: 0.1
+    }
+
+    const position = {
+        x: direction > 0 ? -20: 20,
+        y: -4,
+        z: Math.floor(Math.random() * -7) -3
+    }
+
+
+    // Threejs
+    const geometry = new THREE.BoxGeometry(size.x, size.y)
+    const material = new THREE.MeshStandardMaterial({
+        color: 0xff0000,
+    })
+
+    const mesh = new THREE.Mesh(
+        geometry,
+        material
+    )
+
+    mesh.position.copy(position)
+    scene.add(mesh)
+
+    // Cannonjs
+    const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z))
+    const body = new CANNON.Body()
+    body.mass = 0
+    body.addShape(shape)
+    body.material = defaultMaterial
+    body.position.copy(position)
+
+    world.addBody(body)
+
+    obstacles.push({
+        mesh,
+        body,
+        direction
+    })
+
+    setTimeout(() =>
+    {
+        scene.remove(mesh)
+        world.removeBody(body)
+    }, autoDestruct)
+
+}
 
 // Score indicator
 
@@ -478,7 +546,6 @@ const createWall = (position, rotation, size, material) =>
     mesh.scale.set(size.x, size.y, 1)
     mesh.position.set(x, y, z)
     scene.add(mesh)
-    walls.push(mesh)
 
     //Cannonjs body
     const glassDepth = 0.1
@@ -602,17 +669,11 @@ createBall(
     }
 )
 
+generateObstacles()
+
 /**
  * Walls
  */
-
-// front wall
-// const wallMaterial = new THREE.MeshPhysicalMaterial({
-//     map: bricksColorTexture,
-//     aoMap: bricksAmbientOcclusionTexture,
-//     normalMap: bricksNormalTexture,
-//     roughnessMap: bricksRoughnessTexture
-// })
 const wallMaterial = new THREE.MeshPhysicalMaterial({
     map: wallTexture,
     transparent: true,
@@ -746,6 +807,13 @@ const tick = () =>
         ball.mesh.position.copy(ball.body.position)
         ball.mesh.quaternion.copy(ball.body.quaternion)
 
+    }
+
+    for(const obstacle of obstacles)
+    {
+        obstacle.body.position.x += obstacle.direction
+        
+        obstacle.mesh.position.copy(obstacle.body.position)
     }
 
 
