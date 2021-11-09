@@ -2,7 +2,19 @@ import './style.css'
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 
-// import typefaceFont from 'three/examples/fonts/helvetiker_regular.typeface.json'
+import * as JSONscore from './score.json'
+const scoresList = []
+
+console.log(JSONscore)
+for(const scoreIndex in JSONscore)
+{
+    if(scoreIndex.length < 2)
+    {
+        scoresList.push(JSONscore[scoreIndex])
+    }
+}
+console.log(scoresList)
+
 
 /**
  * Raycaster
@@ -87,20 +99,21 @@ const targets = []
 let targetSize = 8
 const balls = []
 let currentObjectBody
-let remainingTime = 600
+let remainingTime = 5
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('#reset')
 const postGameScreen = document.querySelector('.post')
 const tryAgain = document.querySelector('.tryAgain')
 const timer = document.querySelector('#timer')
 const wind = document.querySelector('#wind')
+const scoreboard = document.querySelector('#scoreboard')
 
 /**
  * Timer
  */
 window.addEventListener('load', () =>
 {
-    setInterval(() =>
+    const interval = setInterval(() =>
     {
         if(remainingTime > 0)
         {
@@ -108,6 +121,17 @@ window.addEventListener('load', () =>
         } else {
             endScore.innerHTML = score
             postGameScreen.classList.add('visible')
+            canvas.classList.add('hidden')
+
+
+            for(const line of scoresList)
+            {
+                const tr = document.createElement('tr')
+                tr.innerHTML = `<td>${line.name}</td> <td>${line.score}</td>`
+                scoreboard.appendChild(tr)
+                clearInterval(interval)
+            }
+            
         }
     }, 1000)
 })

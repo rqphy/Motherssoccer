@@ -85,7 +85,7 @@ body
     bottom: 20px;
     font-family: Big Noodle;
     font-size: 36px;
-    color: #ffffff;
+    color: #000000;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -114,7 +114,7 @@ body
 .title {
     padding-top: 40px;
     text-align: center;
-    color: #ffffff;
+    color: #000000;
     z-index: 2;
     font-family: Big Noodle;
     font-size: 2.5em;
@@ -125,7 +125,7 @@ body
 .btn {
     padding: 10px 20px;
     background: #fffae8;
-    border: 1px solid #ffffff;
+    border: 1px solid #000000;
     color: #000000;
     text-transform: uppercase;
     font-family: Big Noodle;
@@ -170,6 +170,20 @@ body
     padding: 20px 40px;
     margin-top: 20px;
     font-size: 16px;
+}
+
+#scoreboard {
+    width: 150px;
+    text-align: left;
+
+    font-family: Big Noodle;
+    font-size: 24px;
+
+    text-transform: uppercase;
+}
+
+#scoreboard td + td {
+    text-align: right;
 }
 
 @media only screen and (max-width: 600px) {
