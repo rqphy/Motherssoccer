@@ -6,7 +6,6 @@ import * as JSONscore from './score.json'
 import { NotEqualDepth } from 'three'
 const scoresList = []
 
-console.log(JSONscore)
 for(const scoreIndex in JSONscore)
 {
     if(scoreIndex.length < 2)
@@ -14,7 +13,6 @@ for(const scoreIndex in JSONscore)
         scoresList.push(JSONscore[scoreIndex])
     }
 }
-console.log(scoresList)
 
 
 /**
@@ -96,6 +94,7 @@ let score = 0
 const hitPoints = 100
 let windPower = 0
 const windPowerRange = 10
+const windMinScore = 400
 const easterEgg = 1000
 const targets = []
 let targetSize = 8
@@ -561,7 +560,7 @@ const createTarget = (size, position) =>
             }
 
             // Update wind
-            if(score >= 2000)
+            if(score >= windMinScore)
             {
                 windPower = Math.floor((0.5 - Math.random()) * windPowerRange)
                 wind.innerHTML = windPower
