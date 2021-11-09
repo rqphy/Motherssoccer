@@ -92,6 +92,7 @@ const obstaclesDuration = 8000
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
+const hitPoints = 100
 let windPower = 0
 const windPowerRange = 10
 const easterEgg = 1000
@@ -99,7 +100,7 @@ const targets = []
 let targetSize = 8
 const balls = []
 let currentObjectBody
-let remainingTime = 5
+let remainingTime = 100
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('#reset')
 const postGameScreen = document.querySelector('.post')
@@ -500,6 +501,8 @@ const createTarget = (size, position) =>
         {
          
             const targetPosition = [mesh.position.x, mesh.position.y, mesh.position.z]
+            const ballMesh = balls[balls.length - 2].mesh
+            const currentTargetSize = targetSize
 
             if(targetSize > 3)
             {
@@ -507,7 +510,7 @@ const createTarget = (size, position) =>
             }
             
             scene.remove(mesh)
-            scene.remove(balls[balls.length - 2].mesh)
+            scene.remove(ballMesh)
 
             targets[0] = null
 
@@ -519,11 +522,35 @@ const createTarget = (size, position) =>
                 }
             }, 500)
 
+            // console.log(targetPosition)
+            // console.log(currentTargetSize)
+            // console.log(ballMesh.position)
+            // console.log(1 / Math.abs( (mesh.position.x - ballMesh.position.x) + (mesh.position.y - ballMesh.position.y) ) * currentTargetSize )
 
-            score += 100
+
+            const distance = ( Math.sqrt( 
+                Math.pow( Math.abs( mesh.position.x - ballMesh.position.x ), 2 ) +
+                Math.pow( Math.abs( mesh.position.y - ballMesh.position.y ), 2 )
+            ) / currentTargetSize ) * 100
+
+            let addScore = 0
+
+            if(distance <= 25)
+            {
+                addScore = Math.round(1 * hitPoints)
+            } else if(distance <= 50)
+            {
+                addScore = Math.round(0.8 * hitPoints)
+            } else
+            {
+                addScore = Math.round(0.6 * hitPoints)
+            }
+
+
+            score += addScore
             scoreInput.innerHTML = score
 
-            createScoreIndicator('+100', targetPosition)
+            createScoreIndicator(`+${addScore}`, targetPosition)
 
             setTimeout(() =>
             {
