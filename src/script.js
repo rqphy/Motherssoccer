@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 
 import * as JSONscore from './score.json'
+import { NotEqualDepth } from 'three'
 const scoresList = []
 
 console.log(JSONscore)
@@ -537,13 +538,13 @@ const createTarget = (size, position) =>
 
             if(distance <= 25)
             {
-                addScore = Math.round(1 * hitPoints)
+                addScore = Math.round(1 * hitPoints + (Math.random() * 10)) 
             } else if(distance <= 50)
             {
-                addScore = Math.round(0.8 * hitPoints)
+                addScore = Math.round(0.8 * hitPoints + (Math.random() * 10)) 
             } else
             {
-                addScore = Math.round(0.6 * hitPoints)
+                addScore = Math.round(0.6 * hitPoints + (Math.random() * 10)) 
             }
 
 
