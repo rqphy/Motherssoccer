@@ -52,21 +52,16 @@ const textureLoader = new THREE.TextureLoader()
 
 const footBallTexture = textureLoader.load('./textures/football.jpeg')
 
-
-const bgTexture = textureLoader.load('./textures/bg.jpg', (texture) =>
-{
-    scene.background = texture
-})
-const fenceTexture = textureLoader.load('./textures/fence.png')
-fenceTexture.wrapS = THREE.RepeatWrapping
-fenceTexture.repeat.set( 12, 1 )
+const fenceTexture = textureLoader.load('./textures/bg.jpg')
+fenceTexture.wrapS = fenceTexture.wrapT = THREE.RepeatWrapping
+fenceTexture.repeat.set( 1, 1 )
 
 const carpetTexture = textureLoader.load('./textures/zone.png')
 
 
-const floorTexture = textureLoader.load('./textures/floor.jpg')
+const floorTexture = textureLoader.load('./textures/floor1.jpg')
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
-floorTexture.repeat.set( 30, 30 )
+floorTexture.repeat.set(48,48 )
 
 const targetTexture = textureLoader.load('./textures/target.png')
 
@@ -630,6 +625,7 @@ const createFence = (position, size) => {
     const fenceMaterial = new THREE.MeshStandardMaterial({
         map: fenceTexture,
         transparent: true
+        // opacity: 0
     })
     const mesh = new THREE.Mesh(
         fenceGeometry,
@@ -738,8 +734,9 @@ createWall(
 
 // carpet
 const carpetMaterial = new THREE.MeshPhysicalMaterial({
-    map: carpetTexture,
-    transparent: true
+    // map: carpetTexture,
+    transparent: true,
+    opacity: 0
 })
 createWall(
     [0, -5, 5],
@@ -749,7 +746,7 @@ createWall(
 )
 
 // Fence
-createFence([0, 4, -70], {x: 500, y: 20})
+createFence([0, 0, -70], {x: 280, y: 140})
 
 // floor
 createFloor([0, -5, 5])
