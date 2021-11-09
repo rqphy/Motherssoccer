@@ -123,6 +123,11 @@ window.addEventListener('load', () =>
             postGameScreen.classList.add('visible')
             canvas.classList.add('hidden')
 
+            if(score > scoresList[scoresList.length - 1].score)
+            {
+                console.log('goodjob')
+            }
+
 
             for(const line of scoresList)
             {
