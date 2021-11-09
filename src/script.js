@@ -67,6 +67,20 @@ const targetTexture = textureLoader.load('./textures/target.png')
 
 const wallTexture = textureLoader.load('./textures/wall.png')
 
+const goal1Texture = textureLoader.load('./textures/goal1.png')
+goal1Texture.wrapS = goal1Texture.wrapT = THREE.RepeatWrapping
+goal1Texture.repeat.set(1,2 )
+const goal2Texture = textureLoader.load('./textures/goal2.png')
+goal2Texture.wrapS = goal2Texture.wrapT = THREE.RepeatWrapping
+goal2Texture.repeat.set(1,2 )
+const goal3Texture = textureLoader.load('./textures/goal3.png')
+goal3Texture.wrapS = goal3Texture.wrapT = THREE.RepeatWrapping
+goal3Texture.repeat.set(1,2 )
+const goal4Texture = textureLoader.load('./textures/goal4.png')
+goal4Texture.wrapS = goal4Texture.wrapT = THREE.RepeatWrapping
+goal4Texture.repeat.set(1,2 )
+
+const goalTextures = [goal1Texture, goal2Texture, goal3Texture, goal4Texture]
 
 /**
  * Variables
@@ -328,10 +342,13 @@ const createObstacle = (direction, autoDestruct) =>
     }
 
 
+
     // Threejs
-    const geometry = new THREE.BoxGeometry(size.x, size.y)
+    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z / 10)
     const material = new THREE.MeshStandardMaterial({
-        color: 0xff0000,
+        // map: goalTextures[1],
+        map: goalTextures[Math.floor(Math.random() * goalTextures.length)],
+        transparent: true
     })
 
     const mesh = new THREE.Mesh(
