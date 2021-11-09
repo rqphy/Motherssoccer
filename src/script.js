@@ -523,12 +523,6 @@ const createTarget = (size, position) =>
                 }
             }, 500)
 
-            // console.log(targetPosition)
-            // console.log(currentTargetSize)
-            // console.log(ballMesh.position)
-            // console.log(1 / Math.abs( (mesh.position.x - ballMesh.position.x) + (mesh.position.y - ballMesh.position.y) ) * currentTargetSize )
-
-
             const distance = ( Math.sqrt( 
                 Math.pow( Math.abs( mesh.position.x - ballMesh.position.x ), 2 ) +
                 Math.pow( Math.abs( mesh.position.y - ballMesh.position.y ), 2 )
