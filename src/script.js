@@ -270,7 +270,7 @@ tryAgain.addEventListener('click', () =>
 /**
  * Sound
  */
-const targetSound = new Audio('/sounds/target.mp3')
+const targetSound = new Audio('./sounds/target.mp3')
 const playTargetHitSound = () =>
 {
     targetSound.volume = 0.5
@@ -278,7 +278,7 @@ const playTargetHitSound = () =>
     targetSound.play()
 }
 
-const wallSound = new Audio('/sounds/bounce.mp3')
+const wallSound = new Audio('./sounds/bounce.mp3')
 const playWallHitSound = () =>
 {
     wallSound.volume = 0.5
@@ -286,7 +286,7 @@ const playWallHitSound = () =>
     wallSound.play()
 }
 
-const winSound = new Audio('/sounds/win.mp3')
+const winSound = new Audio('./sounds/win.mp3')
 const playWinSound = () =>
 {
     winSound.volume = 0.5
