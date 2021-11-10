@@ -336,7 +336,7 @@ const createObstacle = (direction, autoDestruct) =>
 {
     const size = {
         x: 6,
-        y: 8,
+        y: 7,
         z: 0.1
     }
 
