@@ -391,7 +391,7 @@ const createObstacle = (direction, autoDestruct) =>
 // Score indicator
 
 const scoreTextMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffff00
+    color: 0xff6c6c
 })
 
 const createScoreIndicator = (score, position) =>
@@ -402,12 +402,12 @@ const createScoreIndicator = (score, position) =>
         {
             font,
             fontFamily: 'Arial, Helvetica, sans-serif',
-            size: 3,
+            size: 5,
             height: 0.2,
             curveSegments: 5,
             bevelEnabled: true,
             bevelThickness: 0.03,
-            bevelSize: 0.02,
+            bevelSize: 0.05,
             bevelOffset: 0,
             bevelSegments: 4
         }
