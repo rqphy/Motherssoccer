@@ -63,13 +63,13 @@ body
 .logo {
     z-index: 2;
     position: fixed;
-    top: 10%;
-    left: 60%;
+    top: 7%;
+    left: 50%;
     transform: translateX(-50%);
     width: 20%;
     min-width: 210px;
-    max-width: 200px;
-    height: 120px;
+    max-width: 310px;
+    height: 175px;
     display: flex;
     justify-content: center;
     background-image: url('../static/logo.png');
