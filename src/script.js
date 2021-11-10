@@ -94,6 +94,7 @@ let pannelSize = {
 
 let scoreIndicator = null
 let removeBodies = []
+let particlesMesh
 let score = 0
 const hitPoints = 100
 let windPower = 0
@@ -387,6 +388,36 @@ const createObstacle = (direction, autoDestruct) =>
     }, autoDestruct)
 
 }
+
+// Particles
+const particlesGeometry = new THREE.BufferGeometry
+const particlesCount = 2000
+
+const posArray = new Float32Array(particlesCount * 3)
+
+for(let i = 0; i < particlesCount; i++)
+{
+    // posArray[i] = (Math.random() - 0.5) * 30
+    posArray[i + 0] = Math.floor(Math.random() * 20) - 10
+    posArray[i + 1] = Math.floor(Math.random() * 10)
+    posArray[i + 2] = Math.floor(Math.random() * 10) + 5
+}
+
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3))
+
+const particlesMaterial = new THREE.PointsMaterial({
+    size: 0.1,
+    transparent: true
+})
+
+const createParticles = () =>
+{
+    const mesh = new THREE.Points(particlesGeometry, particlesMaterial)
+
+    scene.add(mesh)
+    particlesMesh = mesh
+}
+
 
 // Score indicator
 
@@ -738,7 +769,15 @@ createBall(
     }
 )
 
+/**
+ * Obstacles
+ */
 generateObstacles()
+
+/**
+ * Particles
+ */
+createParticles()
 
 /**
  * Walls
@@ -884,6 +923,13 @@ const tick = () =>
         obstacle.body.position.x += obstacle.direction
         
         obstacle.mesh.position.copy(obstacle.body.position)
+    }
+
+    // Anim particles
+    if(particlesMesh)
+    {
+        particlesMesh.rotation.x += 0.003
+        // particlesMesh.rotation.y += 0.003
     }
 
 
