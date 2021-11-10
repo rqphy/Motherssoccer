@@ -56,9 +56,6 @@ const fenceTexture = textureLoader.load('./textures/bg.jpg')
 fenceTexture.wrapS = fenceTexture.wrapT = THREE.RepeatWrapping
 fenceTexture.repeat.set( 1, 1 )
 
-const carpetTexture = textureLoader.load('./textures/zone.png')
-
-
 const floorTexture = textureLoader.load('./textures/floor1.jpg')
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
 floorTexture.repeat.set(48,48 )
@@ -69,16 +66,16 @@ const wallTexture = textureLoader.load('./textures/wall.png')
 
 const goal1Texture = textureLoader.load('./textures/goal1.png')
 goal1Texture.wrapS = goal1Texture.wrapT = THREE.RepeatWrapping
-goal1Texture.repeat.set(1,2 )
+goal1Texture.repeat.set(1,1 )
 const goal2Texture = textureLoader.load('./textures/goal2.png')
 goal2Texture.wrapS = goal2Texture.wrapT = THREE.RepeatWrapping
-goal2Texture.repeat.set(1,2 )
+goal2Texture.repeat.set(1,1 )
 const goal3Texture = textureLoader.load('./textures/goal3.png')
 goal3Texture.wrapS = goal3Texture.wrapT = THREE.RepeatWrapping
-goal3Texture.repeat.set(1,2 )
+goal3Texture.repeat.set(1,1 )
 const goal4Texture = textureLoader.load('./textures/goal4.png')
 goal4Texture.wrapS = goal4Texture.wrapT = THREE.RepeatWrapping
-goal4Texture.repeat.set(1,2 )
+goal4Texture.repeat.set(1,1 )
 
 const goalTextures = [goal1Texture, goal2Texture, goal3Texture, goal4Texture]
 
@@ -94,9 +91,7 @@ let pannelSize = {
     width: sizes.width > 780 ? 60 : 40,
     height: sizes.height > 400 ? 20 : 10
 }
-const obstacles = []
-const obstacleSpeed = 0.5
-const obstaclesDuration = 6000
+
 let scoreIndicator = null
 let removeBodies = []
 let score = 0
@@ -110,6 +105,11 @@ let targetSize = 8
 const balls = []
 let currentObjectBody
 let remainingTime = 100
+const obstacles = []
+let obstacleSpeed = 0.1
+const obstaclesDuration = 6000
+const obstaclesInterval = 2000
+
 const scoreInput = document.querySelector('#score')
 const resetBall = document.querySelector('#reset')
 const postGameScreen = document.querySelector('.post')
@@ -307,6 +307,11 @@ const playWinSound = () =>
  * Utils
 */
 
+const updateObstaclesSpeed = () =>
+{
+    obstacleSpeed = (score + 1) / (score * 4)
+}
+
 const generateRandomTargetCoords = () =>
 {
     return [(Math.random() - 0.5) * (pannelSize.width - 20), Math.random() * (pannelSize.height - 10), -29.90]
@@ -324,21 +329,21 @@ const generateObstacles = () =>
             Math.random() > 0.5 ? -obstacleSpeed : obstacleSpeed,
             obstaclesDuration
         )
-    }, 5000)
+    }, obstaclesInterval)
 }
 
 const createObstacle = (direction, autoDestruct) =>
 {
     const size = {
         x: 6,
-        y: 14,
+        y: 8,
         z: 0.1
     }
 
     const position = {
         x: direction > 0 ? -20: 20,
-        y: -4,
-        z: Math.floor(Math.random() * -7) -3
+        y: -4  + (size.y / 2),
+        z: Math.floor(Math.random() * -5)
     }
 
 
@@ -346,7 +351,8 @@ const createObstacle = (direction, autoDestruct) =>
     // Threejs
     const geometry = new THREE.BoxGeometry(size.x, size.y, size.z / 10)
     const material = new THREE.MeshStandardMaterial({
-        // map: goalTextures[1],
+        // map: goalTextures[3],
+        // color: 0xffff00,
         map: goalTextures[Math.floor(Math.random() * goalTextures.length)],
         transparent: true
     })
@@ -355,7 +361,6 @@ const createObstacle = (direction, autoDestruct) =>
         geometry,
         material
     )
-
     mesh.position.copy(position)
     scene.add(mesh)
 
@@ -552,6 +557,7 @@ const createTarget = (size, position) =>
                 addScore = Math.round(0.6 * hitPoints + (Math.random() * 10)) 
             }
 
+            updateObstaclesSpeed()
 
             score += addScore
             scoreInput.innerHTML = score
