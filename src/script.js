@@ -56,9 +56,9 @@ const fenceTexture = textureLoader.load('./textures/bg.jpg')
 fenceTexture.wrapS = fenceTexture.wrapT = THREE.RepeatWrapping
 fenceTexture.repeat.set( 1, 1 )
 
-const floorTexture = textureLoader.load('./textures/floor1.jpg')
+const floorTexture = textureLoader.load('./textures/floor.png')
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
-floorTexture.repeat.set(48,48 )
+floorTexture.repeat.set(5, 4.6)
 
 const targetTexture = textureLoader.load('./textures/target.png')
 
@@ -686,6 +686,7 @@ const createFloor = (position) =>
     mesh.receiveShadow = true
     mesh.position.set(x, y - 1, z)
     mesh.rotation.x = Math.PI * 0.5
+    mesh.rotation.z = Math.PI // Rotate background
     scene.add(mesh)
 
     // Cannon js
