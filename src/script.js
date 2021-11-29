@@ -352,7 +352,7 @@ const posArray = new Float32Array(particlesCount * 3);
 
 for (let i = 0; i < particlesCount; i++) {
   const i3 = i * 3;
-  posArray[i3 + 0] = Math.random() * 30 - 15;
+  posArray[i3 + 0] = (Math.random() - 0.5) * (particlesSpeed / 2) * 3600;
   posArray[i3 + 1] = Math.random() * particlesSpeed * 3600;
   posArray[i3 + 2] = Math.random() * 6 + 10;
 }
@@ -819,8 +819,9 @@ const tick = () => {
   // Anim particles
   if (particlesMesh) {
     // particlesMesh.rotation.x += 0.003;
-    // particlesMesh.rotation.z += 0.003;
     particlesMesh.position.y -= particlesSpeed;
+    particlesMesh.position.x -= particlesSpeed / 4;
+    // particlesMesh.rotation.z = Math.PI / 4;
   }
 
   // Cast a ray
