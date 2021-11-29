@@ -818,20 +818,13 @@ const tick = () => {
 
   // Anim particles
   if (particlesMesh) {
-    // particlesMesh.rotation.x += 0.003;
     particlesMesh.position.y -= particlesSpeed;
+
     if (windPower) {
       particlesMesh.position.x +=
         ((windPower / Math.abs(windPower)) * particlesSpeed) /
         (2 + (5 - Math.abs(windPower)));
     }
-    // particlesMesh.position.x -= windPower
-    //   ? ((windPower / Math.abs(windPower)) * particlesSpeed) /
-    //     (4 + (5 - Math.abs(windPower)))
-    //   : particlesSpeed / 4;
-    // max x -> ( (windPower / Math.abs(windPower)) * particlesSpeed) / (4 + (5 - Math.abs(windPower)))
-    // min x -> particlesSpeed / 8
-    // particlesMesh.rotation.z = Math.PI / 4;
   }
 
   // Cast a ray
