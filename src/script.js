@@ -647,57 +647,6 @@ const createFloor = (position) =>
 
 }
 
-  // Three js
-  const fenceGeometry = new THREE.BoxGeometry(1, 1);
-  const fenceMaterial = new THREE.MeshStandardMaterial({
-    map: fenceTexture,
-    transparent: true,
-    // opacity: 0
-  });
-  const mesh = new THREE.Mesh(fenceGeometry, fenceMaterial);
-  mesh.receiveShadow = true;
-  mesh.scale.set(size.x, size.y);
-  mesh.position.set(x, y, z);
-  scene.add(mesh);
-
-  // Cannon js
-  const fenceShape = new CANNON.Plane();
-  const fenceBody = new CANNON.Body();
-  fenceBody.mass = 0;
-  fenceBody.addShape(fenceShape);
-  fenceBody.position.set(x, y, z);
-
-  world.addBody(fenceBody);
-};
-
-const createFloor = (position) => {
-  const [x, y, z] = position;
-
-  // Three js
-  const floorGeometry = new THREE.BoxGeometry(500, 500);
-  const floorMaterial = new THREE.MeshStandardMaterial({
-    map: floorTexture,
-  });
-  const mesh = new THREE.Mesh(floorGeometry, floorMaterial);
-  mesh.receiveShadow = true;
-  mesh.position.set(x, y - 1, z);
-  mesh.rotation.x = Math.PI * 0.5;
-  scene.add(mesh);
-
-  // Cannon js
-  const floorShape = new CANNON.Plane();
-  const floorBody = new CANNON.Body();
-  floorBody.mass = 0;
-  floorBody.addShape(floorShape);
-  floorBody.position.set(x, y, z);
-  floorBody.quaternion.setFromAxisAngle(
-    new CANNON.Vec3(-1, 0, 0),
-    Math.PI * 0.5
-  );
-
-  world.addBody(floorBody);
-};
-
 /**
  * Physics
  */
