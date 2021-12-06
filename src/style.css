@@ -60,23 +60,6 @@ body
     margin-left: 6px;
 }
 
-.logo {
-    z-index: 2;
-    position: fixed;
-    top: 7%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20%;
-    min-width: 210px;
-    max-width: 310px;
-    height: 175px;
-    display: flex;
-    justify-content: center;
-    background-image: url('../static/logo.png');
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: 100%;
-}
 
 .reset {
     z-index: 3;

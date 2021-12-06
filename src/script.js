@@ -49,9 +49,9 @@ const fenceTexture = textureLoader.load("./textures/bg.jpg");
 fenceTexture.wrapS = fenceTexture.wrapT = THREE.RepeatWrapping;
 fenceTexture.repeat.set(1, 1);
 
-const floorTexture = textureLoader.load("./textures/floor1.jpg");
-floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-floorTexture.repeat.set(48, 48);
+const floorTexture = textureLoader.load('./textures/floor.png')
+floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping
+floorTexture.repeat.set(5, 4.6)
 
 const targetTexture = textureLoader.load("./textures/target.png");
 
@@ -584,7 +584,68 @@ const createWall = (position, rotation, size, material) => {
 };
 
 const createFence = (position, size) => {
-  const [x, y, z] = position;
+    const [x, y, z] = position
+
+    // Three js 
+    const fenceGeometry = new THREE.BoxGeometry(1, 1)
+    const fenceMaterial = new THREE.MeshStandardMaterial({
+        map: fenceTexture,
+        transparent: true
+        // opacity: 0
+    })
+    const mesh = new THREE.Mesh(
+        fenceGeometry,
+        fenceMaterial
+    )
+    mesh.receiveShadow = true
+    mesh.scale.set(size.x, size.y)
+    mesh.position.set(x, y, z)
+    scene.add(mesh)
+
+    // Cannon js
+    const fenceShape = new CANNON.Plane()
+    const fenceBody = new CANNON.Body()
+    fenceBody.mass = 0
+    fenceBody.addShape(fenceShape)
+    fenceBody.position.set(x, y, z)
+
+    world.addBody(fenceBody)
+
+}
+
+const createFloor = (position) =>
+{
+    const [x, y, z] = position
+
+    // Three js
+    const floorGeometry = new THREE.BoxGeometry(500, 500)
+    const floorMaterial = new THREE.MeshStandardMaterial({
+        map: floorTexture
+    })
+    const mesh = new THREE.Mesh(
+        floorGeometry,
+        floorMaterial
+    )
+    mesh.receiveShadow = true
+    mesh.position.set(x, y - 1, z)
+    mesh.rotation.x = Math.PI * 0.5
+    mesh.rotation.z = Math.PI // Rotate background
+    scene.add(mesh)
+
+    // Cannon js
+    const floorShape = new CANNON.Plane()
+    const floorBody = new CANNON.Body()
+    floorBody.mass = 0
+    floorBody.addShape(floorShape)
+    floorBody.position.set(x, y, z)
+    floorBody.quaternion.setFromAxisAngle(
+        new CANNON.Vec3(-1, 0, 0),
+        Math.PI * 0.5
+    )
+
+    world.addBody(floorBody)
+
+}
 
   // Three js
   const fenceGeometry = new THREE.BoxGeometry(1, 1);
