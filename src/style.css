@@ -5,6 +5,15 @@
     src: url("../static/fonts/big_noodle_titling_oblique.woff2") format("woff2");
 }
 
+/* WILLIESH */
+@font-face {
+    font-family: 'Williesh';
+    src: url('../static/fonts/Williesh.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 *
 {
@@ -37,20 +46,21 @@ body
     z-index: 2;
     position: fixed;
     left: 40px;
-    top: 20px;
+    bottom: 80px;
 }
 
 .info {
-    background-color: #00000050;
+    background-color: #13363f90;
     height: 40px;
-    width: 100px;
+    width: 125px;
     margin-top: 5px;
     border-radius: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: Big Noodle;
-    color: #ffffff;
+    font-family: 'Williesh';
+    color: #FFFFFF;
+    padding: 0 10px;
 }
 
 .info svg {
@@ -66,9 +76,9 @@ body
     position: fixed;
     left: 40px;
     bottom: 20px;
-    font-family: Big Noodle;
-    font-size: 36px;
-    color: #000000;
+    font-family: 'Williesh';
+    font-size: 24px;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -86,12 +96,11 @@ body
 }
 
 .info span {
-    font-size: 36px;
+    font-size: 24px;
 }
 
 .info p {
-    font-size: 24px;
-    margin-right: 14px;
+    font-size: 16px;
 }
 
 .title {
