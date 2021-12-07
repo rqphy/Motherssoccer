@@ -90,7 +90,7 @@ let removeBodies = [];
 let particlesMesh;
 let score = 0;
 const hitPoints = 100;
-let windPower = 0;
+let windPower = 5;
 const windPowerRange = 10;
 const windMinScore = 300;
 const easterEgg = 1000;
@@ -346,13 +346,13 @@ const createObstacle = (direction, autoDestruct) => {
 
 // Particles
 const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 5000;
+const particlesCount = 8000;
 
 const posArray = new Float32Array(particlesCount * 3);
 
 for (let i = 0; i < particlesCount; i++) {
   const i3 = i * 3;
-  posArray[i3 + 0] = (Math.random() - 0.5) * (particlesSpeed / 2) * 3600;
+  posArray[i3 + 0] = (Math.random() - 0.5) * (particlesSpeed * 2.2) * 3600;
   posArray[i3 + 1] = Math.random() * particlesSpeed * 4000;
   posArray[i3 + 2] = Math.random() * 6 + 10;
 }
@@ -830,10 +830,11 @@ const tick = () => {
   if (particlesMesh) {
     particlesMesh.position.y -= particlesSpeed;
 
+
     if (windPower) {
       particlesMesh.position.x +=
         ((windPower / Math.abs(windPower)) * particlesSpeed) /
-        (2 + (5 - Math.abs(windPower)));
+        (1 + (5 - Math.abs(windPower)));
     }
   }
 
