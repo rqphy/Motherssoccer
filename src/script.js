@@ -90,7 +90,7 @@ let removeBodies = [];
 let particlesMesh;
 let score = 0;
 const hitPoints = 100;
-let windPower = 5;
+let windPower = 0;
 const windPowerRange = 10;
 const windMinScore = 300;
 const easterEgg = 1000;
