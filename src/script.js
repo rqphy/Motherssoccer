@@ -3,7 +3,6 @@ import * as THREE from "three";
 import * as CANNON from "cannon-es";
 
 import * as JSONscore from "./score.json";
-import { NotEqualDepth } from "three";
 const scoresList = [];
 
 for (const scoreIndex in JSONscore) {
