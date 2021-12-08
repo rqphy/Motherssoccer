@@ -870,4 +870,29 @@ const tick = () => {
   window.requestAnimationFrame(tick);
 };
 
-tick();
+
+let startClickCount = 0;
+const startBtn = document.querySelector('#next');
+const prevGame = document.querySelector('.prev');
+const page1 = document.querySelector('.page-1');
+const page2 = document.querySelector('.page-2');
+
+startBtn.addEventListener('click', () =>
+{
+  startClickCount++;
+  
+  if(startClickCount === 1)
+  {
+    page1.classList.add('hidden');
+    page2.classList.remove('hidden');
+
+    startBtn.innerHTML = 'Jouer';
+  }
+
+  if(startClickCount === 2)
+  {
+    prevGame.classList.add('hidden');
+    tick();
+  }
+  
+})

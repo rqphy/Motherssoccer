@@ -165,11 +165,15 @@ body
     z-index: 5;
 }
 
+.prev.hidden {
+    display: none;
+}
+
 .prev .page {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     margin-bottom: 40px;
     line-height: 100%;
     flex-grow: 1;
