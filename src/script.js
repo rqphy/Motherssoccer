@@ -88,6 +88,7 @@ let pannelSize = {
   width: sizes.width > 780 ? 60 : 40,
   height: sizes.height > 400 ? 20 : 10,
 };
+let loaded = false;
 const particlesSpeed = 0.03;
 let scoreIndicator = null;
 let removeBodies = [];
@@ -120,26 +121,10 @@ const scoreboard = document.querySelector("#scoreboard");
  * Timer
  */
 window.addEventListener("load", () => {
-  const interval = setInterval(() => {
-    if (remainingTime > 0) {
-      timer.innerHTML = --remainingTime;
-    } else {
-      endScore.innerHTML = score;
-      postGameScreen.classList.add("visible");
-      canvas.classList.add("hidden");
-
-      if (score > scoresList[scoresList.length - 1].score) {
-        console.log("goodjob");
-      }
-
-      for (const line of scoresList) {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${line.name}</td> <td>${line.score}</td>`;
-        scoreboard.appendChild(tr);
-        clearInterval(interval);
-      }
-    }
-  }, 1000);
+  if (loaded)
+  {
+    
+  }
 });
 
 /**
@@ -892,7 +877,29 @@ startBtn.addEventListener('click', () =>
   if(startClickCount === 2)
   {
     prevGame.classList.add('hidden');
+    loaded = true;
     tick();
+
+    const interval = setInterval(() => {
+      if (remainingTime > 0) {
+        timer.innerHTML = --remainingTime;
+      } else {
+        endScore.innerHTML = score;
+        postGameScreen.classList.add("visible");
+        canvas.classList.add("hidden");
+        
+        if (score > scoresList[scoresList.length - 1].score) {
+          console.log("goodjob");
+        }
+        
+        for (const line of scoresList) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${line.name}</td> <td>${line.score}</td>`;
+          scoreboard.appendChild(tr);
+          clearInterval(interval);
+        }
+      }
+    }, 1000);
   }
   
 })
