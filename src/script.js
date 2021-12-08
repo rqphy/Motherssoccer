@@ -103,7 +103,7 @@ const targets = [];
 let targetSize = 8;
 const balls = [];
 let currentObjectBody;
-let remainingTime = 60;
+let remainingTime = 1;
 const obstacles = [];
 let obstacleSpeed = 0.1;
 const obstaclesDuration = 6000;
@@ -112,7 +112,7 @@ const obstaclesInterval = 2000;
 const scoreInput = document.querySelector("#score");
 const resetBall = document.querySelector("#reset");
 const postGameScreen = document.querySelector(".post");
-const tryAgain = document.querySelector(".tryAgain");
+const tryAgain = document.querySelector("#restart");
 const timer = document.querySelector("#timer");
 const wind = document.querySelector("#wind");
 const scoreboard = document.querySelector("#scoreboard");
@@ -877,7 +877,8 @@ startBtn.addEventListener('click', () =>
         timer.innerHTML = --remainingTime;
       } else {
         endScore.innerHTML = score;
-        postGameScreen.classList.add("visible");
+        postGameScreen.classList.remove("hidden");
+        prevBg.classList.remove("hidden");
         canvas.classList.add("hidden");
         
         if (score > scoresList[scoresList.length - 1].score) {

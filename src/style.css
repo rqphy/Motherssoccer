@@ -106,27 +106,17 @@ body
 .title {
     padding-top: 40px;
     text-align: center;
-    color: #000000;
+    color: #FFFFFF;
     z-index: 2;
-    font-family: Big Noodle;
+    font-family: 'Williesh';
     font-size: 2.5em;
-    text-transform: uppercase;
+    text-transform: capitalize;
     line-height: 100%;
 }
 
 .btn {
-    padding: 10px 20px;
-    background: #fffae8;
-    border: 1px solid #000000;
-    color: #000000;
-    text-transform: uppercase;
-    font-family: Big Noodle;
+    font-size: 70px;
     cursor: pointer;
-    font-size: .8em;
-}
-
-.btn:hover {
-    background: white;
 }
 
 .wind {
@@ -148,7 +138,7 @@ body
     background: tomato;
     background-image: url(../static/img/prev-bg.jpg);
     background-size: auto 100%;
-    background-position: center;
+    background-position: 50% 50%;
 
     z-index: 2;
 }
@@ -224,44 +214,73 @@ body
 }
 
 .post {
-    display: none;
-    position: fixed;
-    z-index: 5;
-    width: 100%;
-    height: 100%;
-    background-color: #fffae8;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 400px;
+    height: 480px;
+    padding: 40px 60px;
+
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    border-radius: 60px;
+    transform: translate3d(-50%, -50%, 0);
+
+    background-image: url('../static/img/card-bg.jpg');
+    background-size: cover;
+    color: #FFFFFF;
+    box-sizing: border-box;
+
+
+    font-family: 'Williesh';
+
+    z-index: 5;
 }
 
-.post.visible {
-    display: flex;
+.post:after {
+    content: '';
+    position: absolute;
+    top: 90px;
+    left: -260px;
+
+    width: 300px;
+    height: 350px;
+
+    background-image: url('../static/textures/goal1.png');
+    background-size: contain;
+
+    z-index: 10;
+}
+
+.post.hidden {
+    display: none;
 }
 
 .post .score {
-    font-family: Big Noodle;
-    font-size: 56px;
-}
-
-.post .btn {
-    padding: 20px 40px;
-    margin-top: 20px;
-    font-size: 16px;
+    font-family: 'Williesh';
+    font-size: 100px;
 }
 
 #scoreboard {
     width: 90px;
-    text-align: left;
 
-    font-family: Big Noodle;
-    font-size: 24px;
+    font-family: 'Williesh';
+    font-size: 14px;
+    text-align: right;
 
     text-transform: uppercase;
 }
 
+#scoreboard td {
+    padding: 0 10px;;
+}
+
 #scoreboard td + td {
-    text-align: right;
+    text-align: left;
 }
 
 @media only screen and (max-width: 600px) {
@@ -273,9 +292,22 @@ body
         position: initial;
         margin-top: 10px;
     }
+    
+    .prev-bg {
+        background-position: 40% 50%;
+    }
+
+    .prev, .post {
+        width: 90%;
+        font-size: 24px;
+    }
 
     .btn {
-        font-size: 14px;
-        padding: 10px 20px;
+        font-size: 50px;
+    }
+
+    .post:after {
+        top: 150px;
+        left: -200px;
     }
 }
