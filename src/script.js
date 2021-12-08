@@ -859,6 +859,7 @@ const tick = () => {
 let startClickCount = 0;
 const startBtn = document.querySelector('#next');
 const prevGame = document.querySelector('.prev');
+const prevBg = document.querySelector('.prev-bg');
 const page1 = document.querySelector('.page-1');
 const page2 = document.querySelector('.page-2');
 
@@ -877,6 +878,7 @@ startBtn.addEventListener('click', () =>
   if(startClickCount === 2)
   {
     prevGame.classList.add('hidden');
+    prevBg.classList.add('hidden');
     loaded = true;
     tick();
 
