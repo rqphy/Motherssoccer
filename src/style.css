@@ -137,6 +137,68 @@ body
     display: block;
 }
 
+.prev {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 400px;
+    height: 480px;
+    padding: 60px 60px 44px;
+
+    border-radius: 60px;
+    transform: translate3d(-50%, -50%, 0);
+
+    background-image: url('../static/img/prev-bg.jpg');
+    background-size: cover;
+    color: #FFFFFF;
+
+    font-family: 'Williesh';
+    font-size: 30px;
+    text-align: center;
+    box-sizing: border-box;
+    
+    z-index: 5;
+}
+
+.prev .page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    margin-bottom: 40px;
+    line-height: 100%;
+    flex-grow: 1;
+}
+
+.prev .page-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.prev .icon {
+    width: 72px;
+    height: 110px;
+    margin-top: 40px;
+    
+    background-image: url(../static/img/drag.png);
+    background-size: contain;
+}
+
+.prev .next {
+    font-size: 70px;
+    cursor: pointer;
+}
+
+.prev .page.hidden {
+    display: none;
+}
+
 .post {
     display: none;
     position: fixed;
