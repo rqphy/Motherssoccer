@@ -118,16 +118,6 @@ const wind = document.querySelector("#wind");
 const scoreboard = document.querySelector("#scoreboard");
 
 /**
- * Timer
- */
-window.addEventListener("load", () => {
-  if (loaded)
-  {
-    
-  }
-});
-
-/**
  * Events
  */
 
