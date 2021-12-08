@@ -90,6 +90,10 @@ body
     transform: scale(1.15);
 }
 
+.reset.hidden {
+    display: none;
+}
+
 .reset svg {
     width: 28px;
     margin-right: 8px;

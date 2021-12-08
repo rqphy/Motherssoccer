@@ -869,6 +869,7 @@ startBtn.addEventListener('click', () =>
   {
     prevGame.classList.add('hidden');
     prevBg.classList.add('hidden');
+    resetBall.classList.remove('hidden');
     loaded = true;
     tick();
 
@@ -877,6 +878,7 @@ startBtn.addEventListener('click', () =>
         timer.innerHTML = --remainingTime;
       } else {
         endScore.innerHTML = score;
+        resetBall.classList.add('hidden');
         postGameScreen.classList.remove("hidden");
         prevBg.classList.remove("hidden");
         canvas.classList.add("hidden");
