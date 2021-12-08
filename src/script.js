@@ -44,7 +44,7 @@ const textureLoader = new THREE.TextureLoader();
 
 const footBallTexture = textureLoader.load("./textures/football.jpeg");
 
-const fenceTexture = textureLoader.load("./textures/bg.jpg");
+const fenceTexture = textureLoader.load("./img/prev-bg.jpg");
 fenceTexture.wrapS = fenceTexture.wrapT = THREE.RepeatWrapping;
 fenceTexture.repeat.set(1, 1);
 
