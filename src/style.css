@@ -123,6 +123,7 @@ body
     cursor: pointer;
     -webkit-text-stroke: 2px #FFFFFF;
             text-stroke: 2px #FFFFFF;
+    color: #ffffff;
     color: #ffffff00;
 
     transition: all .5s ease-in-out;
