@@ -121,6 +121,17 @@ body
 .btn {
     font-size: 70px;
     cursor: pointer;
+    -webkit-text-stroke: 2px #FFFFFF;
+            text-stroke: 2px #FFFFFF;
+    color: #ffffff00;
+
+    transition: all .5s ease-in-out;
+}
+
+.btn:hover {
+    -webkit-text-stroke: none;
+            text-stroke: none;
+    color: #FFFFFF;
 }
 
 .wind {
