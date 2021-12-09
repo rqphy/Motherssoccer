@@ -775,74 +775,82 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 const clock = new THREE.Clock();
 let oldElapsedTime = 0;
+const fpsInterval = 1 / 60;
+
 
 let currentIntersect = null;
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   const deltaTime = elapsedTime - oldElapsedTime;
-  oldElapsedTime = elapsedTime;
-
-  world.step(1 / 60, deltaTime, 3);
-  if (removeBodies) {
-    for (const body of removeBodies) {
-      world.removeBody(body);
-    }
-
-    removeBodies = [];
-  }
-
-  for (const ball of balls) {
-    ball.mesh.position.copy(ball.body.position);
-    ball.mesh.quaternion.copy(ball.body.quaternion);
-  }
-
-  for (const obstacle of obstacles) {
-    obstacle.body.position.x += obstacle.direction;
-
-    obstacle.mesh.position.copy(obstacle.body.position);
-  }
-
-  // Anim particles
-  if (particlesMesh) {
-    particlesMesh.position.y -= particlesSpeed;
-
-
-    if (windPower) {
-      particlesMesh.position.x +=
-        ((windPower / Math.abs(windPower)) * particlesSpeed) /
-        (1 + (5 - Math.abs(windPower)));
-    }
-  }
-
-  // Cast a ray
-  raycaster.setFromCamera(mouse, camera);
-  currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh);
-
-  // apply wind
-  if (currentObjectBody) {
-    currentObjectBody.applyForce(
-      new CANNON.Vec3(windPower, 0, 0),
-      currentObjectBody.position
-    );
-  }
-
-  // Score indicator update
-  if (scoreIndicator) {
-    const scale = scoreIndicator.scale;
-    const scaleCoef = 0.01;
-    scoreIndicator.scale.set(
-      scale.x - scaleCoef,
-      scale.y - scaleCoef,
-      scale.z - scaleCoef
-    );
-  }
-
-  // Render
-  renderer.render(scene, camera);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
+  world.step(1 / 60, deltaTime, 3);
+  
+  if(deltaTime > fpsInterval)
+  {
+    oldElapsedTime = elapsedTime - (deltaTime % fpsInterval);
+      
+    if (removeBodies) {
+      for (const body of removeBodies) {
+        world.removeBody(body);
+      }
+
+      removeBodies = [];
+    }
+
+    for (const ball of balls) {
+      ball.mesh.position.copy(ball.body.position);
+      ball.mesh.quaternion.copy(ball.body.quaternion);
+    }
+
+    for (const obstacle of obstacles) {
+      obstacle.body.position.x += obstacle.direction;
+
+      obstacle.mesh.position.copy(obstacle.body.position);
+    }
+
+    // Anim particles
+    if (particlesMesh) {
+      particlesMesh.position.y -= particlesSpeed;
+
+
+      if (windPower) {
+        particlesMesh.position.x +=
+          ((windPower / Math.abs(windPower)) * particlesSpeed) /
+          (1 + (5 - Math.abs(windPower)));
+      }
+    }
+
+    // Cast a ray
+    raycaster.setFromCamera(mouse, camera);
+    currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh);
+
+    // apply wind
+    if (currentObjectBody) {
+      currentObjectBody.applyForce(
+        new CANNON.Vec3(windPower, 0, 0),
+        currentObjectBody.position
+      );
+    }
+
+    // Score indicator update
+    if (scoreIndicator) {
+      const scale = scoreIndicator.scale;
+      const scaleCoef = 0.01;
+      scoreIndicator.scale.set(
+        scale.x - scaleCoef,
+        scale.y - scaleCoef,
+        scale.z - scaleCoef
+      );
+    }
+
+    // Render
+    renderer.render(scene, camera);
+
+
+  }
 };
 
 
