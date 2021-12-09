@@ -24,7 +24,7 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+scene.background = null;
 
 /**
  * Fonts
@@ -764,11 +764,14 @@ scene.add(camera);
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
   antialias: true,
+  alpha: true
 });
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor( 0x000000, 0 ); // the default
+
 
 /**
  * Animate
