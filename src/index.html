@@ -40,12 +40,17 @@
         <div class="next btn" id="next" >Suite</div>
     </div>
     <div class="post hidden">
-        <p class="title">Your score is</p>
+        <p class="title">Votre score est</p>
         <p class="score" id="endScore">0</p>
-        <table id="scoreboard">
-
+        <form class="register hidden">
+            <label for="unername">Entrez 3 lettres</label>
+            <input type="text" min="3" max="3" name="unername" id="unername">
+            <button id="registerScore">Enregister</button>
+        </form>
+        <table id="scoreboard" class="hidden">
         </table>
         <div class="restart btn" id="restart" >Rejouer</div>
     </div>
+
 </body>
 </html>

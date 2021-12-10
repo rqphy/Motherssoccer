@@ -103,7 +103,7 @@ const targets = [];
 let targetSize = 8;
 const balls = [];
 let currentObjectBody;
-let remainingTime = 60;
+let remainingTime = 10;
 const obstacles = [];
 let obstacleSpeed = 0.1;
 const obstaclesDuration = 6000;
@@ -115,7 +115,6 @@ const postGameScreen = document.querySelector(".post");
 const tryAgain = document.querySelector("#restart");
 const timer = document.querySelector("#timer");
 const wind = document.querySelector("#wind");
-const scoreboard = document.querySelector("#scoreboard");
 
 /**
  * Events
@@ -216,10 +215,6 @@ document.addEventListener("touchend", (_event) => {
 
     currentIntersect = raycaster.intersectObject(balls[balls.length - 1].mesh);
   }
-});
-
-tryAgain.addEventListener("click", () => {
-  location.reload();
 });
 
 /**
@@ -856,6 +851,15 @@ const tick = () => {
   }
 };
 
+const fillScoreboard = (scoresList) =>
+{
+  for (const line of scoresList)
+  {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${line.name}</td> <td>${line.score}</td>`;
+    scoreboard.appendChild(tr);
+  }
+}
 
 let startClickCount = 0;
 const startBtn = document.querySelector('#next');
@@ -863,6 +867,10 @@ const prevGame = document.querySelector('.prev');
 const prevBg = document.querySelector('.prev-bg');
 const page1 = document.querySelector('.page-1');
 const page2 = document.querySelector('.page-2');
+const register = document.querySelector('.register');
+const scoreboard = document.querySelector("#scoreboard");
+const registerScore = document.querySelector("#registerScore");
+
 
 startBtn.addEventListener('click', () =>
 {
@@ -893,17 +901,34 @@ startBtn.addEventListener('click', () =>
         postGameScreen.classList.remove("hidden");
         prevBg.classList.remove("hidden");
         canvas.classList.add("hidden");
+        clearInterval(interval);
+
         
         if (score > scoresList[scoresList.length - 1].score) {
           console.log("goodjob");
+          register.classList.remove('hidden');
+
+          registerScore.addEventListener('click', (_event) =>
+          {
+            _event.preventDefault();
+            console.log('score enregiste');
+            register.classList.add('hidden');
+            scoreboard.classList.remove('hidden');
+            fillScoreboard(scoresList);
+          })
+          // tryAgain.addEventListener("click", () => {
+          //   location.reload();
+          // });
+
+        } else {
+          console.log(scoreboard)
+          scoreboard.classList.remove('hidden');
+          fillScoreboard(scoresList);
+          tryAgain.addEventListener("click", () => {
+            location.reload();
+          });
         }
         
-        for (const line of scoresList) {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${line.name}</td> <td>${line.score}</td>`;
-          scoreboard.appendChild(tr);
-          clearInterval(interval);
-        }
       }
     }, 1000);
   }

@@ -290,12 +290,30 @@ body
     text-transform: uppercase;
 }
 
+#scoreboard.hidden {
+    display: none;
+}
+
 #scoreboard td {
     padding: 0 10px;;
 }
 
 #scoreboard td + td {
     text-align: left;
+}
+
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    text-align: center;
+
+    z-index: 10;
+}
+
+.register.hidden {
+    display: none;
 }
 
 @media only screen and (max-width: 600px) {
