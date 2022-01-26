@@ -312,6 +312,33 @@ body
     z-index: 10;
 }
 
+.register-ctn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register input {
+    background: transparent;
+    border: 1px solid #FFF;
+    color: #fff;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-size: 25px;
+    width: 50%;
+    text-align: center;
+}
+
+.register button {
+    height: 100%;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 0 5px;
+}
+
 .register.hidden {
     display: none;
 }
