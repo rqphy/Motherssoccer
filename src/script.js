@@ -109,7 +109,9 @@ let obstacleSpeed = 0.1;
 const obstaclesDuration = 6000;
 const obstaclesInterval = 2000;
 
-const scoreInput = document.querySelector("#score");
+const scoreDisplay = document.querySelector("#score");
+const userInput = document.querySelector("#username");
+console.log(userInput)
 const resetBall = document.querySelector("#reset");
 const postGameScreen = document.querySelector(".post");
 const tryAgain = document.querySelector("#restart");
@@ -495,7 +497,7 @@ const createTarget = (size, position) => {
       updateObstaclesSpeed();
 
       score += addScore;
-      scoreInput.innerHTML = score;
+      scoreDisplay.innerHTML = score;
 
       createScoreIndicator(`+${addScore}`, targetPosition);
 
@@ -915,6 +917,8 @@ startBtn.addEventListener('click', () =>
             register.classList.add('hidden');
             scoreboard.classList.remove('hidden');
             fillScoreboard(scoresList);
+            const username = userInput.value.substring(0,3)
+            console.log(username)
           })
           // tryAgain.addEventListener("click", () => {
           //   location.reload();
