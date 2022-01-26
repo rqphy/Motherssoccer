@@ -111,7 +111,6 @@ const obstaclesInterval = 2000;
 
 const scoreDisplay = document.querySelector("#score");
 const userInput = document.querySelector("#username");
-console.log(userInput)
 const resetBall = document.querySelector("#reset");
 const postGameScreen = document.querySelector(".post");
 const tryAgain = document.querySelector("#restart");
@@ -918,12 +917,10 @@ startBtn.addEventListener('click', () =>
             scoreboard.classList.remove('hidden');
             fillScoreboard(scoresList);
             const username = userInput.value.substring(0,3)
-            console.log(username)
-            
-            tryAgain.addEventListener("click", () => {
-              location.reload();
-            });
           })
+          tryAgain.addEventListener("click", () => {
+            location.reload();
+          });
 
         } else {
           console.log(scoreboard)
