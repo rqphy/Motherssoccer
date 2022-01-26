@@ -919,10 +919,11 @@ startBtn.addEventListener('click', () =>
             fillScoreboard(scoresList);
             const username = userInput.value.substring(0,3)
             console.log(username)
+            
+            tryAgain.addEventListener("click", () => {
+              location.reload();
+            });
           })
-          // tryAgain.addEventListener("click", () => {
-          //   location.reload();
-          // });
 
         } else {
           console.log(scoreboard)
