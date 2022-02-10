@@ -852,25 +852,12 @@ const tick = () => {
   }
 };
 
-const fillScoreboard = (scoresList) =>
-{
-  for (const line of scoresList)
-  {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${line.name}</td> <td>${line.score}</td>`;
-    scoreboard.appendChild(tr);
-  }
-}
-
 let startClickCount = 0;
 const startBtn = document.querySelector('#next');
 const prevGame = document.querySelector('.prev');
 const prevBg = document.querySelector('.prev-bg');
 const page1 = document.querySelector('.page-1');
 const page2 = document.querySelector('.page-2');
-const register = document.querySelector('.register');
-const scoreboard = document.querySelector("#scoreboard");
-const registerScore = document.querySelector("#registerScore");
 
 
 startBtn.addEventListener('click', () =>
@@ -904,32 +891,10 @@ startBtn.addEventListener('click', () =>
         canvas.classList.add("hidden");
         clearInterval(interval);
 
-        
-        if (score > scoresList[scoresList.length - 1].score) {
-          console.log("goodjob");
-          register.classList.remove('hidden');
-
-          registerScore.addEventListener('click', (_event) =>
-          {
-            _event.preventDefault();
-            console.log('score enregiste');
-            register.classList.add('hidden');
-            scoreboard.classList.remove('hidden');
-            fillScoreboard(scoresList);
-            const username = userInput.value.substring(0,3)
-          })
-          tryAgain.addEventListener("click", () => {
-            location.reload();
-          });
-
-        } else {
-          console.log(scoreboard)
-          scoreboard.classList.remove('hidden');
-          fillScoreboard(scoresList);
-          tryAgain.addEventListener("click", () => {
-            location.reload();
-          });
-        }
+        // restart game
+        tryAgain.addEventListener("click", () => {
+          location.reload();
+        });
         
       }
     }, 1000);
