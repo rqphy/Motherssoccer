@@ -4,9 +4,8 @@ import * as CANNON from "cannon-es";
 
 let scoresList = [];
 const APIURL = 'https://mothers-soccer.wonderstudios.com/api/'
-const APIKEY = '571f835d7566c461fe57f38fc039770d'
 
-fetch(`${APIURL}?s_key=${APIKEY}&action=top_score`)
+fetch(`${APIURL}?action=top_score`)
   .then(response => response.json())
   .then(data => scoresList = [...data]);
 
@@ -916,7 +915,7 @@ startBtn.addEventListener('click', () =>
             scoreboard.classList.remove('hidden');
             fillScoreboard(scoresList);
             const username = userInput.value.substring(0,3)
-            fetch(`${APIURL}?s_key=${APIKEY}&action=push&player_name=${username}&player_score=${score}`)
+            fetch(`${APIURL}?action=push&player_name=${username}&player_score=${score}`)
               .then(response => response.json())
               .then(data => console.log(data));
           })
