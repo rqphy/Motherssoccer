@@ -102,7 +102,7 @@ const targets = [];
 let targetSize = 8;
 const balls = [];
 let currentObjectBody;
-let remainingTime = 10;
+let remainingTime = 60;
 const obstacles = [];
 let obstacleSpeed = 0.1;
 const obstaclesDuration = 6000;
