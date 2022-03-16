@@ -2,14 +2,13 @@ import "./style.css";
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
 
-import * as JSONscore from "./score.json";
-const scoresList = [];
+let scoresList = [];
+const APIURL = 'https://mothers-soccer.wonderstudios.com/api/'
+const APIKEY = '571f835d7566c461fe57f38fc039770d'
 
-for (const scoreIndex in JSONscore) {
-  if (scoreIndex.length < 2) {
-    scoresList.push(JSONscore[scoreIndex]);
-  }
-}
+fetch(`${APIURL}?s_key=${APIKEY}&action=top_score`)
+  .then(response => response.json())
+  .then(data => scoresList = [...data]);
 
 /**
  * Raycaster
@@ -917,6 +916,9 @@ startBtn.addEventListener('click', () =>
             scoreboard.classList.remove('hidden');
             fillScoreboard(scoresList);
             const username = userInput.value.substring(0,3)
+            fetch(`${APIURL}?s_key=${APIKEY}&action=push&player_name=${username}&player_score=${score}`)
+              .then(response => response.json())
+              .then(data => console.log(data));
           })
           tryAgain.addEventListener("click", () => {
             location.reload();
