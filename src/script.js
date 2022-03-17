@@ -152,6 +152,7 @@ document.addEventListener("mouseup", (_event) => {
   };
 
   if (currentIntersect.length) {
+    Math.random() > 0.5 ? playhit1Sound() : playhit2Sound();
     const bodyBall = balls.find(
       (obj) => obj.mesh.uuid === currentIntersect[0].object.uuid
     );
@@ -195,6 +196,8 @@ document.addEventListener("touchend", (_event) => {
   };
 
   if (currentIntersect.length) {
+    Math.random() > 0.5 ? playhit1Sound() : playhit2Sound();
+
     const bodyBall = balls.find(
       (obj) => obj.mesh.uuid === currentIntersect[0].object.uuid
     );
@@ -244,6 +247,20 @@ const playWinSound = () => {
   winSound.volume = 0.5;
   winSound.currentTime = 0;
   winSound.play();
+};
+
+const hit1Sound = new Audio("./sounds/hit1.mp3");
+const playhit1Sound = () => {
+  hit1Sound.volume = 0.5;
+  hit1Sound.currentTime = 0.25;
+  hit1Sound.play();
+};
+
+const hit2Sound = new Audio("./sounds/hit2.mp3");
+const playhit2Sound = () => {
+  hit2Sound.volume = 0.5;
+  hit2Sound.currentTime = 0;
+  hit2Sound.play();
 };
 
 /**
