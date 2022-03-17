@@ -511,10 +511,6 @@ const createTarget = (size, position) => {
 
       playTargetHitSound();
 
-      if (score === easterEgg) {
-        playWinSound();
-      }
-
       // Update wind
       if (score >= windMinScore) {
         windPower = Math.floor((0.5 - Math.random()) * windPowerRange);
@@ -912,6 +908,8 @@ startBtn.addEventListener('click', () =>
         if (score > scoresList[scoresList.length - 1].score) {
           console.log("goodjob");
           register.classList.remove('hidden');
+          playWinSound();
+
 
           registerScore.addEventListener('click', (_event) =>
           {
