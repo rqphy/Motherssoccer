@@ -30,7 +30,7 @@ body
     -khtml-user-select: none; /* Konqueror HTML */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
-    background: #c6c2bf;
+    background: #2e6d82;
 }
 
 .webgl
