@@ -338,6 +338,13 @@ body
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 0 5px;
+    transition: color .3s ease-in-out, background-color .3s ease-in-out;
+    cursor: pointer;
+}
+
+.register button:hover {
+    color: #00131c;
+    background-color: #FFF;
 }
 
 .register.hidden {
