@@ -5,9 +5,15 @@ import * as CANNON from "cannon-es";
 let scoresList = [];
 const APIURL = 'https://mothers-soccer.wonderstudios.com/api/'
 
-fetch(`${APIURL}?action=top_score`)
-  .then(response => response.json())
-  .then(data => scoresList = [...data]);
+const updateScoresList = async () =>
+{
+  await fetch(`${APIURL}?action=top_score`)
+    .then(response => response.json())
+    .then(data => scoresList = [...data]);
+}
+
+updateScoresList()
+
 
 /**
  * Raycaster
@@ -910,14 +916,16 @@ startBtn.addEventListener('click', () =>
           registerScore.addEventListener('click', (_event) =>
           {
             _event.preventDefault();
-            console.log('score enregiste');
-            register.classList.add('hidden');
-            scoreboard.classList.remove('hidden');
-            fillScoreboard(scoresList);
             const username = userInput.value.substring(0,3)
             fetch(`${APIURL}?action=push&player_name=${username}&player_score=${score}`)
               .then(response => response.json())
-              .then(data => console.log(data));
+              .then(data => console.log(data))
+              .then(updateScoresList)
+              .then(() => fillScoreboard(scoresList))
+            
+            console.log('score enregiste');
+            register.classList.add('hidden');
+            scoreboard.classList.remove('hidden');
           })
           tryAgain.addEventListener("click", () => {
             location.reload();
