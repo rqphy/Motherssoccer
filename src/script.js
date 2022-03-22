@@ -899,7 +899,8 @@ startBtn.addEventListener('click', () =>
     page1.classList.add('hidden');
     page2.classList.remove('hidden');
 
-    startBtn.innerHTML = 'Jouer';
+    startBtn.textContent = 'Jouer';
+    tick();
   }
 
   if(startClickCount === 2)
@@ -908,13 +909,13 @@ startBtn.addEventListener('click', () =>
     prevBg.classList.add('hidden');
     resetBall.classList.remove('hidden');
     loaded = true;
-    tick();
+    remainingTime = 60
 
     const interval = setInterval(() => {
       if (remainingTime > 0) {
-        timer.innerHTML = --remainingTime;
+        timer.textContent = --remainingTime;
       } else {
-        endScore.innerHTML = score;
+        endScore.textContent = score;
         resetBall.classList.add('hidden');
         postGameScreen.classList.remove("hidden");
         prevBg.classList.remove("hidden");
