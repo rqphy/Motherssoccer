@@ -513,13 +513,13 @@ const createTarget = (size, position) => {
       }, 1000);
 
       const randomSound = Math.random()
-      if(randomSound < 0.15) playSound(goal1, 0.5, 0)
-      else if(randomSound < 0.30) playSound(goal2, 0.5, 0)
+      if(randomSound < 0.15) playSound(goal1, 0.8, 0)
+      else if(randomSound < 0.30) playSound(goal2, 0.7, 0)
       else if(randomSound < 0.45) playSound(goal3, 0.5, 0)
-      else if(randomSound < 0.60) playSound(goal4, 0.5, 0)
-      else if(randomSound < 0.75) playSound(goal5, 0.5, 0)
-      else if(randomSound < 0.90) playSound(goal6, 0.5, 0)
-      else playSound(goal7, 0.5, 0)
+      else if(randomSound < 0.60) playSound(goal4, 0.7, 0)
+      else if(randomSound < 0.75) playSound(goal5, 0.8, 0)
+      else if(randomSound < 0.90) playSound(goal6, 0.35, 0)
+      else playSound(goal7, 0.7, 0)
 
       // Update wind
       if (score >= windMinScore) {
