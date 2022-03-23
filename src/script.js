@@ -252,11 +252,23 @@ const playGoal3Sound = () => {
   goal3.currentTime = 0.5;
   goal3.play();
 };
-const crowd = new Audio("./sounds/crowd.mp3");
-const playCrowdSound = () => {
-  crowd.volume = 0.5;
-  crowd.currentTime = 0.5;
-  crowd.play();
+const goal4 = new Audio("./sounds/goal4.mp3");
+const playGoal4Sound = () => {
+  goal4.volume = 0.5;
+  goal4.currentTime = 0.5;
+  goal4.play();
+};
+const goal5 = new Audio("./sounds/goal5.mp3");
+const playGoal5Sound = () => {
+  goal5.volume = 0.5;
+  goal5.currentTime = 0.5;
+  goal5.play();
+};
+const goal6 = new Audio("./sounds/goal6.mp3");
+const playGoal6Sound = () => {
+  goal6.volume = 0.5;
+  goal6.currentTime = 0.5;
+  goal6.play();
 };
 
 const wallSound = new Audio("./sounds/bounce.mp3");
@@ -550,7 +562,13 @@ const createTarget = (size, position) => {
         scoreIndicator = null;
       }, 1000);
 
-      playTargetHitSound();
+      const randomSound = Math.random()
+      if(randomSound < 0.18) playGoal1Sound()
+      else if(randomSound < 0.36) playGoal2Sound()
+      else if(randomSound < 0.54) playGoal3Sound()
+      else if(randomSound < 0.72) playGoal4Sound()
+      else if(randomSound < 0.90) playGoal5Sound()
+      else playGoal6Sound()
 
       // Update wind
       if (score >= windMinScore) {
