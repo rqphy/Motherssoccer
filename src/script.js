@@ -234,6 +234,30 @@ const playTargetHitSound = () => {
   targetSound.currentTime = 0.5;
   targetSound.play();
 };
+const goal1 = new Audio("./sounds/goal1.mp3");
+const playGoal1Sound = () => {
+  goal1.volume = 0.5;
+  goal1.currentTime = 0.5;
+  goal1.play();
+};
+const goal2 = new Audio("./sounds/goal2.mp3");
+const playGoal2Sound = () => {
+  goal2.volume = 0.5;
+  goal2.currentTime = 0.5;
+  goal2.play();
+};
+const goal3 = new Audio("./sounds/goal3.mp3");
+const playGoal3Sound = () => {
+  goal3.volume = 0.5;
+  goal3.currentTime = 0.5;
+  goal3.play();
+};
+const crowd = new Audio("./sounds/crowd.mp3");
+const playCrowdSound = () => {
+  crowd.volume = 0.5;
+  crowd.currentTime = 0.5;
+  crowd.play();
+};
 
 const wallSound = new Audio("./sounds/bounce.mp3");
 const playWallHitSound = () => {
