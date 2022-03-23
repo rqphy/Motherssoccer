@@ -237,38 +237,44 @@ const playTargetHitSound = () => {
 const goal1 = new Audio("./sounds/goal1.mp3");
 const playGoal1Sound = () => {
   goal1.volume = 0.5;
-  goal1.currentTime = 0.5;
+  goal1.currentTime = 0;
   goal1.play();
 };
 const goal2 = new Audio("./sounds/goal2.mp3");
 const playGoal2Sound = () => {
   goal2.volume = 0.5;
-  goal2.currentTime = 0.5;
+  goal2.currentTime = 0;
   goal2.play();
 };
 const goal3 = new Audio("./sounds/goal3.mp3");
 const playGoal3Sound = () => {
   goal3.volume = 0.5;
-  goal3.currentTime = 0.5;
+  goal3.currentTime = 0;
   goal3.play();
 };
 const goal4 = new Audio("./sounds/goal4.mp3");
 const playGoal4Sound = () => {
   goal4.volume = 0.5;
-  goal4.currentTime = 0.5;
+  goal4.currentTime = 0;
   goal4.play();
 };
 const goal5 = new Audio("./sounds/goal5.mp3");
 const playGoal5Sound = () => {
   goal5.volume = 0.5;
-  goal5.currentTime = 0.5;
+  goal5.currentTime = 0;
   goal5.play();
 };
 const goal6 = new Audio("./sounds/goal6.mp3");
 const playGoal6Sound = () => {
   goal6.volume = 0.5;
-  goal6.currentTime = 0.5;
+  goal6.currentTime = 0;
   goal6.play();
+};
+const goal7 = new Audio("./sounds/goal7.mp3");
+const playGoal7Sound = () => {
+  goal7.volume = 0.5;
+  goal7.currentTime = 0;
+  goal7.play();
 };
 
 const wallSound = new Audio("./sounds/bounce.mp3");
@@ -563,12 +569,13 @@ const createTarget = (size, position) => {
       }, 1000);
 
       const randomSound = Math.random()
-      if(randomSound < 0.18) playGoal1Sound()
-      else if(randomSound < 0.36) playGoal2Sound()
-      else if(randomSound < 0.54) playGoal3Sound()
-      else if(randomSound < 0.72) playGoal4Sound()
-      else if(randomSound < 0.90) playGoal5Sound()
-      else playGoal6Sound()
+      if(randomSound < 0.15) playGoal1Sound()
+      else if(randomSound < 0.30) playGoal2Sound()
+      else if(randomSound < 0.45) playGoal3Sound()
+      else if(randomSound < 0.60) playGoal4Sound()
+      else if(randomSound < 0.75) playGoal5Sound()
+      else if(randomSound < 0.90) playGoal6Sound()
+      else playGoal7Sound()
 
       // Update wind
       if (score >= windMinScore) {
