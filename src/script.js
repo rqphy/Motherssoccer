@@ -88,6 +88,8 @@ const sizes = {
   height: window.innerHeight,
 };
 
+let lastSound = null
+
 let pannelSize = {
   width: sizes.width > 780 ? 60 : 40,
   height: sizes.height > 400 ? 20 : 10,
@@ -152,7 +154,7 @@ document.addEventListener("mouseup", (_event) => {
   };
 
   if (currentIntersect.length) {
-    Math.random() > 0.5 ? playhit1Sound() : playhit2Sound();
+    Math.random() > 0.5 ? playSound(hit1Sound, 0.5, 0.25) : playSound(hit2Sound, 0.5, 0);
     const bodyBall = balls.find(
       (obj) => obj.mesh.uuid === currentIntersect[0].object.uuid
     );
@@ -196,7 +198,7 @@ document.addEventListener("touchend", (_event) => {
   };
 
   if (currentIntersect.length) {
-    Math.random() > 0.5 ? playhit1Sound() : playhit2Sound();
+    Math.random() > 0.5 ? playSound(hit1Sound, 0.5, 0.25) : playSound(hit2Sound, 0.5, 0);
 
     const bodyBall = balls.find(
       (obj) => obj.mesh.uuid === currentIntersect[0].object.uuid
@@ -228,82 +230,24 @@ document.addEventListener("touchend", (_event) => {
 /**
  * Sound
  */
-const targetSound = new Audio("./sounds/target.mp3");
-const playTargetHitSound = () => {
-  targetSound.volume = 0.5;
-  targetSound.currentTime = 0.5;
-  targetSound.play();
-};
+
+const playSound = (sound, volume, time) =>
+{
+  sound.volume = volume
+  sound.currentTime = time
+  sound.play()
+  lastSound = sound
+}
 const goal1 = new Audio("./sounds/goal1.mp3");
-const playGoal1Sound = () => {
-  goal1.volume = 0.5;
-  goal1.currentTime = 0;
-  goal1.play();
-};
 const goal2 = new Audio("./sounds/goal2.mp3");
-const playGoal2Sound = () => {
-  goal2.volume = 0.5;
-  goal2.currentTime = 0;
-  goal2.play();
-};
 const goal3 = new Audio("./sounds/goal3.mp3");
-const playGoal3Sound = () => {
-  goal3.volume = 0.5;
-  goal3.currentTime = 0;
-  goal3.play();
-};
 const goal4 = new Audio("./sounds/goal4.mp3");
-const playGoal4Sound = () => {
-  goal4.volume = 0.5;
-  goal4.currentTime = 0;
-  goal4.play();
-};
 const goal5 = new Audio("./sounds/goal5.mp3");
-const playGoal5Sound = () => {
-  goal5.volume = 0.5;
-  goal5.currentTime = 0;
-  goal5.play();
-};
 const goal6 = new Audio("./sounds/goal6.mp3");
-const playGoal6Sound = () => {
-  goal6.volume = 0.5;
-  goal6.currentTime = 0;
-  goal6.play();
-};
 const goal7 = new Audio("./sounds/goal7.mp3");
-const playGoal7Sound = () => {
-  goal7.volume = 0.5;
-  goal7.currentTime = 0;
-  goal7.play();
-};
-
-const wallSound = new Audio("./sounds/bounce.mp3");
-const playWallHitSound = () => {
-  wallSound.volume = 0.5;
-  wallSound.currentTime = 3.2;
-  wallSound.play();
-};
-
 const winSound = new Audio("./sounds/win.mp3");
-const playWinSound = () => {
-  winSound.volume = 0.5;
-  winSound.currentTime = 0;
-  winSound.play();
-};
-
 const hit1Sound = new Audio("./sounds/hit1.mp3");
-const playhit1Sound = () => {
-  hit1Sound.volume = 0.5;
-  hit1Sound.currentTime = 0.25;
-  hit1Sound.play();
-};
-
 const hit2Sound = new Audio("./sounds/hit2.mp3");
-const playhit2Sound = () => {
-  hit2Sound.volume = 0.5;
-  hit2Sound.currentTime = 0;
-  hit2Sound.play();
-};
 
 /**
  * Utils
@@ -569,13 +513,13 @@ const createTarget = (size, position) => {
       }, 1000);
 
       const randomSound = Math.random()
-      if(randomSound < 0.15) playGoal1Sound()
-      else if(randomSound < 0.30) playGoal2Sound()
-      else if(randomSound < 0.45) playGoal3Sound()
-      else if(randomSound < 0.60) playGoal4Sound()
-      else if(randomSound < 0.75) playGoal5Sound()
-      else if(randomSound < 0.90) playGoal6Sound()
-      else playGoal7Sound()
+      if(randomSound < 0.15) playSound(goal1, 0.5, 0)
+      else if(randomSound < 0.30) playSound(goal2, 0.5, 0)
+      else if(randomSound < 0.45) playSound(goal3, 0.5, 0)
+      else if(randomSound < 0.60) playSound(goal4, 0.5, 0)
+      else if(randomSound < 0.75) playSound(goal5, 0.5, 0)
+      else if(randomSound < 0.90) playSound(goal6, 0.5, 0)
+      else playSound(goal7, 0.5, 0)
 
       // Update wind
       if (score >= windMinScore) {
@@ -975,7 +919,7 @@ startBtn.addEventListener('click', () =>
         if (score > scoresList[scoresList.length - 1].score) {
           console.log("goodjob");
           register.classList.remove('hidden');
-          playWinSound();
+          playSound(winSound, 0.5, 0);
 
 
           registerScore.addEventListener('click', (_event) =>
