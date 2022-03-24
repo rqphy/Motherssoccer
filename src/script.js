@@ -119,6 +119,7 @@ const obstaclesInterval = 2000;
 const scoreDisplay = document.querySelector("#score");
 const userInput = document.querySelector("#username");
 const resetBall = document.querySelector("#reset");
+const muteBtn = document.querySelector("#mute");
 const postGameScreen = document.querySelector(".post");
 const tryAgain = document.querySelector("#restart");
 const timer = document.querySelector("#timer");
@@ -142,6 +143,16 @@ resetBall.addEventListener("click", () => {
     z: 5,
   });
 });
+
+/**
+ * Mute
+ */
+const handleMuteBtn = () =>
+{
+  console.log('mute')
+}
+
+muteBtn.addEventListener('click', handleMuteBtn)
 
 document.addEventListener("mousedown", (_event) => {
   mouse.x = (_event.clientX / window.innerWidth) * 2 - 1;
@@ -962,6 +973,7 @@ startBtn.addEventListener('click', () =>
     prevGame.classList.add('hidden');
     prevBg.classList.add('hidden');
     resetBall.classList.remove('hidden');
+    muteBtn.classList.remove('hidden');
     loaded = true;
     remainingTime = 60
 
@@ -971,6 +983,7 @@ startBtn.addEventListener('click', () =>
       } else {
         endScore.textContent = score;
         resetBall.classList.add('hidden');
+        muteBtn.classList.add('hidden');
         postGameScreen.classList.remove("hidden");
         prevBg.classList.remove("hidden");
         canvas.classList.add("hidden");
