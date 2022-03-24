@@ -334,13 +334,15 @@ const goalSounds = [
 const selectRandomGoalSound = () =>
 {
   let randomId = null
-  while(randomId == lastSoundId || !randomId)
+  while(randomId == lastSoundId || randomId == null)
   {
     randomId = Math.floor(Math.random() * goalSounds.length)
   }
   lastSoundId = randomId
+  console.log(randomId)
   return goalSounds[randomId]
 }
+
 const winSound = new Audio("./sounds/win.mp3");
 const hit1Sound = new Audio("./sounds/hit1.mp3");
 const hit2Sound = new Audio("./sounds/hit2.mp3");
