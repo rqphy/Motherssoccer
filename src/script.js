@@ -48,7 +48,7 @@ const textureLoader = new THREE.TextureLoader();
 
 const footBallTexture = textureLoader.load("./textures/football.jpeg");
 
-const fenceTexture = textureLoader.load("./img/prev-bg.jpg");
+const fenceTexture = textureLoader.load("./img/game-bg.jpg");
 fenceTexture.wrapS = fenceTexture.wrapT = THREE.RepeatWrapping;
 fenceTexture.repeat.set(1, 1);
 
@@ -274,49 +274,60 @@ class Goal
 }
 
 const goalSounds = [
+  //1
   new Goal(
     new Audio("./sounds/goal1.mp3"),
     0.8
   ),
+  //2
   new Goal(
     new Audio("./sounds/goal2.mp3"),
     0.7
   ),
+  //3
   new Goal(
     new Audio("./sounds/goal3.mp3"),
     0.5
   ),
+  //4
   new Goal(
     new Audio("./sounds/goal4.mp3"),
     0.7
   ),
+  //5
   new Goal(
     new Audio("./sounds/goal5.mp3"),
     0.8
   ),
+  //6
   new Goal(
     new Audio("./sounds/goal6.mp3"),
     0.35
   ),
+  //7
   new Goal(
     new Audio("./sounds/goal7.mp3"),
     0.7
   ),
+  //8
   new Goal(
     new Audio("./sounds/goal8.mp3"),
-    0.7
+    0.5
   ),
+  //9
   new Goal(
     new Audio("./sounds/goal9.mp3"),
     0.7
   ),
+  //10
   new Goal(
     new Audio("./sounds/goal10.mp3"),
-    0.7
+    0.6
   ),
+  //11
   new Goal(
     new Audio("./sounds/goal11.mp3"),
-    0.7
+    0.6
   ),
 ]
 
@@ -782,7 +793,7 @@ const carpetMaterial = new THREE.MeshPhysicalMaterial({
 createWall([0, -5, 5], { x: -Math.PI * 0.5 }, { x: 10, y: 10 }, carpetMaterial);
 
 // Fence
-createFence([0, 0, -70], { x: 280, y: 140 });
+createFence([0, 0, -70], { x: 320, y: 140 });
 
 // floor
 createFloor([0, -5, 5]);

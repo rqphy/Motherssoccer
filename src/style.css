@@ -31,6 +31,8 @@ body
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     background: #2e6d82;
+    background-image: url(./../static/img/prev-bg.jpg);
+    background-size: 100%;
 }
 
 .webgl
