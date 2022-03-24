@@ -381,9 +381,16 @@ body
         background-position: 40% 50%;
     }
 
+    .prev .icon {
+        width: 54px;
+        height: 110px;
+        margin-top: 20px;
+    }
+
     .prev, .post {
         width: 90%;
         font-size: 24px;
+        height: 400px;
     }
 
     .btn {
