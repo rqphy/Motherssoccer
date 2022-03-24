@@ -89,6 +89,7 @@ const sizes = {
 };
 
 let lastSound = null
+let lastSoundId = null
 
 let pannelSize = {
   width: sizes.width > 780 ? 60 : 40,
@@ -238,13 +239,58 @@ const playSound = (sound, volume, time) =>
   sound.play()
   lastSound = sound
 }
-const goal1 = new Audio("./sounds/goal1.mp3");
-const goal2 = new Audio("./sounds/goal2.mp3");
-const goal3 = new Audio("./sounds/goal3.mp3");
-const goal4 = new Audio("./sounds/goal4.mp3");
-const goal5 = new Audio("./sounds/goal5.mp3");
-const goal6 = new Audio("./sounds/goal6.mp3");
-const goal7 = new Audio("./sounds/goal7.mp3");
+
+class Goal
+{
+  constructor(sound, volume, time = 0)
+  {
+    this.sound = sound
+    this.volume = volume
+    this.time = time
+  }
+}
+
+const goalSounds = [
+  new Goal(
+    new Audio("./sounds/goal1.mp3"),
+    0.8
+  ),
+  new Goal(
+    new Audio("./sounds/goal2.mp3"),
+    0.7
+  ),
+  new Goal(
+    new Audio("./sounds/goal3.mp3"),
+    0.5
+  ),
+  new Goal(
+    new Audio("./sounds/goal4.mp3"),
+    0.7
+  ),
+  new Goal(
+    new Audio("./sounds/goal5.mp3"),
+    0.8
+  ),
+  new Goal(
+    new Audio("./sounds/goal6.mp3"),
+    0.35
+  ),
+  new Goal(
+    new Audio("./sounds/goal7.mp3"),
+    0.7
+  ),
+]
+
+const selectRandomGoalSound = () =>
+{
+  let randomId = null
+  while(randomId == lastSoundId || !randomId)
+  {
+    randomId = Math.floor(Math.random() * goalSounds.length)
+  }
+  lastSoundId = randomId
+  return goalSounds[randomId]
+}
 const winSound = new Audio("./sounds/win.mp3");
 const hit1Sound = new Audio("./sounds/hit1.mp3");
 const hit2Sound = new Audio("./sounds/hit2.mp3");
@@ -512,14 +558,13 @@ const createTarget = (size, position) => {
         scoreIndicator = null;
       }, 1000);
 
-      const randomSound = Math.random()
-      if(randomSound < 0.15) playSound(goal1, 0.8, 0)
-      else if(randomSound < 0.30) playSound(goal2, 0.7, 0)
-      else if(randomSound < 0.45) playSound(goal3, 0.5, 0)
-      else if(randomSound < 0.60) playSound(goal4, 0.7, 0)
-      else if(randomSound < 0.75) playSound(goal5, 0.8, 0)
-      else if(randomSound < 0.90) playSound(goal6, 0.35, 0)
-      else playSound(goal7, 0.7, 0)
+      const selectedSound = selectRandomGoalSound()
+
+      playSound(
+        selectedSound.sound,
+        selectedSound.volume,
+        selectedSound.time
+      )
 
       // Update wind
       if (score >= windMinScore) {
@@ -710,10 +755,10 @@ createTarget(targetSize, generateRandomTargetCoords());
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.1);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
 directionalLight.castShadow = true;
 directionalLight.shadow.mapSize.set(1024, 1024);
 directionalLight.shadow.camera.far = 15;
@@ -721,8 +766,8 @@ directionalLight.shadow.camera.left = -7;
 directionalLight.shadow.camera.top = 7;
 directionalLight.shadow.camera.right = 7;
 directionalLight.shadow.camera.bottom = -7;
-directionalLight.position.set(5, 5, 5);
-const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.1);
+directionalLight.position.set(6, 5, 5);
+const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
 directionalLight2.castShadow = true;
 directionalLight2.shadow.mapSize.set(1024, 1024);
 directionalLight2.shadow.camera.far = 15;
@@ -730,7 +775,7 @@ directionalLight2.shadow.camera.left = -7;
 directionalLight2.shadow.camera.top = 7;
 directionalLight2.shadow.camera.right = 7;
 directionalLight2.shadow.camera.bottom = -7;
-directionalLight2.position.set(-5, 5, 5);
+directionalLight2.position.set(-6, 5, 5);
 scene.add(directionalLight, directionalLight2);
 
 /**
