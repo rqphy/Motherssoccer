@@ -154,7 +154,6 @@ const handleMuteBtn = () =>
   {
     // unmute
     soundIsMuted = false
-    console.log('unmute')
     muteBtn.classList.remove('off')
     return
   }
@@ -162,7 +161,6 @@ const handleMuteBtn = () =>
   // mute
   soundIsMuted = true
   if(currentSound) currentSound.pause()
-  console.log('mute')
   muteBtn.classList.add('off')
 }
 
@@ -180,7 +178,7 @@ document.addEventListener("mouseup", (_event) => {
   };
 
   if (currentIntersect.length) {
-    Math.random() > 0.5 ? playSound(hit1Sound, 0.5, 0.25) : playSound(hit2Sound, 0.5, 0);
+    if(!soundIsMuted) Math.random() > 0.5 ? playSound(hit1Sound, 0.5, 0.25) : playSound(hit2Sound, 0.5, 0);
     const bodyBall = balls.find(
       (obj) => obj.mesh.uuid === currentIntersect[0].object.uuid
     );
@@ -224,7 +222,7 @@ document.addEventListener("touchend", (_event) => {
   };
 
   if (currentIntersect.length) {
-    Math.random() > 0.5 ? playSound(hit1Sound, 0.5, 0.25) : playSound(hit2Sound, 0.5, 0);
+    if(!soundIsMuted) Math.random() > 0.5 ? playSound(hit1Sound, 0.5, 0.25) : playSound(hit2Sound, 0.5, 0);
 
     const bodyBall = balls.find(
       (obj) => obj.mesh.uuid === currentIntersect[0].object.uuid
@@ -600,13 +598,15 @@ const createTarget = (size, position) => {
       }, 1000);
 
       const selectedSound = selectRandomGoalSound()
-
-      playSound(
-        selectedSound.sound,
-        selectedSound.volume,
-        selectedSound.time
-      )
-
+      if(!soundIsMuted)
+      {
+        playSound(
+          selectedSound.sound,
+          selectedSound.volume,
+          selectedSound.time
+        )
+      }
+          
       // Update wind
       if (score >= windMinScore) {
         windPower = Math.floor((0.5 - Math.random()) * windPowerRange);
@@ -1007,7 +1007,7 @@ startBtn.addEventListener('click', () =>
         if (score > scoresList[scoresList.length - 1].score) {
           console.log("goodjob");
           register.classList.remove('hidden');
-          playSound(winSound, 0.5, 0);
+          if(!soundIsMuted) playSound(winSound, 0.5, 0);
 
 
           registerScore.addEventListener('click', (_event) =>
