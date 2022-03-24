@@ -279,6 +279,22 @@ const goalSounds = [
     new Audio("./sounds/goal7.mp3"),
     0.7
   ),
+  new Goal(
+    new Audio("./sounds/goal8.mp3"),
+    0.7
+  ),
+  new Goal(
+    new Audio("./sounds/goal9.mp3"),
+    0.7
+  ),
+  new Goal(
+    new Audio("./sounds/goal10.mp3"),
+    0.7
+  ),
+  new Goal(
+    new Audio("./sounds/goal11.mp3"),
+    0.7
+  ),
 ]
 
 const selectRandomGoalSound = () =>
