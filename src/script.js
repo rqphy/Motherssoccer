@@ -88,7 +88,7 @@ const sizes = {
   height: window.innerHeight,
 };
 
-let lastSound = null
+let currentSound = null
 let lastSoundId = null
 
 let pannelSize = {
@@ -124,6 +124,7 @@ const postGameScreen = document.querySelector(".post");
 const tryAgain = document.querySelector("#restart");
 const timer = document.querySelector("#timer");
 const wind = document.querySelector("#wind");
+let soundIsMuted = false
 
 /**
  * Events
@@ -149,7 +150,20 @@ resetBall.addEventListener("click", () => {
  */
 const handleMuteBtn = () =>
 {
+  if(soundIsMuted)
+  {
+    // unmute
+    soundIsMuted = false
+    console.log('unmute')
+    muteBtn.classList.remove('off')
+    return
+  }
+  
+  // mute
+  soundIsMuted = true
+  if(currentSound) currentSound.pause()
   console.log('mute')
+  muteBtn.classList.add('off')
 }
 
 muteBtn.addEventListener('click', handleMuteBtn)
@@ -248,7 +262,7 @@ const playSound = (sound, volume, time) =>
   sound.volume = volume
   sound.currentTime = time
   sound.play()
-  lastSound = sound
+  currentSound = sound
 }
 
 class Goal

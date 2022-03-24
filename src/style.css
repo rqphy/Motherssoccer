@@ -92,10 +92,10 @@ body
     right: 40px;
 }
 
-.mute.on .soundOn, .mute.off .soundOff {
+.mute .soundOn, .mute.off .soundOff {
     display: block;
 }
-.mute.on .soundOff, .mute.off .soundOn {
+.mute .soundOff, .mute.off .soundOn {
     display: none;
 }
 
