@@ -339,7 +339,6 @@ const selectRandomGoalSound = () =>
     randomId = Math.floor(Math.random() * goalSounds.length)
   }
   lastSoundId = randomId
-  console.log(randomId)
   return goalSounds[randomId]
 }
 
