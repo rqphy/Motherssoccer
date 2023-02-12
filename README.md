@@ -40,7 +40,7 @@ If you play Mother’s Soccer, you can’t see any helper. It’s because I’ve
 
 ### The scoreboard
 
-To keep competitive players entertained, I’ll add a scoreboard so they can compare their scores. If you want to know more about it, you can know the whole story on [this repo](https://github.com/rqphy/motherssoccer-score)
+To keep competitive players entertained, I’ll add a scoreboard so they can compare their scores. If you want to know more about it, you can know the whole story on [this repo](https://github.com/rqphy/motherssoccer-score).
 
 ## Inspiration
 
