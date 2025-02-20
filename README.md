@@ -6,7 +6,7 @@ I give myself 1 week to create a 3d video game! I want to test CANNON.js, a libr
 
 Because I’m not a good designer and 1 week is really shot, the design was made by a coworker at Wonderstudios.
 
-[Live](https://lab.wonderstudios.com/#Mothers-Soccer)
+/!\ The site is not live anymore
 
 ## The gameplay
 
